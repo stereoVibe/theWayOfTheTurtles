@@ -26,18 +26,16 @@ public class IntentionDAOHelper {
                                               BigGoal bigGoal) throws SQLException {
         dao.create(subGoal);
         assignSubGoalEmptyCollection(subGoal, dao);
-        bigGoal.getSubGoals().add(subGoal);
+//        bigGoal.getSubGoals().add(subGoal);
+//        dao.refresh(subGoal);
         return subGoal;
     }
-
-//    TODO: Create method "createTaskRecord"
 
     public static Task createTaskRecord(Task task,
                                         Dao<Task, Integer> dao,
                                         SubGoal subGoal) throws SQLException{
-
         dao.create(task);
-
+        subGoal.getTasks().add(task);
         return task;
     }
 

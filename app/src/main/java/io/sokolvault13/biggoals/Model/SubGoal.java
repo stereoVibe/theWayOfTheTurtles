@@ -7,14 +7,12 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 @DatabaseTable(tableName = "sub_goals")
 public class SubGoal extends Intention {
 
-    @DatabaseField(generatedId = true, index = true)
-    private int id;
+    @DatabaseField(generatedId = true, canBeNull = false, index = true)
+    protected int id;
     @DatabaseField (canBeNull = false)
     private String title;
     @DatabaseField
@@ -36,10 +34,10 @@ public class SubGoal extends Intention {
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = "big_goal_id")
     private BigGoal mBigGoal;
 
-    protected SubGoal() {
+    public SubGoal() {
     }
 
-    protected SubGoal(String title, ObjectiveType objectiveType) {
+    public SubGoal(String title, ObjectiveType objectiveType) {
         this.title = title;
         this.mObjectiveType = objectiveType;
         this.startDate = new Date();
@@ -48,14 +46,24 @@ public class SubGoal extends Intention {
         this.mPriority = 1;
     }
 
-    protected SubGoal(String title, String description, ObjectiveType objectiveType) {
-        this.title = title;
+    public SubGoal (String title, ObjectiveType objectiveType, int priority){
+        this(title, objectiveType);
+        this.mPriority = priority;
+    }
+
+    public SubGoal(String title, String description, ObjectiveType objectiveType) {
+        this(title, objectiveType);
         this.description = description;
-        this.mObjectiveType = objectiveType;
-        this.startDate = new Date();
-        this.isOutOfDate = 0;
-        this.isComplete = 0;
-        this.mPriority = 1;
+    }
+
+    public SubGoal (String title, ObjectiveType objectiveType, String description, int priority){
+        this(title, description, objectiveType);
+        this.mPriority = priority;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     public int getPriority() {
@@ -80,6 +88,11 @@ public class SubGoal extends Intention {
 
     public ForeignCollection<Task> getTasks() {
         return tasks;
+    }
+
+    protected Task createTask(Task task){
+        task.setSubGoal(this);
+        return task;
     }
 
     @Override

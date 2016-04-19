@@ -6,8 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "tasks")
 public class Task extends Intention {
 
-    @DatabaseField(generatedId = true, index = true)
-    private int id;
+    @DatabaseField(generatedId = true, canBeNull = false, index = true)
+    protected int id;
     @DatabaseField (canBeNull = false)
     private String title;
     @DatabaseField
@@ -29,11 +29,17 @@ public class Task extends Intention {
     }
 
     protected Task(String title, String description) {
-        this.title = title;
+        this(title);
         this.description = description;
-        this.isOutOfDate = 0;
-        this.isComplete = 0;
     }
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    protected void setSubGoal(SubGoal subGoal){
+        this.mSubGoal = subGoal;
+    }
 
 }

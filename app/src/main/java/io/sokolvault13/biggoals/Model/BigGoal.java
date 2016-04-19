@@ -41,11 +41,18 @@ public class BigGoal extends Intention {
     }
 
     public BigGoal(String title, String description) {
-        this.title = title;
+        this(title);
         this.description = description;
-        this.startDate = new Date();
-        this.isOutOfDate = 0;
-        this.isComplete = 0;
+    }
+
+    public BigGoal(String title, Date endDate){
+        this(title);
+        this.endDate = endDate;
+    }
+
+    public BigGoal(String title, String description, Date endDate){
+        this(title, description);
+        this.endDate = endDate;
     }
 
     @Override
@@ -67,9 +74,6 @@ public class BigGoal extends Intention {
         return this.subGoals;
     }
 
-    private void addSubGoal(SubGoal subGoal) { this.subGoals.add(subGoal);
-    }
-
     @Override
     public String toString() {
         return "BigGoal{" +
@@ -84,17 +88,8 @@ public class BigGoal extends Intention {
                 '}';
     }
 
-    public SubGoal createSubGoal(String title, ObjectiveType type){
-        SubGoal subGoal = new SubGoal(title, type);
+    public SubGoal createSubGoal(SubGoal subGoal){
         subGoal.setBigGoal(this);
-        addSubGoal(subGoal);
-        return subGoal;
-    }
-
-    public SubGoal createSubGoal(String title, String description, ObjectiveType type){
-        SubGoal subGoal = new SubGoal(title, description, type);
-        subGoal.setBigGoal(this);
-        addSubGoal(subGoal);
         return subGoal;
     }
 }
