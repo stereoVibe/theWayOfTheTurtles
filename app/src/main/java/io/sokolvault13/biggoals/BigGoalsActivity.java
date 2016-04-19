@@ -53,6 +53,8 @@ public class BigGoalsActivity extends AppCompatActivity {
             ArrayList<SubGoal> arraySubGoalsList = (ArrayList<SubGoal>) getIntentionList(subGoalDAO);
             ArrayList<Task> arrayTasksList = (ArrayList<Task>) getIntentionList(tasksDao);
 
+            Log.d("arrayList", String.valueOf(arrayBigGoalsList.size()));
+
             Log.i("dbHelper", " " + bigGoalsDAO.queryForId(bigGoal.getId()));
             Log.i("dbHelper", "Is SubGoals in memory is empty? :" + String.valueOf(bigGoal.getSubGoals() == null));
             Log.i("dbHelper", "Is SubGoals in DAO is empty? Size is :" + String.valueOf(bigGoal.getSubGoals().size()));

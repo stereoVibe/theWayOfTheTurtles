@@ -26,7 +26,4 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.3.0'
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'net.orfjackal.retrolambda:retrolambda:2.1.0'
-    compile 'me.tatarka:gradle-retrolambda:3.3.0-beta4'
-    compile 'net.orfjackal.retrolambda:retrolambda-maven-plugin:2.1.0'
 }

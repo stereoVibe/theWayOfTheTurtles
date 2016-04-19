@@ -27,7 +27,6 @@ public class IntentionDAOHelper {
         dao.create(subGoal);
         assignSubGoalEmptyCollection(subGoal, dao);
         bigGoal.getSubGoals().add(subGoal);
-        dao.commit();
         return subGoal;
     }
 
