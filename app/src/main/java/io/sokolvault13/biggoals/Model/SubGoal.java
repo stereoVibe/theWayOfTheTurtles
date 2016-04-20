@@ -10,6 +10,9 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "sub_goals")
 public class SubGoal extends Intention {
+    public static final String TASKS_COLLECTS_FIELD = "tasks_collects";
+    public static final String BIGGOAL_FIELD = "big_goal";
+    public static final String BIGGOAL_ID_FIELD = "big_goal_id";
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     protected int id;
@@ -29,10 +32,12 @@ public class SubGoal extends Intention {
     private int isComplete;
     @DatabaseField (canBeNull = false, columnName = "priority")
     private int mPriority;
-    @ForeignCollectionField(columnName = "tasks_collects", eager = true)
+    @ForeignCollectionField(columnName = TASKS_COLLECTS_FIELD, eager = true)
     private ForeignCollection<Task> tasks;
-    @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = "big_goal_id")
+    @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
     private BigGoal mBigGoal;
+    @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
+    private int mBigGoalId;
 
     public SubGoal() {
     }
@@ -86,12 +91,15 @@ public class SubGoal extends Intention {
         mBigGoal = bigGoal;
     }
 
+    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
+
     public ForeignCollection<Task> getTasks() {
         return tasks;
     }
 
     protected Task createTask(Task task){
         task.setSubGoal(this);
+        task.setSubGoalId(this);
         return task;
     }
 

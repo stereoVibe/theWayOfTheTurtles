@@ -11,6 +11,7 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "big_goals")
 public class BigGoal extends Intention {
+    public static final String SUBGOALS_COLLECTS_FIELD = "subgoals_collects";
 
     @DatabaseField (generatedId = true, canBeNull = false)
     protected int id;
@@ -26,8 +27,7 @@ public class BigGoal extends Intention {
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
     private int isComplete;
-//    private Collection<SubGoal> mSubGoals;
-    @ForeignCollectionField (columnName = "subgoals_collects", eager = true)
+    @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
     private ForeignCollection <SubGoal> subGoals;
 
     public BigGoal() {
@@ -90,6 +90,7 @@ public class BigGoal extends Intention {
 
     public SubGoal createSubGoal(SubGoal subGoal){
         subGoal.setBigGoal(this);
+        subGoal.setBigGoalId(this);
         return subGoal;
     }
 }
