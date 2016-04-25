@@ -41,7 +41,7 @@ public class IntentionDAOHelper {
         return task;
     }
 
-    public static <T> List<T> getSubIntention (Dao<T, Integer> dao,
+    public static List<? extends Intention> getSubIntention (Dao<? extends Intention, Integer> dao,
                                                Intention goal,
                                                String idField) throws SQLException {
         return dao.queryBuilder().where()
@@ -49,7 +49,7 @@ public class IntentionDAOHelper {
                 .query();
     }
 
-    public static <T> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
+    public static <T extends Intention> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
                                                    Intention goal,
                                                    String idField) throws  SQLException {
         ArrayList<T> subIntentionsList = new ArrayList<>();
@@ -68,7 +68,7 @@ public class IntentionDAOHelper {
         return subIntentionsList;
     }
 
-    public static <T> List<T> getIntentionList (Dao<T, Integer> dao) throws SQLException {
+    public static <T extends Intention> List<T> getIntentionList (Dao<T, Integer> dao) throws SQLException {
         ArrayList<T> list = new ArrayList<>();
         CloseableIterator<T> iterator = dao.closeableIterator();
         try {
