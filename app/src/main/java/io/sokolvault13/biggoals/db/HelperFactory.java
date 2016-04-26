@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 
-import io.sokolvault13.biggoals.Model.DatabaseHelper;
-
 public class HelperFactory {
     private static DatabaseHelper sDatabaseHelper;
 

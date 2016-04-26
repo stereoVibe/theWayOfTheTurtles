@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Model;
+package io.sokolvault13.biggoals.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,12 +7,14 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+
+import io.sokolvault13.biggoals.Model.BigGoal;
+import io.sokolvault13.biggoals.Model.SubGoal;
+import io.sokolvault13.biggoals.Model.Task;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 

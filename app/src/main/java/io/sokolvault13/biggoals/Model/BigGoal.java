@@ -27,6 +27,8 @@ public class BigGoal extends Intention {
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
     private int isComplete;
+    @DatabaseField (canBeNull = false, columnName = "progress")
+    private int mProgress;
     @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
     private ForeignCollection <SubGoal> subGoals;
 
@@ -38,6 +40,7 @@ public class BigGoal extends Intention {
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
+        this.mProgress = 0;
     }
 
     public BigGoal(String title, String description) {
@@ -68,6 +71,14 @@ public class BigGoal extends Intention {
     @Override
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getProgress() {
+        return mProgress;
+    }
+
+    public void setProgress(int progress) {
+        mProgress = progress;
     }
 
     public Collection<SubGoal> getSubGoals() {
