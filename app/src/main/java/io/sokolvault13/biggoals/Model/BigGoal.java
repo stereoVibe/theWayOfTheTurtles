@@ -73,6 +73,11 @@ public class BigGoal extends Intention {
         this.title = title;
     }
 
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
     public int getProgress() {
         return mProgress;
     }

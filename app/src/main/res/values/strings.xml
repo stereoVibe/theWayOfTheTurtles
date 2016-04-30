@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">BigGoals</string>
-    <string name="drawer_open">Открытие меню</string>
-    <string name="drawer_close">закрытие меню</string>
+    <string name="app_name">Big Goals</string>
+    <string name="drawer_open">Menu Open</string>
+    <string name="drawer_close">Menu Close</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="big_goal_description_text"></string>
 </resources>

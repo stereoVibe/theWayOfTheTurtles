@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/toolbar_height">
+    android:layout_height="?attr/actionBarSize"
+    >
 
 
     <LinearLayout
@@ -33,16 +34,17 @@
                 <!--android:clickable="true"-->
                 <!--/>-->
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceButton"-->
-                <!--android:text="добавить Большую Цель"-->
-                <!--android:textColor="@color/primaryBlue"-->
-                <!--android:id="@+id/textView"-->
-                <!--android:gravity="center_horizontal"-->
-                <!--android:layout_marginTop="12dp"-->
-                <!--android:clickable="true"/>-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Большие Цели"
+                android:textSize="18sp"
+                android:textColor="#424242"
+                android:id="@+id/textView"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:backgroundTintMode="src_atop"
+                />
 
         </LinearLayout>
     </LinearLayout>

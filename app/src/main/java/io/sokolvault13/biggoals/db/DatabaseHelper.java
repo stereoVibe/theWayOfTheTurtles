@@ -25,10 +25,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<SubGoal, Integer> mSubGoalDAO = null;
     private Dao<Task, Integer> mTasksDAO = null;
 
-//    private BigGoal mBigGoalDAO = null;
-//    private SubGoal mSubGoalDAO = null;
-//    private Task mTasksDAO = null;
-
     public DatabaseHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -69,14 +65,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     public Dao<SubGoal, Integer> getSubGoalDAO() throws SQLException {
         if (mSubGoalDAO == null){
-            mSubGoalDAO = getDao(SubGoal.class);
+            mSubGoalDAO = DaoManager.createDao(connectionSource, SubGoal.class);
         }
         return mSubGoalDAO;
     }
 
     public Dao<Task, Integer> getTaskDAO() throws SQLException {
         if (mTasksDAO == null){
-            mTasksDAO = getDao(Task.class);
+            mTasksDAO = DaoManager.createDao(connectionSource, Task.class);
         }
         return mTasksDAO;
     }

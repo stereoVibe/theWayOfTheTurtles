@@ -1,6 +1,8 @@
 package io.sokolvault13.biggoals;
 
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,7 +30,7 @@ public class BigGoalsListFragment extends Fragment {
 
     private RecyclerView mBigGoalsRecyclerView;
     private BigGoalsAdapter mBigGoalsAdapter;
-
+    private DatabaseHelper dbHelper;
     private Dao<BigGoal, Integer> bigGoalsDAO;
 
 //    public BigGoalsListFragment() {
@@ -37,11 +39,22 @@ public class BigGoalsListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        HelperFactory.setHelper(getContext());
         super.onCreate(savedInstanceState);
-
-        DatabaseHelper dbHelper = HelperFactory.getHelper();
+        dbHelper = HelperFactory.getHelper();
         try {
             bigGoalsDAO = dbHelper.getBigGoalDAO();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            BigGoal bigGoal = createBigGoalRecord(new BigGoal("Первая Цель", "Описание один для первой цели. Оно не должно быть очень длинным"),
+                    bigGoalsDAO);
+            BigGoal bigGoal1 = createBigGoalRecord(new BigGoal("Вторая Цель", "Описание два для второй цели. По идее оно короче."),
+                    bigGoalsDAO);
+            BigGoal bigGoal2 = createBigGoalRecord(new BigGoal("Третья Цель", "Самое короткое описание из всех. Описание три."),
+                    bigGoalsDAO);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,13 +68,7 @@ public class BigGoalsListFragment extends Fragment {
         mBigGoalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         try {
-//
-            BigGoal bigGoal = createBigGoalRecord(new BigGoal("Первая Цель"), bigGoalsDAO);
-            BigGoal bigGoal1 = createBigGoalRecord(new BigGoal("Вторая Цель"), bigGoalsDAO);
-            BigGoal bigGoal2 = createBigGoalRecord(new BigGoal("Третья Цель", "Описание"), bigGoalsDAO);
-
             updateUI();
-
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -69,7 +76,9 @@ public class BigGoalsListFragment extends Fragment {
         return view;
     }
 
+//        TODO: Make this method AsyncTask because DAO do not have time to initialize, in some cases (randomly)
     private void updateUI() throws SQLException {
+//        TODO: Instance of this DAO can be removed after method will be AsyncTask
 //        Dao<BigGoal, Integer> bigGoalsDAO = dbHelper.getBigGoalDAO();
         List<BigGoal> bigGoals = IntentionDAOHelper.getIntentionList(bigGoalsDAO);
         mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
@@ -79,20 +88,26 @@ public class BigGoalsListFragment extends Fragment {
     private class BigGoalsHolder extends RecyclerView.ViewHolder {
         private BigGoal mBigGoal;
         public TextView mBigGoalTitle;
+        public TextView mBigGoalDescription;
         public NumberProgressBar mBigGoalProgress;
 
         public BigGoalsHolder(View itemView) {
             super(itemView);
-
-//            mBigGoalTitle = (TextView) itemView;
             mBigGoalTitle = (TextView) itemView.findViewById(R.id.big_goal_title);
+            mBigGoalDescription = (TextView) itemView.findViewById(R.id.big_goal_description);
             mBigGoalProgress = (NumberProgressBar) itemView.findViewById(R.id.progressBar);
         }
 
         public void bindBigGoal(BigGoal bigGoal){
             mBigGoal = bigGoal;
             mBigGoalTitle.setText(mBigGoal.getTitle());
-            Log.d("getIntentionList", mBigGoal.getTitle());
+//            This is a patch for description field happens were RecyclerView is recycling cards
+            if (mBigGoal.getDescription() != null){
+                mBigGoalDescription.setText(mBigGoal.getDescription());
+            } else if(mBigGoal.getDescription() == null){
+                Log.d("Big Goal Description", mBigGoalDescription.getText().toString());
+                mBigGoalDescription.setText("");
+            }
             mBigGoalProgress.setProgress(mBigGoal.getProgress());
         }
     }
@@ -125,4 +140,9 @@ public class BigGoalsListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        HelperFactory.releaseHelper();
+    }
 }
