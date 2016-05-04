@@ -12,7 +12,8 @@
         android:layout_height="112dp"
         android:orientation="vertical"
         android:elevation="4dp"
-        android:background="@drawable/cyanist">
+        android:background="@drawable/cyanist"
+        >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/big_goals_list_toolbar"
@@ -27,10 +28,11 @@
             android:paddingLeft="8dp">
 
             <ImageButton
+                android:id="@+id/add_Big_Goal_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_content_add_circle"
-                android:tint="@color/colorPrimary"
+                android:tint="@color/nearBlack"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_gravity="left"
@@ -43,11 +45,12 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:textAppearance="?android:attr/textAppearanceButton"
+                android:textSize="12sp"
                 android:text="Добавить Цель"
                 tools:text="Add Big Goal"
                 android:gravity="center_vertical"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
+                android:textColor="@color/nearBlack"
+
 
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"

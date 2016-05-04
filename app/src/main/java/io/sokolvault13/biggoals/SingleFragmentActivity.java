@@ -1,5 +1,6 @@
 package io.sokolvault13.biggoals;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ import io.sokolvault13.biggoals.db.HelperFactory;
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
     private Toolbar mToolBar;
+    private ImageButton mCreateBigGoalBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
                     .commit();
         }
 
+        mCreateBigGoalBtn = (ImageButton) findViewById(R.id.add_Big_Goal_btn);
         mToolBar = (Toolbar) findViewById(R.id.big_goals_list_toolbar);
         setSupportActionBar(mToolBar);
+
+        mCreateBigGoalBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateBigGoalActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -56,7 +69,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         if (actionBar != null){
             actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setCustomView(view);
             actionBar.setDisplayShowCustomEnabled(true);
@@ -70,4 +83,5 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
     }
+
 }

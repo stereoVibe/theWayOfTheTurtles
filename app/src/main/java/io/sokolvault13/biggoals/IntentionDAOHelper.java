@@ -41,6 +41,11 @@ public class IntentionDAOHelper {
         return task;
     }
 
+    public static <T extends Intention> void deleteIntention(T intention,
+                                                             Dao<T, Integer> dao) throws SQLException{
+        dao.deleteById(intention.getId());
+    }
+
     public static List<? extends Intention> getSubIntention (Dao<? extends Intention, Integer> dao,
                                                Intention goal,
                                                String idField) throws SQLException {

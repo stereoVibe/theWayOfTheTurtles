@@ -12,4 +12,5 @@
     <color name="darkTitle">#262626</color>
     <color name="greySubTitle">#999999</color>
     <color name="black">#3ab1a8</color>
+    <color name="nearBlack">#546e7a</color>
 </resources>

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
@@ -48,16 +50,16 @@ public class BigGoalsListFragment extends Fragment {
             e.printStackTrace();
         }
 
-        try {
-            BigGoal bigGoal = createBigGoalRecord(new BigGoal("Первая Цель", "Описание один для первой цели. Оно не должно быть очень длинным"),
-                    bigGoalsDAO);
-            BigGoal bigGoal1 = createBigGoalRecord(new BigGoal("Вторая Цель", "Описание два для второй цели. По идее оно короче."),
-                    bigGoalsDAO);
-            BigGoal bigGoal2 = createBigGoalRecord(new BigGoal("Третья Цель", "Самое короткое описание из всех. Описание три."),
-                    bigGoalsDAO);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            BigGoal bigGoal = createBigGoalRecord(new BigGoal("Первая Цель", "Описание один для первой цели. Оно не должно быть очень длинным"),
+//                    bigGoalsDAO);
+//            BigGoal bigGoal1 = createBigGoalRecord(new BigGoal("Вторая Цель", "Описание два для второй цели. По идее оно короче."),
+//                    bigGoalsDAO);
+//            BigGoal bigGoal2 = createBigGoalRecord(new BigGoal("Третья Цель", "Самое короткое описание из всех. Описание три."),
+//                    bigGoalsDAO);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -85,7 +87,7 @@ public class BigGoalsListFragment extends Fragment {
         mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
     }
 
-    private class BigGoalsHolder extends RecyclerView.ViewHolder {
+    private class BigGoalsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private BigGoal mBigGoal;
         public TextView mBigGoalTitle;
         public TextView mBigGoalDescription;
@@ -96,6 +98,7 @@ public class BigGoalsListFragment extends Fragment {
             mBigGoalTitle = (TextView) itemView.findViewById(R.id.big_goal_title);
             mBigGoalDescription = (TextView) itemView.findViewById(R.id.big_goal_description);
             mBigGoalProgress = (NumberProgressBar) itemView.findViewById(R.id.progressBar);
+
         }
 
         public void bindBigGoal(BigGoal bigGoal){
@@ -109,6 +112,11 @@ public class BigGoalsListFragment extends Fragment {
                 mBigGoalDescription.setText("");
             }
             mBigGoalProgress.setProgress(mBigGoal.getProgress());
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), mBigGoal.getTitle() + " clicked!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -131,7 +139,6 @@ public class BigGoalsListFragment extends Fragment {
             BigGoal bigGoal = mBigGoals.get(position);
             holder.bindBigGoal(bigGoal);
 //            holder.mBigGoalTitle.setText(bigGoal.getTitle());
-
         }
 
         @Override
