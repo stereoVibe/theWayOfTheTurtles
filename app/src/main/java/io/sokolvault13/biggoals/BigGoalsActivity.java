@@ -11,4 +11,5 @@ public class BigGoalsActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         return new BigGoalsFragment();
     }
+
 }
