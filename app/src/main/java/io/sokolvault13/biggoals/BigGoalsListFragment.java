@@ -49,17 +49,6 @@ public class BigGoalsListFragment extends Fragment {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-//        try {
-//            BigGoal bigGoal = createBigGoalRecord(new BigGoal("Первая Цель", "Описание один для первой цели. Оно не должно быть очень длинным"),
-//                    bigGoalsDAO);
-//            BigGoal bigGoal1 = createBigGoalRecord(new BigGoal("Вторая Цель", "Описание два для второй цели. По идее оно короче."),
-//                    bigGoalsDAO);
-//            BigGoal bigGoal2 = createBigGoalRecord(new BigGoal("Третья Цель", "Самое короткое описание из всех. Описание три."),
-//                    bigGoalsDAO);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -78,16 +67,14 @@ public class BigGoalsListFragment extends Fragment {
         return view;
     }
 
-//        TODO: Make this method AsyncTask because DAO do not have time to initialize, in some cases (randomly)
     private void updateUI() throws SQLException {
-//        TODO: Instance of this DAO can be removed after method will be AsyncTask
 //        Dao<BigGoal, Integer> bigGoalsDAO = dbHelper.getBigGoalDAO();
         List<BigGoal> bigGoals = IntentionDAOHelper.getIntentionList(bigGoalsDAO);
         mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
         mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
     }
 
-    private class BigGoalsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class BigGoalsHolder extends RecyclerView.ViewHolder {
         private BigGoal mBigGoal;
         public TextView mBigGoalTitle;
         public TextView mBigGoalDescription;
@@ -98,29 +85,21 @@ public class BigGoalsListFragment extends Fragment {
             mBigGoalTitle = (TextView) itemView.findViewById(R.id.big_goal_title);
             mBigGoalDescription = (TextView) itemView.findViewById(R.id.big_goal_description);
             mBigGoalProgress = (NumberProgressBar) itemView.findViewById(R.id.progressBar);
-
         }
 
         public void bindBigGoal(BigGoal bigGoal){
             mBigGoal = bigGoal;
             mBigGoalTitle.setText(mBigGoal.getTitle());
-//            This is a patch for description field happens were RecyclerView is recycling cards
-            if (mBigGoal.getDescription() != null){
+            if (mBigGoalDescription != null) {
                 mBigGoalDescription.setText(mBigGoal.getDescription());
-            } else if(mBigGoal.getDescription() == null){
-                Log.d("Big Goal Description", mBigGoalDescription.getText().toString());
-                mBigGoalDescription.setText("");
             }
             mBigGoalProgress.setProgress(mBigGoal.getProgress());
-        }
-
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getActivity(), mBigGoal.getTitle() + " clicked!", Toast.LENGTH_LONG).show();
         }
     }
 
     private class BigGoalsAdapter extends RecyclerView.Adapter<BigGoalsHolder>{
+        public static final int DESCRIPTION = 0;
+        public static final int NO_DESCRIPTION = 1;
         private List<BigGoal> mBigGoals;
 
         public BigGoalsAdapter(List<BigGoal> bigGoals) {
@@ -129,8 +108,17 @@ public class BigGoalsListFragment extends Fragment {
 
         @Override
         public BigGoalsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            View view = layoutInflater.inflate(R.layout.big_goal_card, parent, false);
+
+//            LayoutInflater layoutInflater = LayoutInflater.from(getContext());
+
+            View view = null;
+            if (viewType == NO_DESCRIPTION){
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.big_goal_card_no_description, parent, false);
+            } else if (viewType == DESCRIPTION){
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.big_goal_card, parent, false);
+            }
             return new BigGoalsHolder(view);
         }
 
@@ -144,6 +132,15 @@ public class BigGoalsListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mBigGoals.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (mBigGoals.get(position).getDescription().isEmpty()){
+                return NO_DESCRIPTION;
+            }else {
+                return DESCRIPTION;
+            }
         }
     }
 
