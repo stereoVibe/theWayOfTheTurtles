@@ -1,20 +1,14 @@
 package io.sokolvault13.biggoals;
 
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
@@ -23,10 +17,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
+import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
-
-import static io.sokolvault13.biggoals.IntentionDAOHelper.createBigGoalRecord;
 
 public class BigGoalsListFragment extends Fragment {
 
@@ -63,7 +56,6 @@ public class BigGoalsListFragment extends Fragment {
         } catch (SQLException e){
             e.printStackTrace();
         }
-
         return view;
     }
 
@@ -76,9 +68,9 @@ public class BigGoalsListFragment extends Fragment {
 
     private class BigGoalsHolder extends RecyclerView.ViewHolder {
         private BigGoal mBigGoal;
-        public TextView mBigGoalTitle;
-        public TextView mBigGoalDescription;
-        public NumberProgressBar mBigGoalProgress;
+        public final TextView mBigGoalTitle;
+        public final TextView mBigGoalDescription;
+        public final NumberProgressBar mBigGoalProgress;
 
         public BigGoalsHolder(View itemView) {
             super(itemView);
@@ -100,7 +92,7 @@ public class BigGoalsListFragment extends Fragment {
     private class BigGoalsAdapter extends RecyclerView.Adapter<BigGoalsHolder>{
         public static final int DESCRIPTION = 0;
         public static final int NO_DESCRIPTION = 1;
-        private List<BigGoal> mBigGoals;
+        private final List<BigGoal> mBigGoals;
 
         public BigGoalsAdapter(List<BigGoal> bigGoals) {
             mBigGoals = bigGoals;

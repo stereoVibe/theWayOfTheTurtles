@@ -96,11 +96,11 @@
                     android:layout_marginTop="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    tools:text="Subgoals status:"
+                    tools:text="Status:"
                     android:textStyle="bold"
                     android:textColor="#55000000"
                     android:textSize="14sp"
-                    android:text="Статус Подцелей: "/>
+                    android:text="Статус: "/>
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -265,6 +265,20 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginRight="8dp"
+                    android:paddingRight="32dp"/>
+
+                <ImageButton
+                    android:layout_width="16dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/imageButton"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/button2"
+                    android:src="@drawable/ic_choose_arrow_down"
+                    android:tint="@color/nearBlack"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingBottom="5dp"
+                    android:layout_alignRight="@id/button2"
                     android:layout_marginRight="8dp"/>
             </RelativeLayout>
 

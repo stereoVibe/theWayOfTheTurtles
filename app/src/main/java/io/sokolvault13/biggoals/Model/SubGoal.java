@@ -15,7 +15,7 @@ public class SubGoal extends Intention {
     public static final String BIGGOAL_ID_FIELD = "big_goal_id";
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
-    protected int id;
+    private int id;
     @DatabaseField (canBeNull = false)
     private String title;
     @DatabaseField
@@ -32,8 +32,8 @@ public class SubGoal extends Intention {
     private int isComplete;
     @DatabaseField (canBeNull = false, columnName = "priority")
     private int mPriority;
-    @ForeignCollectionField(columnName = TASKS_COLLECTS_FIELD, eager = true)
-    private ForeignCollection<Task> tasks;
+//    @ForeignCollectionField(columnName = TASKS_COLLECTS_FIELD, eager = true)
+//    private ForeignCollection<Task> tasks;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
     private BigGoal mBigGoal;
     @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
@@ -93,15 +93,15 @@ public class SubGoal extends Intention {
 
     public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
 
-    public ForeignCollection<Task> getTasks() {
-        return tasks;
-    }
+//    public ForeignCollection<Task> getTasks() {
+//        return tasks;
+//    }
 
-    protected Task createTask(Task task){
-        task.setSubGoal(this);
-        task.setSubGoalId(this);
-        return task;
-    }
+//    protected Task createTask(Task task){
+//        task.setSubGoal(this);
+//        task.setSubGoalId(this);
+//        return task;
+//    }
 
     @Override
     public String toString() {
@@ -115,7 +115,7 @@ public class SubGoal extends Intention {
                 ", isOutOfDate=" + isOutOfDate +
                 ", isComplete=" + isComplete +
                 ", mPriority=" + mPriority +
-                ", tasks=" + tasks +
+//                ", tasks=" + tasks +
                 ", mBigGoal=" + mBigGoal +
                 '}';
     }

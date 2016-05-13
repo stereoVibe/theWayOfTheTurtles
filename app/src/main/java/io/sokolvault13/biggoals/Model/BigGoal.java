@@ -14,7 +14,7 @@ public class BigGoal extends Intention {
     public static final String SUBGOALS_COLLECTS_FIELD = "subgoals_collects";
 
     @DatabaseField (generatedId = true, canBeNull = false)
-    protected int id;
+    private int id;
     @DatabaseField (canBeNull = false, useGetSet = true)
     private String title;
     @DatabaseField (canBeNull = true)

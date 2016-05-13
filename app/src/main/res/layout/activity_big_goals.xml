@@ -1,68 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.design.widget.FloatingActionButton
+        app:pressedTranslationZ="10dp"
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_plus_fab"
+        android:layout_marginTop="73dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        android:layout_marginLeft="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="112dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:elevation="4dp"
-        android:background="@drawable/cyanist"
         >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/big_goals_list_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            xmlns:android="http://schemas.android.com/apk/res/android"/>
-
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingLeft="8dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/cyanist_half"
+            android:elevation="4dp"
+            >
 
-            <ImageButton
-                android:id="@+id/add_Big_Goal_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_plus_poly"
-                android:tint="@color/nearBlack"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:layout_gravity="left"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/big_goals_list_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:textAppearance="?android:attr/textAppearanceButton"
-                android:textSize="12sp"
-                android:text="Добавить Цель"
-                tools:text="Add Big Goal"
-                android:gravity="center_vertical"
-                android:textColor="@color/nearBlack"
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="?attr/actionBarSize"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:gravity="center">-->
+
+                <!--&lt;!&ndash;<com.melnykov.fab.FloatingActionButton&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/fab"&ndash;&gt;-->
+                <!--&lt;!&ndash;fab:fab_type="mini"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:src="@drawable/ic_plus_fab"&ndash;&gt;-->
+                <!--&lt;!&ndash;fab:fab_colorNormal="@color/colorAccent"&ndash;&gt;-->
+                <!--&lt;!&ndash;fab:fab_colorPressed="#EE6352"&ndash;&gt;-->
+                <!--&lt;!&ndash;fab:fab_colorRipple="#EE6352"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginTop="35dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:cropToPadding="false"/>&ndash;&gt;-->
+
+                <!--&lt;!&ndash;<ImageButton&ndash;&gt;-->
+                <!--&lt;!&ndash;android:id="@+id/add_Big_Goal_btn"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_width="48dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_height="48dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:src="@drawable/ic_plus_poly"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:tint="@color/nearBlack"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:background="?attr/selectableItemBackgroundBorderless"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:clickable="true"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_gravity="left"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginLeft="4dp"&ndash;&gt;-->
+                <!--&lt;!&ndash;android:layout_marginStart="4dp"/>&ndash;&gt;-->
 
 
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_gravity="left"/>
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:text="Мои Цели"-->
+                    <!--style="?attr/titleTextStyle"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold"-->
+                    <!--tools:text="My Goals"-->
+                    <!--android:gravity="center"-->
+                    <!--android:textColor="#2d2d2d"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--/>-->
+
+            <!--</LinearLayout>-->
 
         </LinearLayout>
+
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                     android:id="@+id/fragmentContainer"
+                     android:elevation="2dp"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"/>
     </LinearLayout>
-
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:id="@+id/fragmentContainer"
-                 android:layout_width="match_parent"
-                 android:elevation="2dp"
-                 android:layout_height="match_parent"/>
-
-</LinearLayout>
+</RelativeLayout>

@@ -2,7 +2,7 @@ package io.sokolvault13.biggoals.Model;
 
 import java.util.Date;
 
-public abstract class Intention {
+abstract class Intention {
     private int id;
     private String title;
     private String description;

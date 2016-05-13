@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals;
+package io.sokolvault13.biggoals.Model;
 
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
@@ -29,9 +29,9 @@ public class IntentionDAOHelper {
     public static SubGoal createSubGoalRecord(SubGoal subGoal,
                                               Dao<SubGoal, Integer> dao) throws SQLException {
         dao.create(subGoal);
-        if (subGoal.getTasks() == null) {
-            dao.assignEmptyForeignCollection(subGoal, SubGoal.TASKS_COLLECTS_FIELD);
-        }
+//        if (subGoal.getTasks() == null) {
+//            dao.assignEmptyForeignCollection(subGoal, SubGoal.TASKS_COLLECTS_FIELD);
+//        }
         return subGoal;
     }
 
@@ -46,13 +46,13 @@ public class IntentionDAOHelper {
         dao.deleteById(intention.getId());
     }
 
-    public static List<? extends Intention> getSubIntention (Dao<? extends Intention, Integer> dao,
-                                               Intention goal,
-                                               String idField) throws SQLException {
-        return dao.queryBuilder().where()
-                .eq(idField, goal.getId())
-                .query();
-    }
+//    public static List<? extends Intention> getSubIntention (Dao<? extends Intention, Integer> dao,
+//                                               Intention goal,
+//                                               String idField) throws SQLException {
+//        return dao.queryBuilder().where()
+//                .eq(idField, goal.getId())
+//                .query();
+//    }
 
     public static <T extends Intention> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
                                                    Intention goal,

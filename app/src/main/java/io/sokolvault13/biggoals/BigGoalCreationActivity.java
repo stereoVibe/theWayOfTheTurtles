@@ -8,18 +8,16 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.misc.TransactionManager;
 
-import java.sql.Date;
 import java.sql.SQLException;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
 
-import static io.sokolvault13.biggoals.IntentionDAOHelper.createBigGoalRecord;
+import static io.sokolvault13.biggoals.Model.IntentionDAOHelper.createBigGoalRecord;
 
-public class CreateBigGoalActivity extends AppCompatActivity {
+public class BigGoalCreationActivity extends AppCompatActivity {
     private EditText mBigGoalTitle;
     private EditText mBigGoalDescription;
     private EditText mBigGoalEndDate;
@@ -52,19 +50,35 @@ public class CreateBigGoalActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Intent intent = new Intent(CreateBigGoalActivity.this, BigGoalsListActivity.class);
+                Intent intent = new Intent(BigGoalCreationActivity.this, BigGoalsListActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
 
-    private Dao<BigGoal, Integer> getBigGoalDao() {
+    @Override
+    protected void onStart(){
+        super.onStart();
+        if (dbHelper == null){
+            HelperFactory.setHelper(getApplicationContext());
+            dbHelper = HelperFactory.getHelper();
+        }
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        HelperFactory.releaseHelper();
+    }
+
+    private void getBigGoalDao() {
         try {
             bigGoalsDAO = dbHelper.getBigGoalDAO();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return bigGoalsDAO;
     }
+
+
 }
