@@ -5,7 +5,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "tasks")
 public class Task extends Intention {
-    public static final String SUBGOAL_ID_FIELD = "sub_goal_id";
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     protected int id;
@@ -17,10 +16,10 @@ public class Task extends Intention {
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
     private int isComplete;
-    @DatabaseField (foreign = true, index = true, foreignAutoCreate = true, foreignAutoRefresh = true, canBeNull = false, columnName = "sub_goal")
-    private SubGoal mSubGoal;
-    @DatabaseField (canBeNull = false, columnName = SUBGOAL_ID_FIELD)
-    private int mSubGoalId;
+    @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
+    private BigGoal mBigGoal;
+    @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
+    private int mBigGoalId;
 
     protected Task() {
     }
@@ -41,10 +40,10 @@ public class Task extends Intention {
         return id;
     }
 
-    protected void setSubGoal(SubGoal subGoal){
-        this.mSubGoal = subGoal;
+    public void setBigGoal(BigGoal bigGoal) {
+        mBigGoal = bigGoal;
     }
 
-    protected void setSubGoalId (SubGoal subGoalId) { this.mSubGoalId = subGoalId.getId();}
+    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
 
 }

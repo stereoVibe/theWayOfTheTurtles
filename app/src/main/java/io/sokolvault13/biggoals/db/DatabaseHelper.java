@@ -35,7 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTable(connectionSource, BigGoal.class);
             TableUtils.createTable(connectionSource, SubGoal.class);
-            TableUtils.createTable(connectionSource, Task.class);
+//            TableUtils.createTable(connectionSource, Task.class);
 
 //            Dao<BigGoal, Integer> dao = getBigGoalDAO();
 //            BigGoal bigGoal = new BigGoal("First goal");

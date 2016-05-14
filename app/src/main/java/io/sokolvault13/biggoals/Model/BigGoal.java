@@ -104,9 +104,16 @@ public class BigGoal extends Intention {
                 '}';
     }
 
+    public <T extends SubIntention> T createSubIntention(T subIntention) {
+        subIntention.setBigGoal(this);
+        subIntention.setBigGoalId(this);
+        return subIntention;
+    }
+
     public SubGoal createSubGoal(SubGoal subGoal){
         subGoal.setBigGoal(this);
         subGoal.setBigGoalId(this);
         return subGoal;
     }
+
 }
