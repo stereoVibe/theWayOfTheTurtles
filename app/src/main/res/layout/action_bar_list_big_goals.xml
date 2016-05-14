@@ -14,7 +14,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:src="@drawable/logo_turtles_way"
+            android:src="@drawable/logo_turtles_way2"
             android:layout_gravity="center_vertical"/>
 
         <!--<TextView-->

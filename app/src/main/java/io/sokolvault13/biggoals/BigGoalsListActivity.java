@@ -16,7 +16,7 @@ public class BigGoalsListActivity extends SingleFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         int layoutId = R.layout.activity_big_goals;
         int toolbarResourceId = R.id.big_goals_list_toolbar;
-        int toolbarLayoutId = R.layout.action_bar_layout;
+        int toolbarLayoutId = R.layout.action_bar_list_big_goals;
         int toolbarMenuId = R.menu.biggoals_list_menu_toolbar;
         assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, false);
 
