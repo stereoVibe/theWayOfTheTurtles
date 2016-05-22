@@ -1,27 +1,20 @@
 package io.sokolvault13.biggoals.Model;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
 @DatabaseTable(tableName = "sub_goals")
-public class SubGoal extends Intention {
-    public static final String TASKS_COLLECTS_FIELD = "tasks_collects";
-    public static final String BIGGOAL_FIELD = "big_goal";
-    public static final String BIGGOAL_ID_FIELD = "big_goal_id";
+public class SubGoal extends Intention implements Performable {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     private int id;
-    @DatabaseField (canBeNull = false)
+    @DatabaseField (canBeNull = true)
     private String title;
     @DatabaseField
     private String description;
-    @DatabaseField (canBeNull = false, index = true, dataType = DataType.ENUM_STRING, columnName = "objective_type")
-    private ObjectiveType mObjectiveType;
     @DatabaseField (canBeNull = false, dataType = DataType.DATE_STRING, columnName = "start_date")
     private Date startDate;
     @DatabaseField (dataType = DataType.DATE_STRING, columnName = "end_date")
@@ -32,91 +25,99 @@ public class SubGoal extends Intention {
     private int isComplete;
     @DatabaseField (canBeNull = false, columnName = "priority")
     private int mPriority;
-//    @ForeignCollectionField(columnName = TASKS_COLLECTS_FIELD, eager = true)
-//    private ForeignCollection<Task> tasks;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
     private BigGoal mBigGoal;
     @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
     private int mBigGoalId;
 
     public SubGoal() {
-    }
-
-    public SubGoal(String title, ObjectiveType objectiveType) {
-        this.title = title;
-        this.mObjectiveType = objectiveType;
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
-        this.mPriority = 1;
-    }
-
-    public SubGoal (String title, ObjectiveType objectiveType, int priority){
-        this(title, objectiveType);
-        this.mPriority = priority;
-    }
-
-    public SubGoal(String title, String description, ObjectiveType objectiveType) {
-        this(title, objectiveType);
-        this.description = description;
-    }
-
-    public SubGoal (String title, ObjectiveType objectiveType, String description, int priority){
-        this(title, description, objectiveType);
-        this.mPriority = priority;
-    }
-
-    @Override
-    public int getId() {
-        return id;
     }
 
     public int getPriority() {
         return mPriority;
     }
 
-    public ObjectiveType getObjectiveType() {
-        return mObjectiveType;
-    }
-
-    public void setObjectiveType(ObjectiveType objectiveType) {
-        mObjectiveType = objectiveType;
-    }
-
     public void setPriority(int priority) {
         mPriority = priority;
     }
 
-    public void setBigGoal(BigGoal bigGoal) {
-        mBigGoal = bigGoal;
+    @Override
+    public String getTitle() {
+        return title;
     }
 
-    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
-
-//    public ForeignCollection<Task> getTasks() {
-//        return tasks;
-//    }
-
-//    protected Task createTask(Task task){
-//        task.setSubGoal(this);
-//        task.setSubGoalId(this);
-//        return task;
-//    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     @Override
-    public String toString() {
-        return "SubGoal{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", mObjectiveType=" + mObjectiveType +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isOutOfDate=" + isOutOfDate +
-                ", isComplete=" + isComplete +
-                ", mPriority=" + mPriority +
-//                ", tasks=" + tasks +
-                ", mBigGoal=" + mBigGoal +
-                '}';
+    public String getDescription() {
+        return description;
     }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Override
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    @Override
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Override
+    public int getOutOfDate() {
+        return isOutOfDate;
+    }
+
+    @Override
+    public void setOutOfDate(int isOutOfDate) {
+        this.isOutOfDate = isOutOfDate;
+    }
+
+    @Override
+    public int getCompleteStatus() {
+        return isComplete;
+    }
+
+    public void setCompleteStatus(int isComplete) {
+        this.isComplete = isComplete;
+    }
+
+    @Override
+    public void setBigGoal(BigGoal bigGoal) {
+        this.mBigGoal = bigGoal;
+    }
+
+    @Override
+    public BigGoal getBigGoal() {
+        return this.mBigGoal;
+    }
+
+    @Override
+    public int getBigGoalId() {
+        return mBigGoalId;
+    }
+
+    @Override
+    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
+
 }

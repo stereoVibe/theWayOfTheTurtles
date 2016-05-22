@@ -2,7 +2,11 @@ package io.sokolvault13.biggoals.Model;
 
 import java.util.Date;
 
-abstract class Intention {
+public abstract class Intention {
+
+    public static final String BIGGOAL_FIELD = "big_goal";
+    public static final String BIGGOAL_ID_FIELD = "big_goal_id";
+
     private int id;
     private String title;
     private String description;
@@ -11,68 +15,47 @@ abstract class Intention {
     private int isOutOfDate;
     private int isComplete;
 
-    public int getId() {
+//    public abstract int getId();
+    public abstract String getTitle();
+    public abstract void setTitle(String title);
+    public abstract String getDescription();
+    public abstract void setDescription(String description);
+    public abstract Date getStartDate();
+    public abstract void setStartDate(Date startDate);
+    public abstract Date getEndDate();
+    public abstract void setEndDate(Date endDate);
+    public abstract int getOutOfDate();
+    public abstract void setOutOfDate(int isOutOfDate);
+    public abstract int getCompleteStatus();
+    public abstract void setCompleteStatus(int isComplete);
+
+    public int getId(){
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    private static <T extends Performable> T createEmptyIntention(ObjectiveType objectiveType){
+        Object intention = null;
+        switch (objectiveType){
+            case SIMPLE:
+                intention = new Task();
+                break;
+            case CONTINUOUS:
+                intention = new SubGoal();
+                break;
+        }
+        return (T) intention;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    private static <T> boolean isIntentionCorrect (T intention, ObjectiveType objectiveType) {
+
+        return intention instanceof SubGoal && objectiveType.equals(ObjectiveType.CONTINUOUS)
+                || intention instanceof Task && objectiveType.equals(ObjectiveType.SIMPLE);
     }
 
-    public String getDescription() {
-        return description;
+    public static <T extends Performable> T createIntention(T intention, ObjectiveType objectiveType) {
+        if (isIntentionCorrect(intention, objectiveType)){
+            return createEmptyIntention(objectiveType);
+        }
+        return null;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public final boolean isOutOfDate() {
-        return 0 != this.isOutOfDate;
-    }
-
-    public void setIsOutOfDate(int isOutOfDate) {
-        this.isOutOfDate = isOutOfDate;
-    }
-
-    public final boolean isComplete() {
-        return 0 != this.isComplete;
-    }
-
-    public void setIsComplete(int isComplete) {
-        this.isComplete = isComplete;
-    }
-
-    public int getIsOutOfDate() {
-        return isOutOfDate;
-    }
-
-    public int getIsComplete() {
-        return isComplete;
-    }
-
-//    public final boolean hasId(){
-//        return 0 != this.id;
-//    }
-
 }
