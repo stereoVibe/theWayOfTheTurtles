@@ -1,5 +1,7 @@
 package io.sokolvault13.biggoals.Model;
 
+import android.util.Log;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -12,10 +14,11 @@ import java.util.Date;
 @DatabaseTable(tableName = "big_goals")
 public class BigGoal extends Intention {
     public static final String SUBGOALS_COLLECTS_FIELD = "subgoals_collects";
+    public static final String TASKS_COLLECTS_FIELD = "tasks_collects";
 
     @DatabaseField (generatedId = true, canBeNull = false)
     private int id;
-    @DatabaseField (canBeNull = false, useGetSet = true)
+    @DatabaseField (canBeNull = false)
     private String title;
     @DatabaseField (canBeNull = true)
     private String description;
@@ -31,18 +34,22 @@ public class BigGoal extends Intention {
     private int mProgress;
     @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
     private ForeignCollection <SubGoal> subGoals;
+    @ForeignCollectionField (columnName = TASKS_COLLECTS_FIELD, eager = true)
+    private ForeignCollection <Task> tasks;
 
     public BigGoal() {
-    }
-
-    public BigGoal(String title) {
-        setTitle(title);
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
-        this.mProgress = 0;
     }
-
+//
+    public BigGoal(String title) {
+        this.title = title;
+        this.startDate = new Date();
+        this.isOutOfDate = 0;
+        this.isComplete = 0;
+    }
+//
     public BigGoal(String title, String description) {
         this(title);
         this.description = description;
@@ -58,22 +65,63 @@ public class BigGoal extends Intention {
         this.endDate = endDate;
     }
 
-    @Override
+
     public int getId() {
-        return id;
+        return this.id;
     }
 
-    @Override
     public String getTitle() {
         return this.title;
     }
 
-    @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
+    public Date getStartDate() {
+        return null;
+    }
+
+    @Override
+    public void setStartDate(Date startDate) {
+
+    }
+
+    @Override
+    public Date getEndDate() {
+        return null;
+    }
+
+    @Override
+    public void setEndDate(Date endDate) {
+
+    }
+
+    @Override
+    public int getOutOfDate() {
+        return 0;
+    }
+
+    @Override
+    public void setOutOfDate(int isOutOfDate) {
+
+    }
+
+    @Override
+    public int getCompleteStatus() {
+        return 0;
+    }
+
+    @Override
+    public void setCompleteStatus(int isComplete) {
+
+    }
+
     public String getDescription() {
         return description;
     }
@@ -90,30 +138,13 @@ public class BigGoal extends Intention {
         return this.subGoals;
     }
 
-    @Override
-    public String toString() {
-        return "BigGoal{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", isOutOfDate=" + isOutOfDate +
-                ", isComplete=" + isComplete +
-                ", subGoals=" + subGoals +
-                '}';
-    }
-
-    public <T extends SubIntention> T createSubIntention(T subIntention) {
-        subIntention.setBigGoal(this);
-        subIntention.setBigGoalId(this);
-        return subIntention;
-    }
-
-    public SubGoal createSubGoal(SubGoal subGoal){
-        subGoal.setBigGoal(this);
-        subGoal.setBigGoalId(this);
-        return subGoal;
+    public <T extends Performable, B extends Intention> void assignSubIntention(T subIntention) {
+//        B subIntentionTemp = (B) subIntention;
+//        if (subIntentionTemp.getTitle() != null){
+            subIntention.setBigGoal(this);
+            subIntention.setBigGoalId(this);
+            Log.d("Assigning BigGoal", subIntention.getBigGoal().toString());
+//        }
     }
 
 }

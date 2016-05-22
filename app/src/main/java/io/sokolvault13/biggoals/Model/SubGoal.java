@@ -1,19 +1,17 @@
 package io.sokolvault13.biggoals.Model;
 
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
 @DatabaseTable(tableName = "sub_goals")
-public class SubGoal extends SubIntention {
+public class SubGoal extends Intention implements Performable {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     private int id;
-    @DatabaseField (canBeNull = false)
+    @DatabaseField (canBeNull = true)
     private String title;
     @DatabaseField
     private String description;
@@ -33,34 +31,9 @@ public class SubGoal extends SubIntention {
     private int mBigGoalId;
 
     public SubGoal() {
-    }
-
-    public SubGoal(String title) {
-        this.title = title;
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
-        this.mPriority = 1;
-    }
-
-    public SubGoal (String title, int priority){
-        this(title);
-        this.mPriority = priority;
-    }
-
-    public SubGoal(String title, String description) {
-        this(title);
-        this.description = description;
-    }
-
-    public SubGoal (String title, String description, int priority){
-        this(title, description);
-        this.mPriority = priority;
-    }
-
-    @Override
-    public int getId() {
-        return id;
     }
 
     public int getPriority() {
@@ -71,8 +44,62 @@ public class SubGoal extends SubIntention {
         mPriority = priority;
     }
 
-    public int getBigGoalId() {
-        return mBigGoalId;
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    @Override
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Override
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    @Override
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Override
+    public int getOutOfDate() {
+        return isOutOfDate;
+    }
+
+    @Override
+    public void setOutOfDate(int isOutOfDate) {
+        this.isOutOfDate = isOutOfDate;
+    }
+
+    @Override
+    public int getCompleteStatus() {
+        return isComplete;
+    }
+
+    public void setCompleteStatus(int isComplete) {
+        this.isComplete = isComplete;
     }
 
     @Override
@@ -81,7 +108,16 @@ public class SubGoal extends SubIntention {
     }
 
     @Override
-    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
+    public BigGoal getBigGoal() {
+        return this.mBigGoal;
+    }
 
+    @Override
+    public int getBigGoalId() {
+        return mBigGoalId;
+    }
+
+    @Override
+    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
 
 }
