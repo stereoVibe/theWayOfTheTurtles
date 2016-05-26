@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+
+    android:background="@drawable/bg_create_big_goal">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:columnCount="2"
+        android:rowCount="4"
+        android:background="#97ffffff">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageLabelTitle"
+            android:src="@drawable/ic_label_black_24dp"
+            android:tint="#4194AA"
+            android:layout_gravity="center"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textGetTitleLayout"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginEnd="22dp"
+            android:paddingBottom="8dp">
+            <!--app:errorEnabled="true"-->
+            <!--&gt;-->
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textGetTitle"
+                android:ems="0"
+                android:hint="Имя Цели *"
+                android:maxLength="35"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/hintColorEditText"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageDescription"
+            android:src="@drawable/ic_comment_black_24dp"
+            android:tint="#4194AA"
+            android:layout_gravity="center_vertical"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textGetDescriprtionLayout"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginEnd="22dp"
+            android:paddingBottom="8dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:id="@+id/textGetDescriprtion"
+                android:hint="Описание"
+                android:maxLength="135"
+                android:textColor="@color/hintColorEditText"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:id="@+id/imageEndDate"
+            android:src="@drawable/ic_event_black_24dp"
+            android:tint="#4194AA"
+            android:layout_rowSpan="2"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Дата достижения"
+            android:textSize="12sp"
+            android:id="@+id/textView"
+            android:layout_marginLeft="34dp"
+            android:layout_marginStart="34dp"
+            android:layout_row="2"
+            android:layout_column="1"/>
+
+        <Button
+            style="@style/datePickerButton"
+            android:gravity="left"
+            android:textColor="@color/hintColorEditText"
+            android:textAppearance="@android:style/Widget.DeviceDefault.DatePicker"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="34dp"
+            android:layout_marginStart="34dp"
+            android:text="Май 25, 2016"
+            android:id="@+id/pickBigGoalEndDate"
+            android:textSize="18sp"
+            />
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewEndDate"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="Дата достижения"-->
+            <!--android:textSize="18sp"-->
+            <!--android:layout_marginTop="14dp"-->
+            <!--android:layout_marginLeft="26dp"-->
+            <!--android:layout_marginStart="26dp"-->
+            <!--android:layout_marginRight="22dp"-->
+            <!--android:layout_marginEnd="22dp"-->
+            <!--android:paddingBottom="16dp"-->
+            <!--android:layout_gravity="center_vertical"/>-->
+
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/textGetDateLayout"-->
+            <!--android:layout_marginLeft="22dp"-->
+            <!--android:layout_marginStart="22dp"-->
+            <!--android:layout_marginRight="22dp"-->
+            <!--android:layout_marginEnd="22dp"-->
+            <!--android:paddingBottom="8dp">-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/textGetDate"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:inputType="date"-->
+                <!--android:hint="Дата достижения"-->
+                <!--android:textColor="@color/greySubTitle"-->
+                <!--/>-->
+
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+    </GridLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#97ffffff"
+        android:padding="8dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/greySubTitle"
+            android:text="* Поля обязательные для заполнения"
+            android:paddingStart="12dp"
+            android:paddingLeft="12dp"
+            android:paddingBottom="8dp"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Продолжить..."
+        android:id="@+id/createBigGoalBtn"
+        android:theme="@style/raisedButton"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>

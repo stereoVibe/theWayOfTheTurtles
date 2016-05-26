@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="raisedButton" parent="Theme.AppCompat.Light">
+
+                <item name="colorControlHighlight">@color/colorAccent</item>
+                <item name="colorButtonNormal">@color/redParrot</item>
+                <item name="android:textColor">@color/light_bg_white</item>
+                <item name="android:paddingStart">16dp</item>
+                <item name="android:paddingLeft">16dp</item>
+                <item name="android:paddingEnd">16dp</item>
+                <item name="android:paddingRight">16dp</item>
+        </style>
+
+</resources>

@@ -7,15 +7,17 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_horizontal"
         >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:src="@drawable/logo_turtles_way2"
-            android:layout_gravity="center_vertical"/>
+            android:src="@drawable/logo_turtles_way03"
+            android:layout_gravity="center"
+            />
 
         <!--<TextView-->
             <!--android:layout_width="0dp"-->

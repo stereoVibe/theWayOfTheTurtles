@@ -62,10 +62,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         if (actionBar != null){
             actionBar.setDisplayShowTitleEnabled(false);
+
             if (mHomeAsUp){
                 actionBar.setDisplayHomeAsUpEnabled(true);
             }
-            actionBar.setHomeButtonEnabled(true);
+
+//            actionBar.setHomeButtonEnabled(true);
             actionBar.setCustomView(view);
             actionBar.setDisplayShowCustomEnabled(true);
         }

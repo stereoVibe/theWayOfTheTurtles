@@ -68,164 +68,164 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                >
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:paddingLeft="16dp"-->
+                <!--android:paddingRight="16dp"-->
+                <!--&gt;-->
 
-                <!--<View-->
+                <!--&lt;!&ndash;<View&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:layout_height="1dp"&ndash;&gt;-->
+                    <!--&lt;!&ndash;android:background="#dcdcdc" />&ndash;&gt;-->
+
+                <!--<TextView-->
+                    <!--android:layout_marginTop="12dp"-->
                     <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="1dp"-->
-                    <!--android:background="#dcdcdc" />-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--tools:text="Subgoals status:"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textColor="#55000000"-->
+                    <!--android:textSize="14sp"-->
+                    <!--android:text="Статус Подцелей: "/>-->
 
-                <TextView
-                    android:layout_marginTop="12dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:text="Subgoals status:"
-                    android:textStyle="bold"
-                    android:textColor="#55000000"
-                    android:textSize="14sp"
-                    android:text="Статус Подцелей: "/>
+                <!--<LinearLayout-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--android:weightSum="8">-->
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:weightSum="8">
+                    <!--<LinearLayout-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="2.5"-->
+                        <!--&gt;-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="В процессе"-->
+                            <!--android:layout_gravity="center_horizontal|left"-->
+                            <!--/>-->
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:orientation="horizontal"-->
+                            <!--style="?android:attr/selectableItemBackground"-->
+                            <!--android:layout_weight="2"-->
+                            <!--android:gravity="left">-->
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2.5"
-                        >
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="В процессе"
-                            android:layout_gravity="center_horizontal|left"
-                            />
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            style="?android:attr/selectableItemBackground"
-                            android:layout_weight="2"
-                            android:gravity="left">
+                            <!--<ImageButton-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:src="@drawable/ic_square"-->
+                                <!--android:tint="@color/primaryBlue"-->
+                                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                                <!--android:clickable="true"-->
+                                <!--android:paddingLeft="-7dp"/>-->
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:background="?attr/selectableItemBackgroundBorderless"-->
+                                <!--tools:text="10"-->
+                                <!--android:text="12"-->
+                                <!--android:textSize="26sp"-->
+                                <!--android:textColor="@color/primaryBlue"-->
+                                <!--android:textStyle="bold"-->
+                                <!--android:paddingRight="8dp"-->
+                                <!--android:paddingEnd="8dp"-->
+                                <!--android:gravity="center_vertical"/>-->
 
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_square"
-                                android:tint="@color/primaryBlue"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:clickable="true"
-                                android:paddingLeft="-7dp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                tools:text="10"
-                                android:text="12"
-                                android:textSize="26sp"
-                                android:textColor="@color/primaryBlue"
-                                android:textStyle="bold"
-                                android:paddingRight="8dp"
-                                android:paddingEnd="8dp"
-                                android:gravity="center_vertical"/>
+                        <!--</LinearLayout>-->
 
-                        </LinearLayout>
+                    <!--</LinearLayout>-->
 
-                    </LinearLayout>
+                    <!--<LinearLayout-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_weight="3"-->
+                        <!--android:layout_height="wrap_content">-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="Достигнуто"-->
+                            <!--android:layout_gravity="center_horizontal"/>-->
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:gravity="center">-->
+                            <!--<ImageButton-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:src="@drawable/ic_check_circle"-->
+                                <!--android:tint="@color/happyGreen"-->
+                                <!--style="?android:attr/selectableItemBackground"-->
+                                <!--android:background="?attr/selectableItemBackground"-->
+                                <!--android:clickable="true"-->
+                                <!--android:layout_marginLeft="4dp"-->
+                                <!--android:layout_marginStart="4dp"-->
+                                <!--android:layout_gravity="center_horizontal"/>-->
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--tools:text="10"-->
+                                <!--android:text="9"-->
+                                <!--android:textSize="26sp"-->
+                                <!--android:textColor="@color/happyGreen"-->
+                                <!--android:textStyle="bold"-->
+                                <!--android:gravity="center"-->
+                                <!--android:paddingRight="8dp"-->
+                                <!--android:paddingEnd="8dp"/>-->
+                        <!--</LinearLayout>-->
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="Достигнуто"
-                            android:layout_gravity="center_horizontal"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center">
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_check_circle"
-                                android:tint="@color/happyGreen"
-                                style="?android:attr/selectableItemBackground"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:layout_marginLeft="4dp"
-                                android:layout_marginStart="4dp"
-                                android:layout_gravity="center_horizontal"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                tools:text="10"
-                                android:text="9"
-                                android:textSize="26sp"
-                                android:textColor="@color/happyGreen"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:paddingRight="8dp"
-                                android:paddingEnd="8dp"/>
-                        </LinearLayout>
+                    <!--</LinearLayout>-->
 
-                    </LinearLayout>
+                    <!--<LinearLayout-->
+                        <!--android:orientation="vertical"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_weight="2.5"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="right">-->
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:text="Просрочено"-->
+                            <!--android:layout_gravity="right"/>-->
+                        <!--<LinearLayout-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:orientation="horizontal"-->
+                            <!--android:gravity="right"-->
+                            <!--android:layout_gravity="right">-->
+                            <!--<ImageButton-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--android:src="@drawable/ic_fire_overdue"-->
+                                <!--android:tint="@color/colorAccent"-->
+                                <!--style="?android:attr/selectableItemBackground"-->
+                                <!--android:background="?attr/selectableItemBackground"-->
+                                <!--android:clickable="true"-->
+                                <!--android:layout_gravity="center_horizontal|right"-->
+                                <!--android:layout_marginLeft="8dp"/>-->
+                            <!--<TextView-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="match_parent"-->
+                                <!--tools:text="12"-->
+                                <!--android:text="3"-->
+                                <!--android:textSize="26sp"-->
+                                <!--android:textColor="@color/colorAccent"-->
+                                <!--android:textStyle="bold"-->
+                                <!--android:layout_gravity="right"-->
+                                <!--android:gravity="center_vertical|right"/>-->
+                        <!--</LinearLayout>-->
+                    <!--</LinearLayout>-->
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="0dp"
-                        android:layout_weight="2.5"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="Просрочено"
-                            android:layout_gravity="right"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="right"
-                            android:layout_gravity="right">
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_fire_overdue"
-                                android:tint="@color/colorAccent"
-                                style="?android:attr/selectableItemBackground"
-                                android:background="?attr/selectableItemBackground"
-                                android:clickable="true"
-                                android:layout_gravity="center_horizontal|right"
-                                android:layout_marginLeft="8dp"/>
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                tools:text="12"
-                                android:text="3"
-                                android:textSize="26sp"
-                                android:textColor="@color/colorAccent"
-                                android:textStyle="bold"
-                                android:layout_gravity="right"
-                                android:gravity="center_vertical|right"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
+                <!--</LinearLayout>-->
+            <!--</LinearLayout>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -240,21 +240,11 @@
 
                     android:text="открыть"
                     android:id="@+id/button"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="6dp"/>
-
-                <Button
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:textColor="@color/nearBlack"
-                    android:text="перейти..."
-                    android:id="@+id/button2"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginRight="8dp"/>
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="6dp"/>
             </RelativeLayout>
 
         </LinearLayout>

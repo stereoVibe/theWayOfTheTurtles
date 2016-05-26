@@ -26,7 +26,7 @@ public class BigGoalsListActivity extends SingleFragmentActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BigGoalCreationActivity.class);
+                Intent intent = new Intent(BigGoalsListActivity.this, BigGoalCreationActivity.class);
                 startActivity(intent);
             }
         });

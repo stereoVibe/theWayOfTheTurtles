@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -10,6 +10,24 @@
         <item name="android:windowBackground">@color/light_bg_white</item>
         <!--<item name="android:windowTranslucentStatus">true</item>-->
 
+    </style>
+
+    <style name="raisedButton" parent="Theme.AppCompat.Light">
+
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="colorButtonNormal">@color/redParrot</item>
+        <item name="android:textColor">@color/light_bg_white</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+
+    <style name="datePickerButton" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingStart" tools:targetApi="jelly_bean_mr1">0dp</item>
+        <item name="android:paddingEnd" tools:targetApi="jelly_bean_mr1">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
