@@ -1,6 +1,7 @@
 package io.sokolvault13.biggoals;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
@@ -79,14 +81,24 @@ public class BigGoalsListFragment extends Fragment {
             mBigGoalProgress = (NumberProgressBar) itemView.findViewById(R.id.progressBar);
         }
 
-        public void bindBigGoal(BigGoal bigGoal){
+        public void bindBigGoal(final BigGoal bigGoal){
             mBigGoal = bigGoal;
             mBigGoalTitle.setText(mBigGoal.getTitle());
             if (mBigGoalDescription != null) {
                 mBigGoalDescription.setText(mBigGoal.getDescription());
             }
             mBigGoalProgress.setProgress(mBigGoal.getProgress());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Clicked!", Toast.LENGTH_SHORT).show();
+                    Intent intent = SubGoalsListActivity.newIntent(getActivity(), mBigGoal.getId());
+                    startActivity(intent);
+                }
+            });
         }
+
     }
 
     private class BigGoalsAdapter extends RecyclerView.Adapter<BigGoalsHolder>{
