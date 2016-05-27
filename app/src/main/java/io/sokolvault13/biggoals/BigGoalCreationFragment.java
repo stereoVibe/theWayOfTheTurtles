@@ -48,7 +48,7 @@ public class BigGoalCreationFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_big_goal, container, false);
         mBigGoalTitle = (EditText) view.findViewById(R.id.textGetTitle);
@@ -68,14 +68,13 @@ public class BigGoalCreationFragment extends Fragment {
                 Date date = new Date(mCalendar.getTimeInMillis());
 
                 try {
-                    createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+                    BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+                    int bigGoalId = bigGoal.getId();
+                    Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
+                    startActivity(intent);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-                Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
-                startActivity(intent);
-
             }
         });
 

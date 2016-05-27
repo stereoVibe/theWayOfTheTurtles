@@ -32,6 +32,10 @@
             android:name=".BigGoalCreationActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".SubGoalsListActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
