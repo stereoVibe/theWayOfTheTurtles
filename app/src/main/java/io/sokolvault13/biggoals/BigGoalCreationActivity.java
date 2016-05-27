@@ -21,12 +21,6 @@ import io.sokolvault13.biggoals.db.HelperFactory;
 import static io.sokolvault13.biggoals.Model.IntentionDAOHelper.createBigGoalRecord;
 
 public class BigGoalCreationActivity extends SingleFragmentActivity {
-    private EditText mBigGoalTitle;
-    private EditText mBigGoalDescription;
-    private EditText mBigGoalEndDate;
-    private Button mCreateBigGoalBtn;
-    private DatabaseHelper dbHelper;
-    private Dao<BigGoal, Integer> bigGoalsDAO;
 
     @Override
     protected Fragment createFragment() {
@@ -42,12 +36,10 @@ public class BigGoalCreationActivity extends SingleFragmentActivity {
         assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, false);
 
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
         switch (id){

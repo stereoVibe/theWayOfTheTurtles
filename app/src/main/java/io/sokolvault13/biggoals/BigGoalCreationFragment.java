@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
@@ -31,7 +33,7 @@ public class BigGoalCreationFragment extends Fragment {
     private EditText mBigGoalDescription;
     private Button mCreateBigGoalBtn;
     private Button mPickBigGoalEndDateBtn;
-    private TextView mBigGoalEndDate;
+    private Date mBigGoalEndDate;
     private DatabaseHelper dbHelper;
     private Calendar mCalendar = Calendar.getInstance();
     private Dao<BigGoal, Integer> bigGoalsDAO;
@@ -51,7 +53,6 @@ public class BigGoalCreationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_create_big_goal, container, false);
         mBigGoalTitle = (EditText) view.findViewById(R.id.textGetTitle);
         mBigGoalDescription = (EditText) view.findViewById(R.id.textGetDescriprtion);
-//        mBigGoalEndDate = (TextView) view.findViewById(R.id.textViewEndDate);
         mCreateBigGoalBtn = (Button) view.findViewById(R.id.createBigGoalBtn);
         mPickBigGoalEndDateBtn = (Button) view.findViewById(R.id.pickBigGoalEndDate);
 
@@ -64,17 +65,17 @@ public class BigGoalCreationFragment extends Fragment {
             public void onClick(View v) {
                 String title = mBigGoalTitle.getText().toString();
                 String description = mBigGoalDescription.getText().toString();
-//                Date date = mBigGoalEndDate.getText();
+                Date date = new Date(mCalendar.getTimeInMillis());
 
                 try {
-                    createBigGoalRecord(new BigGoal(title, description), bigGoalsDAO);
+                    createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
 
                 Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
                 startActivity(intent);
-//                finish();
+
             }
         });
 
@@ -94,11 +95,11 @@ public class BigGoalCreationFragment extends Fragment {
 
     @Override
     public void onStart() {
-        super.onStart();
         if (dbHelper == null){
             HelperFactory.setHelper(getActivity());
             dbHelper = HelperFactory.getHelper();
         }
+        super.onStart();
     }
 
     @Override
@@ -118,7 +119,14 @@ public class BigGoalCreationFragment extends Fragment {
     DatePickerDialog.OnDateSetListener mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            mPickBigGoalEndDateBtn.setText(String.format(Locale.getDefault(), "%d %d %d", dayOfMonth, monthOfYear, year));
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            Date date = new Date(mCalendar.getTimeInMillis());
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+
+            mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(date)));
         }
     };
 }
