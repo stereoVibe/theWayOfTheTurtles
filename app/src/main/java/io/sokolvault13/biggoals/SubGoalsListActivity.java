@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 public class SubGoalsListActivity extends SingleFragmentActivity {
+    public static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
     private static final String EXTRA_BIG_GOAL_ID = "io.sokolvault.turtlesway.big_goal_id";
 
     public static Intent newIntent(Context context, int bigGoalId){
@@ -28,7 +29,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         int toolbarResourceId = R.id.sub_goals_list_toolbar;
         int toolbarLayoutId = R.layout.action_bar_list_sub_goals;
         int toolbarMenuId = R.menu.subgoals_list_menu_toolbar;
-        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, true);
+        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId,SUB_GOALS_LIST_FRAGMENT_TAG, true);
         super.onCreate(savedInstanceState);
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

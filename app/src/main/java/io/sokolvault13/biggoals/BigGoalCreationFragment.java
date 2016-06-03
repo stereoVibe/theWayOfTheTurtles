@@ -1,18 +1,21 @@
 package io.sokolvault13.biggoals;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -36,7 +39,9 @@ public class BigGoalCreationFragment extends Fragment {
     private Date mBigGoalEndDate;
     private DatabaseHelper dbHelper;
     private Calendar mCalendar = Calendar.getInstance();
+    private Date mDate;
     private Dao<BigGoal, Integer> bigGoalsDAO;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +61,9 @@ public class BigGoalCreationFragment extends Fragment {
         mCreateBigGoalBtn = (Button) view.findViewById(R.id.createBigGoalBtn);
         mPickBigGoalEndDateBtn = (Button) view.findViewById(R.id.pickBigGoalEndDate);
 
-        Date date = new Date(mCalendar.getTimeInMillis());
+        mDate = new Date(mCalendar.getTimeInMillis());
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-        mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(date)));
+        mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(mDate)));
 
 //        TextInputLayout inputLayout = (TextInputLayout) view.findViewById(R.id.textGetTitleLayout);
 //        inputLayout.setError("First name is required"); // show error
@@ -67,19 +72,7 @@ public class BigGoalCreationFragment extends Fragment {
         mCreateBigGoalBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String title = mBigGoalTitle.getText().toString();
-                String description = mBigGoalDescription.getText().toString();
-                Date date = new Date(mCalendar.getTimeInMillis());
-
-                try {
-                    BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
-                    int bigGoalId = bigGoal.getId();
-                    Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
-                    startActivity(intent);
-                    getActivity().finish();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                createBigGoal();
             }
         });
 
@@ -95,6 +88,11 @@ public class BigGoalCreationFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public Context getContext() {
+        return super.getContext();
     }
 
     @Override
@@ -120,6 +118,22 @@ public class BigGoalCreationFragment extends Fragment {
         }
     }
 
+    public void createBigGoal() {
+        String title = mBigGoalTitle.getText().toString();
+        String description = mBigGoalDescription.getText().toString();
+
+        try {
+            BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, mDate), bigGoalsDAO);
+            int bigGoalId = bigGoal.getId();
+            Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
+            startActivity(intent);
+            getActivity().finish();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     DatePickerDialog.OnDateSetListener mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -127,10 +141,10 @@ public class BigGoalCreationFragment extends Fragment {
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            Date date = new Date(mCalendar.getTimeInMillis());
+            mDate = new Date(mCalendar.getTimeInMillis());
             DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
 
-            mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(date)));
+            mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(mDate)));
         }
     };
 }

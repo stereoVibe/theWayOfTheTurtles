@@ -1,27 +1,14 @@
 package io.sokolvault13.biggoals;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.j256.ormlite.dao.Dao;
-
-import java.sql.SQLException;
-
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.db.DatabaseHelper;
-import io.sokolvault13.biggoals.db.HelperFactory;
-
-import static io.sokolvault13.biggoals.Model.IntentionDAOHelper.createBigGoalRecord;
-
 public class BigGoalCreationActivity extends SingleFragmentActivity {
+    private BigGoalCreationFragment mFragment;
+    public static final String CREATE_BIG_GOAL_FRAGMENT_TAG = "create_big_goal_tag";
 
     @Override
     protected Fragment createFragment() {
@@ -34,7 +21,12 @@ public class BigGoalCreationActivity extends SingleFragmentActivity {
         int toolbarResourceId = R.id.big_goals_list_toolbar;
         int toolbarLayoutId = R.layout.action_bar_create_big_goal;
         int toolbarMenuId = R.menu.create_big_goal_menu_toolbar;
-        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, true);
+        assignResources(layoutId,
+                toolbarLayoutId,
+                toolbarResourceId,
+                toolbarMenuId,
+                CREATE_BIG_GOAL_FRAGMENT_TAG,
+                true);
 
         super.onCreate(savedInstanceState);
     }
@@ -50,6 +42,8 @@ public class BigGoalCreationActivity extends SingleFragmentActivity {
 
         switch (id){
             case R.id.continue_creation:
+                mFragment = (BigGoalCreationFragment) getSupportFragmentManager().findFragmentByTag(CREATE_BIG_GOAL_FRAGMENT_TAG);
+                mFragment.createBigGoal();
                 Toast.makeText(BigGoalCreationActivity.this, "Button Pressed!", Toast.LENGTH_SHORT).show();
                 return true;
             default:

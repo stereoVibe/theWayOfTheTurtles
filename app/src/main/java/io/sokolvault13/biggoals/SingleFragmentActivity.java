@@ -18,17 +18,20 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     private int mToolbarResource;
     private int mToolbarMenu;
     private int mToolbarLayout;
+    private String mTag;
     private boolean mHomeAsUp = false;
 
     public final void assignResources(int mainLayout,
                                       int toolbarLayout,
                                       int toolbarResource,
                                       int toolbarMenu,
+                                      String tag,
                                       boolean homeAsUp){
         this.mMainLayout = mainLayout;
         this.mToolbarLayout = toolbarLayout;
         this.mToolbarResource = toolbarResource;
         this.mToolbarMenu = toolbarMenu;
+        this.mTag = tag;
         this.mHomeAsUp = homeAsUp;
     }
 
@@ -42,7 +45,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         if (fragment == null){
             fragment = createFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
+                    .add(R.id.fragmentContainer, fragment, mTag)
                     .commit();
         }
 

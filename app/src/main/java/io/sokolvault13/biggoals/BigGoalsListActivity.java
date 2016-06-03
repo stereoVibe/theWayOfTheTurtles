@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 public class BigGoalsListActivity extends SingleFragmentActivity {
+    public static final String BIG_GOALS_LIST_FRAGMENT_TAG = "big_goals_list";
+
     @Override
     protected Fragment createFragment() {
         return new BigGoalsListFragment();
@@ -18,7 +20,7 @@ public class BigGoalsListActivity extends SingleFragmentActivity {
         int toolbarResourceId = R.id.big_goals_list_toolbar;
         int toolbarLayoutId = R.layout.action_bar_list_big_goals;
         int toolbarMenuId = R.menu.biggoals_list_menu_toolbar;
-        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, false);
+        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, BIG_GOALS_LIST_FRAGMENT_TAG, false);
 
         super.onCreate(savedInstanceState);
 
