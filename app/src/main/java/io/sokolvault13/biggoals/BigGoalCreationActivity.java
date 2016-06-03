@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -33,9 +34,14 @@ public class BigGoalCreationActivity extends SingleFragmentActivity {
         int toolbarResourceId = R.id.big_goals_list_toolbar;
         int toolbarLayoutId = R.layout.action_bar_create_big_goal;
         int toolbarMenuId = R.menu.create_big_goal_menu_toolbar;
-        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, false);
+        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, true);
 
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

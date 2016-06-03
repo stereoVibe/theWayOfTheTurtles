@@ -72,6 +72,7 @@ public class BigGoalCreationFragment extends Fragment {
                     int bigGoalId = bigGoal.getId();
                     Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
                     startActivity(intent);
+                    getActivity().finish();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

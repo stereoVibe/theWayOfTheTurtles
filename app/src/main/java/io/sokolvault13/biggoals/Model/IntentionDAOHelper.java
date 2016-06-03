@@ -54,6 +54,10 @@ public class IntentionDAOHelper {
 //                .query();
 //    }
 
+   public static BigGoal getBigGoal (Dao<BigGoal, Integer> dao, int bigGoalId) throws SQLException {
+       return dao.queryForId(bigGoalId);
+   }
+
     public static <T extends Intention> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
                                                    Intention goal,
                                                    String idField) throws  SQLException {

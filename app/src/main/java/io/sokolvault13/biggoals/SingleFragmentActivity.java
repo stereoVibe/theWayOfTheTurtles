@@ -48,6 +48,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         mToolBar = (Toolbar) findViewById(mToolbarResource);
         setSupportActionBar(mToolBar);
+
+        if (mHomeAsUp){
+            mToolBar.setNavigationIcon(R.drawable.ic_arrow_left);
+            mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
     }
 
     @Override
@@ -62,11 +73,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         if (actionBar != null){
             actionBar.setDisplayShowTitleEnabled(false);
-
-            if (mHomeAsUp){
-                actionBar.setDisplayHomeAsUpEnabled(true);
-            }
-
 //            actionBar.setHomeButtonEnabled(true);
             actionBar.setCustomView(view);
             actionBar.setDisplayShowCustomEnabled(true);

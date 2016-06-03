@@ -10,11 +10,16 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:orientation="horizontal"
         android:columnCount="2"
         android:rowCount="4"
-        android:background="#97ffffff">
+        android:background="#ffffffff"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:elevation="4dp">
 
 
         <ImageView
@@ -159,8 +164,12 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#97ffffff"
-        android:padding="8dp">
+        android:background="#ffffffff"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="16dp"
+        android:elevation="4dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -169,14 +178,17 @@
             android:paddingStart="12dp"
             android:paddingLeft="12dp"
             android:paddingBottom="8dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Продолжить..."
+            android:id="@+id/createBigGoalBtn"
+            android:theme="@style/raisedButton"
+            android:layout_gravity="right"
+            android:padding="8dp"/>
     </LinearLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Продолжить..."
-        android:id="@+id/createBigGoalBtn"
-        android:theme="@style/raisedButton"
-        android:layout_gravity="center_horizontal"/>
+
 
 </LinearLayout>
