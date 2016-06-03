@@ -40,7 +40,7 @@ public abstract class Intention {
                 intention = new Task();
                 break;
             case CONTINUOUS:
-                intention = new SubGoal();
+                intention = new Job();
                 break;
         }
         return (T) intention;
@@ -48,7 +48,7 @@ public abstract class Intention {
 
     private static <T> boolean isIntentionCorrect (T intention, ObjectiveType objectiveType) {
 
-        return intention instanceof SubGoal && objectiveType.equals(ObjectiveType.CONTINUOUS)
+        return intention instanceof Job && objectiveType.equals(ObjectiveType.CONTINUOUS)
                 || intention instanceof Task && objectiveType.equals(ObjectiveType.SIMPLE);
     }
 

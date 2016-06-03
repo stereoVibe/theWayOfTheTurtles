@@ -2,37 +2,26 @@ package io.sokolvault13.biggoals.Model;
 
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedQuery;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.query.In;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.Intention;
-import io.sokolvault13.biggoals.Model.SubGoal;
-import io.sokolvault13.biggoals.Model.Task;
 
 public class IntentionDAOHelper {
 
     public static BigGoal createBigGoalRecord(BigGoal bigGoal,
                                               Dao<BigGoal, Integer> dao) throws SQLException {
         dao.create(bigGoal);
-        if (bigGoal.getSubGoals() == null) {
+        if (bigGoal.getJobs() == null) {
             dao.assignEmptyForeignCollection(bigGoal, BigGoal.SUBGOALS_COLLECTS_FIELD);
         }
         return bigGoal;
     }
 
-    public static SubGoal createSubGoalRecord(SubGoal subGoal,
-                                              Dao<SubGoal, Integer> dao) throws SQLException {
-        dao.create(subGoal);
-//        if (subGoal.getTasks() == null) {
-//            dao.assignEmptyForeignCollection(subGoal, SubGoal.TASKS_COLLECTS_FIELD);
-//        }
-        return subGoal;
+    public static Job createJobRecord(Job job,
+                                      Dao<Job, Integer> dao) throws SQLException {
+        dao.create(job);
+        return job;
     }
 
     public static Task createTaskRecord(Task task,

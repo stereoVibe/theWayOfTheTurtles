@@ -13,7 +13,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.SubGoal;
+import io.sokolvault13.biggoals.Model.Job;
 import io.sokolvault13.biggoals.Model.Task;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
@@ -22,7 +22,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private Dao<BigGoal, Integer> mBigGoalDAO = null;
-    private Dao<SubGoal, Integer> mSubGoalDAO = null;
+    private Dao<Job, Integer> mSubGoalDAO = null;
     private Dao<Task, Integer> mTasksDAO = null;
 
     public DatabaseHelper(final Context context) {
@@ -34,7 +34,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTable(connectionSource, BigGoal.class);
-            TableUtils.createTable(connectionSource, SubGoal.class);
+            TableUtils.createTable(connectionSource, Job.class);
             TableUtils.createTable(connectionSource, Task.class);
 
 //            Dao<BigGoal, Integer> dao = getBigGoalDAO();
@@ -63,9 +63,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return mBigGoalDAO;
     }
 
-    public Dao<SubGoal, Integer> getSubGoalDAO() throws SQLException {
+    public Dao<Job, Integer> getJobDAO() throws SQLException {
         if (mSubGoalDAO == null){
-            mSubGoalDAO = DaoManager.createDao(connectionSource, SubGoal.class);
+            mSubGoalDAO = DaoManager.createDao(connectionSource, Job.class);
         }
         return mSubGoalDAO;
     }

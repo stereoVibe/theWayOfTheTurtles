@@ -56,6 +56,10 @@ public class BigGoalCreationFragment extends Fragment {
         mCreateBigGoalBtn = (Button) view.findViewById(R.id.createBigGoalBtn);
         mPickBigGoalEndDateBtn = (Button) view.findViewById(R.id.pickBigGoalEndDate);
 
+        Date date = new Date(mCalendar.getTimeInMillis());
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+        mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(date)));
+
 //        TextInputLayout inputLayout = (TextInputLayout) view.findViewById(R.id.textGetTitleLayout);
 //        inputLayout.setError("First name is required"); // show error
 //        inputLayout.setError(null); // hide error

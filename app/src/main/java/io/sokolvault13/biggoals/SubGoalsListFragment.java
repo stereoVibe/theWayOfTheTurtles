@@ -2,7 +2,6 @@ package io.sokolvault13.biggoals;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,7 +17,7 @@ import java.util.List;
 import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.Model.Intention;
 import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
-import io.sokolvault13.biggoals.Model.SubGoal;
+import io.sokolvault13.biggoals.Model.Job;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
 
@@ -29,7 +28,7 @@ public class SubGoalsListFragment extends Fragment {
     private Dao<BigGoal, Integer> mBigGoalsDAO;
     private int bigGoalId;
     private BigGoal bigGoal;
-    private Dao<SubGoal, Integer> mSubGoalsDAO;
+    private Dao<Job, Integer> mJobsDAO;
 
     public static SubGoalsListFragment newInstance(int bigGoalId){
         Bundle args = new Bundle();
@@ -47,7 +46,7 @@ public class SubGoalsListFragment extends Fragment {
         dbHelper = HelperFactory.getHelper();
         try {
             mBigGoalsDAO = dbHelper.getBigGoalDAO();
-            mSubGoalsDAO = dbHelper.getSubGoalDAO();
+            mJobsDAO = dbHelper.getJobDAO();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -75,8 +74,8 @@ public class SubGoalsListFragment extends Fragment {
     }
 
     private void updateUI() throws SQLException {
-        List<SubGoal> subGoalsList = IntentionDAOHelper.getAllSubIntentionsList(
-                mSubGoalsDAO,
+        List<Job> subGoalsList = IntentionDAOHelper.getAllSubIntentionsList(
+                mJobsDAO,
                 bigGoal, Intention.BIGGOAL_ID_FIELD);
     }
 }

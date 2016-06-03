@@ -49,7 +49,6 @@ public class Task extends Intention implements Performable{
     public void setBigGoal(BigGoal bigGoal) {
         mBigGoal = bigGoal;
     }
-
     @Override
     public BigGoal getBigGoal() {
         return this.mBigGoal;

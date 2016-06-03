@@ -33,7 +33,7 @@ public class BigGoal extends Intention {
     @DatabaseField (canBeNull = false, columnName = "progress")
     private int mProgress;
     @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
-    private ForeignCollection <SubGoal> subGoals;
+    private ForeignCollection <Job> mJobs;
     @ForeignCollectionField (columnName = TASKS_COLLECTS_FIELD, eager = true)
     private ForeignCollection <Task> tasks;
 
@@ -134,8 +134,8 @@ public class BigGoal extends Intention {
         mProgress = progress;
     }
 
-    public Collection<SubGoal> getSubGoals() {
-        return this.subGoals;
+    public Collection<Job> getJobs() {
+        return this.mJobs;
     }
 
     public <T extends Performable, B extends Intention> void assignSubIntention(T subIntention) {

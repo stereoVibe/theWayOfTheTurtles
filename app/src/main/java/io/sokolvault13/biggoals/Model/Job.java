@@ -6,8 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-@DatabaseTable(tableName = "sub_goals")
-public class SubGoal extends Intention implements Performable {
+@DatabaseTable(tableName = "jobs")
+public class Job extends Intention implements Performable {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     private int id;
@@ -30,7 +30,7 @@ public class SubGoal extends Intention implements Performable {
     @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
     private int mBigGoalId;
 
-    public SubGoal() {
+    public Job() {
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
@@ -39,7 +39,6 @@ public class SubGoal extends Intention implements Performable {
     public int getPriority() {
         return mPriority;
     }
-
     public void setPriority(int priority) {
         mPriority = priority;
     }
@@ -48,7 +47,6 @@ public class SubGoal extends Intention implements Performable {
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -57,7 +55,6 @@ public class SubGoal extends Intention implements Performable {
     public String getDescription() {
         return description;
     }
-
     @Override
     public void setDescription(String description) {
         this.description = description;
@@ -67,7 +64,6 @@ public class SubGoal extends Intention implements Performable {
     public Date getStartDate() {
         return startDate;
     }
-
     @Override
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
@@ -77,7 +73,6 @@ public class SubGoal extends Intention implements Performable {
     public Date getEndDate() {
         return endDate;
     }
-
     @Override
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
@@ -87,7 +82,6 @@ public class SubGoal extends Intention implements Performable {
     public int getOutOfDate() {
         return isOutOfDate;
     }
-
     @Override
     public void setOutOfDate(int isOutOfDate) {
         this.isOutOfDate = isOutOfDate;
@@ -97,7 +91,6 @@ public class SubGoal extends Intention implements Performable {
     public int getCompleteStatus() {
         return isComplete;
     }
-
     public void setCompleteStatus(int isComplete) {
         this.isComplete = isComplete;
     }
@@ -106,17 +99,14 @@ public class SubGoal extends Intention implements Performable {
     public void setBigGoal(BigGoal bigGoal) {
         this.mBigGoal = bigGoal;
     }
-
     @Override
     public BigGoal getBigGoal() {
         return this.mBigGoal;
     }
-
     @Override
     public int getBigGoalId() {
         return mBigGoalId;
     }
-
     @Override
     public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
 
