@@ -32,7 +32,7 @@
     </style>
 
     <style name="TitleSubGoalsStyle">
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/nearBlack</item>
     </style>
     

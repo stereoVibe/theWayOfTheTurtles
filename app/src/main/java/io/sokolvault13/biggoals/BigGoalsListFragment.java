@@ -102,8 +102,8 @@ public class BigGoalsListFragment extends Fragment {
     }
 
     private class BigGoalsAdapter extends RecyclerView.Adapter<BigGoalsHolder>{
-        public static final int DESCRIPTION = 0;
-        public static final int NO_DESCRIPTION = 1;
+        public static final int DESCRIPTION = 0,
+                                NO_DESCRIPTION = 1;
         private final List<BigGoal> mBigGoals;
 
         public BigGoalsAdapter(List<BigGoal> bigGoals) {

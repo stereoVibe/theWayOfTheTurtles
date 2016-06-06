@@ -121,9 +121,9 @@ public class BigGoalCreationFragment extends Fragment {
     public void createBigGoal() {
         String title = mBigGoalTitle.getText().toString();
         String description = mBigGoalDescription.getText().toString();
-
+        Date date = this.mDate;
         try {
-            BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, mDate), bigGoalsDAO);
+            BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
             int bigGoalId = bigGoal.getId();
             Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
             startActivity(intent);
@@ -132,7 +132,6 @@ public class BigGoalCreationFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 
     DatePickerDialog.OnDateSetListener mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override

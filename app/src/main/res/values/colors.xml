@@ -16,4 +16,6 @@
     <color name="toolbar_blue">#8CDDD9</color>
     <color name="nearBlack">#546e7a</color>
     <color name="hintColorEditText">#424242</color>
+    <color name="brightBlue">#1FA1DB</color>
+    <color name="darkBlueSea">#0B486B</color>
 </resources>

@@ -94,7 +94,7 @@ public class BigGoal extends Intention {
 
     @Override
     public Date getEndDate() {
-        return null;
+        return this.endDate;
     }
 
     @Override

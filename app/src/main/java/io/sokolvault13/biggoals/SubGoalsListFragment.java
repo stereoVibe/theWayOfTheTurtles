@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
@@ -23,10 +24,11 @@ import io.sokolvault13.biggoals.db.HelperFactory;
 
 public class SubGoalsListFragment extends Fragment {
     public static final String ARG_BIG_GOAL_ID = "big_goal_id";
+
     private RecyclerView mSubGoalsRecyclerView;
     private DatabaseHelper dbHelper;
     private Dao<BigGoal, Integer> mBigGoalsDAO;
-    private int bigGoalId;
+    private int mBigGoalId;
     private BigGoal bigGoal;
     private Dao<Job, Integer> mJobsDAO;
 
@@ -40,13 +42,13 @@ public class SubGoalsListFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        bigGoalId = getArguments().getInt(ARG_BIG_GOAL_ID);
-        HelperFactory.setHelper(getActivity());
+        mBigGoalId = getArguments().getInt(ARG_BIG_GOAL_ID);
+//        HelperFactory.setHelper(getActivity());
         super.onCreate(savedInstanceState);
-        dbHelper = HelperFactory.getHelper();
+//        dbHelper = HelperFactory.getHelper();
         try {
-            mBigGoalsDAO = dbHelper.getBigGoalDAO();
-            mJobsDAO = dbHelper.getJobDAO();
+            HashMap allDAO = ((SubGoalsListActivity)getActivity()).getAllDAO();
+            mBigGoalsDAO = (Dao) allDAO.get("BigGoalsDAO");
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -59,10 +61,9 @@ public class SubGoalsListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_sub_goals_list, container, false);
-//        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.sub_goals_list_container);
 
         try {
-            bigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, bigGoalId);
+            bigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
             updateUI();
         } catch (SQLException e){
             e.printStackTrace();
@@ -74,8 +75,6 @@ public class SubGoalsListFragment extends Fragment {
     }
 
     private void updateUI() throws SQLException {
-        List<Job> subGoalsList = IntentionDAOHelper.getAllSubIntentionsList(
-                mJobsDAO,
-                bigGoal, Intention.BIGGOAL_ID_FIELD);
+
     }
 }

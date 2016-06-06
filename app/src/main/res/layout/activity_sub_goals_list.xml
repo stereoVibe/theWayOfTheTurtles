@@ -3,24 +3,31 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clipToPadding="false"
+    >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/sub_goals_list_container"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="210dp"
         android:background="@null"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:elevation="4dp">
+
+        >
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/sub_goals_collapsingToolbar"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:contentScrim="?attr/colorPrimary"
             app:titleEnabled="true"
             app:expandedTitleTextAppearance="@style/TitleSubGoalsStyle"
             app:expandedTitleMarginStart="72dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:expandedTitleMarginBottom="115dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:elevation="3dp"
+            >
 
             <ImageView
                 android:layout_width="match_parent"
@@ -36,12 +43,62 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:layout_collapseMode="pin"
+
             />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/sub_goals_list_container"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="50dp"
+        android:paddingRight="8dp"
+        >
+
+        <TextView
+            android:id="@+id/end_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дата достижения:"/>
+
+        <TextView
+            android:id="@+id/big_goal_inner_end_date"
+            android:layout_toRightOf="@id/end_date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="05.10.2017"/>
+
+        <TextView
+            android:id="@+id/big_goal_inner_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/end_date_label"
+            android:layout_marginTop="68dp"
+            android:maxLines="3"
+            android:text="Показателем результата будет являтся способность исполнить Little Wing, Jimi Hendrix"/>
+
+    </RelativeLayout>
+
+
+    <com.daimajia.numberprogressbar.NumberProgressBar
+        app:progress_reached_color="@color/darkBlueSea"
+        app:progress_unreached_color="@color/brightBlue"
+        app:progress_text_color="@color/darkBlueSea"
+        app:progress_text_size="14sp"
+        app:progress_unreached_bar_height="3dp"
+        app:progress_reached_bar_height="3dp"
+        android:id="@+id/big_goal_inner_progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="94dp"
+        />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                  android:id="@+id/fragmentContainer"

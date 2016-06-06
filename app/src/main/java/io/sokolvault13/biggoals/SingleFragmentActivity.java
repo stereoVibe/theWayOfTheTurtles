@@ -52,6 +52,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         mToolBar = (Toolbar) findViewById(mToolbarResource);
         setSupportActionBar(mToolBar);
 
+
         if (mHomeAsUp){
             mToolBar.setNavigationIcon(R.drawable.ic_arrow_left);
             mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
