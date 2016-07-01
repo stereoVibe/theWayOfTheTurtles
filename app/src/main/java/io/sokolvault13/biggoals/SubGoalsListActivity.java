@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.util.AttributeSet;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,13 +17,7 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.Model.Intention;
@@ -47,6 +41,9 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     private TextView mDescription;
     private TextView mEndDate;
     private NumberProgressBar mProgressBar;
+    private Toolbar mToolbar;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private AppBarLayout mAppBarLayout;
 
 
     public static Intent newIntent(Context context, int bigGoalId){
@@ -64,18 +61,34 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int layoutId = R.layout.activity_sub_goals_list;
-        int toolbarResourceId = R.id.sub_goals_list_toolbar;
+        int toolbarResourceId = R.id.sub_goals_list_toolbar_uncollapse;
         int toolbarLayoutId = R.layout.action_bar_list_sub_goals;
         int toolbarMenuId = R.menu.subgoals_list_menu_toolbar;
-        assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, SUB_GOALS_LIST_FRAGMENT_TAG, true);
+        assignResources(layoutId,
+                toolbarLayoutId,
+                toolbarResourceId,
+                toolbarMenuId,
+                SUB_GOALS_LIST_FRAGMENT_TAG,
+                true);
 
         HelperFactory.setHelper(getApplication());
 
         super.onCreate(savedInstanceState);
 
-        mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
-        mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
-        mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
+//        mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
+//        mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
+//        mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
+        mToolbar = (Toolbar) findViewById(R.id.sub_goals_list_toolbar_collapsed);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.sub_goals_collapsingToolbar);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.sub_goals_list_container);
+
+        mToolbar.setNavigationIcon(R.drawable.ic_arrow_left);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         dbHelper = HelperFactory.getHelper();
         try {
@@ -86,6 +99,15 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         } catch (SQLException e){
             e.printStackTrace();
         }
+
+
+//        mCollapsingToolbarLayout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.getParent().requestDisallowInterceptTouchEvent(false);
+//                return false;
+//            }
+//        });
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 //        assert fab != null;
@@ -99,20 +121,44 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     }
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null && mBigGoal.getTitle() != null){
-            actionBar.setTitle(mBigGoal.getTitle());
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.delete_big_goal:
+                try {
+                    IntentionDAOHelper.deleteIntention(mBigGoal, mBigGoalsDAO);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null && mBigGoal.getTitle() != null){
+//            actionBar.setTitle(mBigGoal.getTitle());
+//        }
+        mCollapsingToolbarLayout.setTitle(mBigGoal.getTitle());
+
         super.onPostCreate(savedInstanceState);
-        mBigGoal.setProgress(34);
 
-        mDescription.setText(mBigGoal.getDescription());
-
-        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-        mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));
-
-        mProgressBar.setProgress(mBigGoal.getProgress());
+//        mBigGoal.setProgress(34);
+//
+//        mDescription.setText(mBigGoal.getDescription());
+//
+//        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+//        mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));
+//
+//        mProgressBar.setProgress(mBigGoal.getProgress());
     }
 
     @Override

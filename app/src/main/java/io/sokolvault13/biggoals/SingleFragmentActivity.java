@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 
 
@@ -51,7 +52,6 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         mToolBar = (Toolbar) findViewById(mToolbarResource);
         setSupportActionBar(mToolBar);
-
 
         if (mHomeAsUp){
             mToolBar.setNavigationIcon(R.drawable.ic_arrow_left);

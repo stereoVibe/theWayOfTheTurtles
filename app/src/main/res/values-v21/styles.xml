@@ -9,6 +9,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/light_bg_white</item>
         <item name="android:statusBarColor">@color/statusbar_cyan</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <!--<item name="android:windowTranslucentStatus">true</item>-->
 
     </style>
