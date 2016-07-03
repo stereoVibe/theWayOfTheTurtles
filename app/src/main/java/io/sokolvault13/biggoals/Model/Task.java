@@ -11,7 +11,7 @@ public class Task extends Intention implements Performable{
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     protected int id;
-    @DatabaseField (canBeNull = false)
+    @DatabaseField (canBeNull = true)
     private String title;
     @DatabaseField
     private String description;
@@ -62,12 +62,12 @@ public class Task extends Intention implements Performable{
 
     @Override
     public String getTitle() {
-        return null;
+        return title;
     }
 
     @Override
     public void setTitle(String title) {
-
+        this.title = title;
     }
 
     @Override

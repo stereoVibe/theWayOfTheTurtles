@@ -23,6 +23,10 @@ public class Job extends Intention implements Performable {
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
     private int isComplete;
+    @DatabaseField (canBeNull = false, columnName = "completed_quantity")
+    private int mCompletedQuantity;
+    @DatabaseField (canBeNull = false, columnName = "goals_quantity")
+    private int mGoalQuantity;
     @DatabaseField (canBeNull = false, columnName = "priority")
     private int mPriority;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
@@ -34,6 +38,22 @@ public class Job extends Intention implements Performable {
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
+        this.mGoalQuantity = 0;
+        this.mCompletedQuantity = 0;
+    }
+
+    public int getCompletedQuantity() {
+        return mCompletedQuantity;
+    }
+    public void setCompletedQuantity(int completedQuantity) {
+        this.mCompletedQuantity = completedQuantity;
+    }
+
+    public int getGoalQuantity() {
+        return mGoalQuantity;
+    }
+    public void setGoalQuantity(int goalQuantity) {
+        this.mGoalQuantity = goalQuantity;
     }
 
     public int getPriority() {

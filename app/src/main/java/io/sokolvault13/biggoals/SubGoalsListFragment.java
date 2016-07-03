@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -33,9 +34,9 @@ public class SubGoalsListFragment extends Fragment {
     private int mBigGoalId;
     private BigGoal bigGoal;
     private ArrayList subGoalsList;
-    private Dao<BigGoal, Integer> mBigGoalsDAO;
-    private Dao<Job, Integer> mJobsDAO;
-    private Dao<Task, Integer> mTasksDAO;
+    private Dao mBigGoalsDAO;
+    private Dao mJobsDAO;
+    private Dao mTasksDAO;
 
     public static SubGoalsListFragment newInstance(int bigGoalId){
         Bundle args = new Bundle();
@@ -78,8 +79,8 @@ public class SubGoalsListFragment extends Fragment {
     }
 
     private void updateUI() throws SQLException {
-        List<? extends Intention> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
-        List<? extends Intention> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
+        List jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
+        List tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
         subGoalsList = new ArrayList();
         subGoalsList.addAll(jobsList);
         subGoalsList.addAll(tasksList);
@@ -88,15 +89,54 @@ public class SubGoalsListFragment extends Fragment {
 
     private class JobHolder extends RecyclerView.ViewHolder {
 
+        private TextView title,
+                         goal,
+                         completed;
+
         public JobHolder(View itemView) {
             super(itemView);
+            title = (TextView) itemView.findViewById(R.id.item_job_title);
+            goal = (TextView) itemView.findViewById(R.id.item_goal);
+            completed = (TextView) itemView.findViewById(R.id.item_complete);
+        }
+
+        public TextView getTitle() {
+            return title;
+        }
+        public void setTitle(TextView title) {
+            this.title = title;
+        }
+
+        public TextView getGoal() {
+            return goal;
+        }
+        public void setGoal(TextView goal) {
+            this.goal = goal;
+        }
+
+        public TextView getCompleted() {
+            return completed;
+        }
+        public void setCompleted(TextView completed) {
+            this.completed = completed;
         }
     }
 
     private class TaskHolder extends RecyclerView.ViewHolder {
 
+        private TextView title;
+
         public TaskHolder(View itemView) {
             super(itemView);
+            title = (TextView) itemView.findViewById(R.id.item_task_title);
+        }
+
+        public TextView getTitle() {
+            return title;
+        }
+
+        public void setTitle(TextView title) {
+            this.title = title;
         }
     }
 
@@ -104,7 +144,7 @@ public class SubGoalsListFragment extends Fragment {
         public final static int JOB = 0,
                                 TASK = 1;
 
-        ArrayList<? extends Intention> items = subGoalsList;
+        ArrayList items = subGoalsList;
 
         public SubGoalsAdapter(ArrayList subGoalsList) {
             this.items = subGoalsList;
@@ -112,12 +152,34 @@ public class SubGoalsListFragment extends Fragment {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
+            RecyclerView.ViewHolder viewHolder = null;
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+            switch (viewType){
+                case JOB:
+                    View jobView = inflater.inflate(R.layout.item_sub_goal_job, parent, false);
+                    viewHolder = new JobHolder(jobView);
+                    break;
+                case TASK:
+                    View taskView = inflater.inflate(R.layout.item_sub_goal_task, parent, false);
+                    viewHolder = new TaskHolder(taskView);
+                    break;
+            }
+            return viewHolder;
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+            switch (holder.getItemViewType()) {
+                case JOB:
+                    JobHolder jobHolder = (JobHolder) holder;
+                    configureJobViewHolder(jobHolder, position);
+                    break;
+                case TASK:
+                    TaskHolder taskHolder = (TaskHolder) holder;
+                    configureTaskViewHolder(taskHolder, position);
+                    break;
+            }
         }
 
         @Override
@@ -133,6 +195,18 @@ public class SubGoalsListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return this.items.size();
+        }
+
+        private void configureJobViewHolder(JobHolder jobHolder, int position) {
+            Job job = (Job) items.get(position);
+            jobHolder.getTitle().setText(job.getTitle());
+            jobHolder.getGoal().setText(String.valueOf(job.getGoalQuantity()));
+            jobHolder.getCompleted().setText(String.valueOf(job.getCompletedQuantity()));
+        }
+
+        private void configureTaskViewHolder(TaskHolder taskHolder, int position) {
+            Task task = (Task) items.get(position);
+            taskHolder.getTitle().setText(task.getTitle());
         }
     }
 }

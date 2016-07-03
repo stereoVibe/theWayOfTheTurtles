@@ -17,12 +17,15 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.Model.Intention;
 import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
 import io.sokolvault13.biggoals.Model.Job;
+import io.sokolvault13.biggoals.Model.ObjectiveType;
 import io.sokolvault13.biggoals.Model.Task;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
@@ -75,9 +78,9 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 
         super.onCreate(savedInstanceState);
 
-//        mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
-//        mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
-//        mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
+        mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
+        mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
+        mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
         mToolbar = (Toolbar) findViewById(R.id.sub_goals_list_toolbar_collapsed);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.sub_goals_collapsingToolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.sub_goals_list_container);
@@ -96,6 +99,17 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
             mJobsDAO = dbHelper.getJobDAO();
             mTasksDAO = dbHelper.getTaskDAO();
             mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
+
+            // Needs to be deleted
+//            Job job = Intention.createIntention(new Job(), ObjectiveType.CONTINUOUS);
+//            Task task = Intention.createIntention(new Task(), ObjectiveType.SIMPLE);
+//            createJob(job);
+//            createTask(task);
+//            mBigGoal.assignSubIntention(job);
+//            mBigGoal.assignSubIntention(task);
+//            IntentionDAOHelper.createJobRecord(job,mJobsDAO);
+//            IntentionDAOHelper.createTaskRecord(task, mTasksDAO);
+
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -151,14 +165,14 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 
         super.onPostCreate(savedInstanceState);
 
-//        mBigGoal.setProgress(34);
-//
-//        mDescription.setText(mBigGoal.getDescription());
-//
-//        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-//        mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));
-//
-//        mProgressBar.setProgress(mBigGoal.getProgress());
+        mBigGoal.setProgress(34);
+
+        mDescription.setText(mBigGoal.getDescription());
+
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+        mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));
+
+        mProgressBar.setProgress(mBigGoal.getProgress());
     }
 
     @Override
@@ -186,5 +200,18 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         daosMap.put("TasksDAO", dbHelper.getTaskDAO());
 //        Map syncDaosMap = Collections.synchronizedMap(daosMap);
         return daosMap;
+    }
+
+    private void createJob(Job job){
+        if (job != null) {
+            job.setTitle("Создать и выложить 30 приложений в GoogleStore");
+            job.setGoalQuantity(30);
+        }
+    }
+
+    private void createTask(Task task) {
+        if (task != null){
+            task.setTitle("Записать сюда требования для Toptal");
+        }
     }
 }
