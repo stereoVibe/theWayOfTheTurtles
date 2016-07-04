@@ -1,21 +1,16 @@
-package io.sokolvault13.biggoals;
+package io.sokolvault13.biggoals.Presenters.BigGoalCreation;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -26,6 +21,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
+import io.sokolvault13.biggoals.Presenters.SubGoalsList.SubGoalsListActivity;
+import io.sokolvault13.biggoals.R;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
 
