@@ -1,11 +1,10 @@
-package io.sokolvault13.biggoals;
+package io.sokolvault13.biggoals.Presenters.SubGoalsList;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.Intention;
 import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
 import io.sokolvault13.biggoals.Model.Job;
 import io.sokolvault13.biggoals.Model.Task;
+import io.sokolvault13.biggoals.R;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
-import io.sokolvault13.biggoals.db.HelperFactory;
 
 public class SubGoalsListFragment extends Fragment {
     public static final String ARG_BIG_GOAL_ID = "big_goal_id";

@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals;
+package io.sokolvault13.biggoals.Presenters.BigGoalsList;
 
 
 import android.content.Intent;
@@ -20,6 +20,8 @@ import java.util.List;
 
 import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
+import io.sokolvault13.biggoals.Presenters.SubGoalsList.SubGoalsListActivity;
+import io.sokolvault13.biggoals.R;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
 

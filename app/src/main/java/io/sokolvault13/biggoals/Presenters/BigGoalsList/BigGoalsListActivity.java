@@ -1,10 +1,14 @@
-package io.sokolvault13.biggoals;
+package io.sokolvault13.biggoals.Presenters.BigGoalsList;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
+
+import io.sokolvault13.biggoals.Presenters.BigGoalCreation.BigGoalCreationActivity;
+import io.sokolvault13.biggoals.Presenters.SingleFragmentActivity;
+import io.sokolvault13.biggoals.R;
 
 public class BigGoalsListActivity extends SingleFragmentActivity {
     public static final String BIG_GOALS_LIST_FRAGMENT_TAG = "big_goals_list";

@@ -19,7 +19,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
         <activity
-            android:name=".BigGoalsListActivity"
+            android:name=".Presenters.BigGoalsList.BigGoalsListActivity"
             android:finishOnTaskLaunch="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,15 +29,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BigGoalCreationActivity"
+            android:name=".Presenters.BigGoalCreation.BigGoalCreationActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".SubGoalsListActivity"
+            android:name=".Presenters.SubGoalsList.SubGoalsListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".BigGoalsListActivity"/>
+                android:value=".Presenters.BigGoalsList.BigGoalsListActivity"/>
         </activity>
     </application>
 
