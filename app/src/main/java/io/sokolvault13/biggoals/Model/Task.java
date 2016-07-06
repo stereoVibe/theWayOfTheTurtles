@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "tasks")
-public class Task extends Intention implements Performable{
+public class Task extends Intention implements Goal {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     protected int id;
@@ -29,13 +29,12 @@ public class Task extends Intention implements Performable{
     private int mBigGoalId;
 
     public Task() {
-        this.startDate = new Date();
-        this.isOutOfDate = 0;
-        this.isComplete = 0;
+
     }
 
-//    private Task(String title) {
+//    protected Task(String title) {
 //        this.title = title;
+//        this.startDate = new Date();
 //        this.isOutOfDate = 0;
 //        this.isComplete = 0;
 //    }
@@ -44,6 +43,30 @@ public class Task extends Intention implements Performable{
 //        this(title);
 //        this.description = description;
 //    }
+//
+//    protected Task(String title, Date endDate) {
+//        this(title);
+//        this.endDate = endDate;
+//    }
+//
+//    protected Task(String title, String description, Date endDate){
+//        this(title, description);
+//        this.endDate = endDate;
+//    }
+
+    protected Task (String title, String description, Date endDate) {
+        this.title = title;
+        this.startDate = new Date();
+        this.isOutOfDate = 0;
+        this.isComplete = 0;
+
+        if (description != null){
+            this.description = description;
+        }
+        if (endDate != null) {
+            this.description = description;
+        }
+    }
 
     @Override
     public void setBigGoal(BigGoal bigGoal) {

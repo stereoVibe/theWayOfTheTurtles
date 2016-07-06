@@ -20,18 +20,19 @@ import java.util.List;
 import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
 import io.sokolvault13.biggoals.Model.Job;
+import io.sokolvault13.biggoals.Model.Goal;
 import io.sokolvault13.biggoals.Model.Task;
 import io.sokolvault13.biggoals.R;
 import io.sokolvault13.biggoals.db.DatabaseHelper;
 
 public class SubGoalsListFragment extends Fragment {
-    public static final String ARG_BIG_GOAL_ID = "big_goal_id";
+    private static final String ARG_BIG_GOAL_ID = "big_goal_id";
 
     private RecyclerView mSubGoalsRecyclerView;
     private DatabaseHelper dbHelper;
     private int mBigGoalId;
     private BigGoal bigGoal;
-    private ArrayList subGoalsList;
+    private List subGoalsList;
     private Dao mBigGoalsDAO;
     private Dao mJobsDAO;
     private Dao mTasksDAO;
@@ -77,12 +78,12 @@ public class SubGoalsListFragment extends Fragment {
     }
 
     private void updateUI() throws SQLException {
-        List jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
-        List tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
+        List<? extends Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
+        List<? extends Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
         subGoalsList = new ArrayList();
         subGoalsList.addAll(jobsList);
         subGoalsList.addAll(tasksList);
-        mSubGoalsRecyclerView.setAdapter(new SubGoalsAdapter(subGoalsList));
+        mSubGoalsRecyclerView.setAdapter(new SubGoalsAdapter((ArrayList) subGoalsList));
     }
 
     private class JobHolder extends RecyclerView.ViewHolder {
@@ -142,7 +143,7 @@ public class SubGoalsListFragment extends Fragment {
         public final static int JOB = 0,
                                 TASK = 1;
 
-        ArrayList items = subGoalsList;
+        ArrayList<? extends Goal> items = (ArrayList) subGoalsList;
 
         public SubGoalsAdapter(ArrayList subGoalsList) {
             this.items = subGoalsList;

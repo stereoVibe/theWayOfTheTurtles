@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "jobs")
-public class Job extends Intention implements Performable {
+public class Job extends Intention implements Goal {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     private int id;
@@ -35,11 +35,23 @@ public class Job extends Intention implements Performable {
     private int mBigGoalId;
 
     public Job() {
+    }
+
+    protected Job(String title, String description, Date endDate, int goalQuantity){
+        this.title = title;
+        this.mGoalQuantity = goalQuantity;
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
-        this.mGoalQuantity = 0;
         this.mCompletedQuantity = 0;
+
+        if (description != null){
+            this.description = description;
+        }
+        if (endDate != null) {
+            this.description = description;
+        }
+
     }
 
     public int getCompletedQuantity() {

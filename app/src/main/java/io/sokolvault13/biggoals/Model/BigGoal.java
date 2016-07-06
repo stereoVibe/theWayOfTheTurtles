@@ -138,7 +138,7 @@ public class BigGoal extends Intention {
         return this.mJobs;
     }
 
-    public <T extends Performable, B extends Intention> void assignSubIntention(T subIntention) {
+    public <T extends Goal> void assignSubIntention(T subIntention) {
 //        B subIntentionTemp = (B) subIntention;
 //        if (subIntentionTemp.getTitle() != null){
             subIntention.setBigGoal(this);

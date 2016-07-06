@@ -1,6 +1,6 @@
 package io.sokolvault13.biggoals.Model;
 
-public interface Performable {
+public interface Goal {
 
     void setBigGoal(BigGoal bigGoal);
     BigGoal getBigGoal();

@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +31,7 @@ import io.sokolvault13.biggoals.Model.BigGoal;
 import io.sokolvault13.biggoals.Model.Intention;
 import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
 import io.sokolvault13.biggoals.Model.Job;
+import io.sokolvault13.biggoals.Model.ObjectiveType;
 import io.sokolvault13.biggoals.Model.Task;
 import io.sokolvault13.biggoals.Presenters.BigGoalsList.BigGoalsListActivity;
 import io.sokolvault13.biggoals.Presenters.SingleFragmentActivity;
@@ -40,7 +40,7 @@ import io.sokolvault13.biggoals.db.DatabaseHelper;
 import io.sokolvault13.biggoals.db.HelperFactory;
 
 public class SubGoalsListActivity extends SingleFragmentActivity {
-    public static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
+    private static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
     private static final String EXTRA_BIG_GOAL_ID = "io.sokolvault.turtlesway.big_goal_id";
 
     private DatabaseHelper dbHelper;
@@ -48,7 +48,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     private Dao<Job, Integer> mJobsDAO;
     private Dao<Task, Integer> mTasksDAO;
     private int mBigGoalId;
-    BigGoal mBigGoal;
+    private BigGoal mBigGoal;
 
     private TextView mDescription;
     private TextView mEndDate;
@@ -110,16 +110,25 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
             mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
 
             // Needs to be deleted
-//            Job job = Intention.createIntention(new Job(), ObjectiveType.CONTINUOUS);
-//            Task task = Intention.createIntention(new Task(), ObjectiveType.SIMPLE);
+            HashMap<String, Object> hashMap = Intention.prepareSubGoal("Создать и выложить 30 приложений в GoogleStore",
+                    null, null, 30);
+//            Intention.createSubGoal(ObjectiveType.SIMPLE, mBigGoal, hashMap, mTasksDAO);
+            Job job = (Job) new Job().createSubGoal(ObjectiveType.CONTINUOUS, mBigGoal, hashMap, mJobsDAO);
+
+//            Job job = (Job) Intention.createIntention(ObjectiveType.CONTINUOUS);
+//            Task task = (Task) Intention.createIntention(ObjectiveType.SIMPLE);
+//            Job job1 = (Job) Intention.createIntention(ObjectiveType.SIMPLE);
 //            createJob(job);
 //            createTask(task);
+//            createJob(job1);
 //            mBigGoal.assignSubIntention(job);
 //            mBigGoal.assignSubIntention(task);
+//            mBigGoal.assignSubIntention(job1);
 //            IntentionDAOHelper.createJobRecord(job,mJobsDAO);
 //            IntentionDAOHelper.createTaskRecord(task, mTasksDAO);
+//            IntentionDAOHelper.createJobRecord(job1, mJobsDAO);
 
-        } catch (SQLException e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -141,11 +150,6 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 //                startActivity(intent);
 //            }
 //        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -171,12 +175,9 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         super.onPostCreate(savedInstanceState);
 
         mBigGoal.setProgress(34);
-
         mDescription.setText(mBigGoal.getDescription());
-
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));
-
         mProgressBar.setProgress(mBigGoal.getProgress());
     }
 
@@ -246,15 +247,15 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         }
 
         @Override
-        public void onDestroyView() {
-            HelperFactory.releaseHelper();
-            super.onDestroyView();
-        }
-
-        @Override
         public void onAttach(Context context) {
             helper = HelperFactory.getHelper();
             super.onAttach(context);
+        }
+
+        @Override
+        public void onDestroyView() {
+            HelperFactory.releaseHelper();
+            super.onDestroyView();
         }
 
         @NonNull
@@ -266,7 +267,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
                     cancel = getResources().getString(R.string.cancel_delete_big_goal_dialog);
             bigGoalID = getArguments().getInt(EXTRA_BIG_GOAL_ID);
 
-            new dbConnection().execute(helper);
+            new initializeBigGoal().execute(helper);
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
             alertDialog.setTitle(title);
@@ -295,9 +296,11 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 
             return alertDialog.create();
 
+
+
         }
 
-        private class dbConnection extends AsyncTask<DatabaseHelper, Integer, DatabaseHelper>{
+        private class initializeBigGoal extends AsyncTask<DatabaseHelper, Integer, DatabaseHelper>{
 
             @Override
             protected void onPreExecute() {

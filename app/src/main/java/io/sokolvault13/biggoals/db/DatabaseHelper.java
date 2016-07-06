@@ -25,17 +25,24 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<Job, Integer> mSubGoalDAO = null;
     private Dao<Task, Integer> mTasksDAO = null;
 
+    private Class[] models = {
+            BigGoal.class,
+            Job.class,
+            Task.class
+    };
+
     public DatabaseHelper(final Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {
+    public void onCreate(SQLiteDatabase database, final ConnectionSource connectionSource) {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
-            TableUtils.createTable(connectionSource, BigGoal.class);
-            TableUtils.createTable(connectionSource, Job.class);
-            TableUtils.createTable(connectionSource, Task.class);
+
+            for (Class c : models) {
+                TableUtils.createTable(connectionSource, c);
+            }
 
 //            Dao<BigGoal, Integer> dao = getBigGoalDAO();
 //            BigGoal bigGoal = new BigGoal("First goal");
