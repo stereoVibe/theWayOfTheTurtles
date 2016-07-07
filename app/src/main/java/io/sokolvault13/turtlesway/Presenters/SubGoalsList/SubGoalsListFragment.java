@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Presenters.SubGoalsList;
+package io.sokolvault13.turtlesway.Presenters.SubGoalsList;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,13 +17,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
-import io.sokolvault13.biggoals.Model.Job;
-import io.sokolvault13.biggoals.Model.Goal;
-import io.sokolvault13.biggoals.Model.Task;
-import io.sokolvault13.biggoals.R;
-import io.sokolvault13.biggoals.db.DatabaseHelper;
+import io.sokolvault13.turtlesway.Model.BigGoal;
+import io.sokolvault13.turtlesway.Model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.Model.Job;
+import io.sokolvault13.turtlesway.Model.Goal;
+import io.sokolvault13.turtlesway.Model.Task;
+import io.sokolvault13.turtlesway.R;
+import io.sokolvault13.turtlesway.db.DatabaseHelper;
 
 public class SubGoalsListFragment extends Fragment {
     private static final String ARG_BIG_GOAL_ID = "big_goal_id";
@@ -33,6 +33,7 @@ public class SubGoalsListFragment extends Fragment {
     private int mBigGoalId;
     private BigGoal bigGoal;
     private List subGoalsList;
+    SubGoalsAdapter mSubGoalsAdapter;
     private Dao mBigGoalsDAO;
     private Dao mJobsDAO;
     private Dao mTasksDAO;
@@ -77,13 +78,28 @@ public class SubGoalsListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            updateUI();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateUI() throws SQLException {
         List<? extends Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
         List<? extends Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
         subGoalsList = new ArrayList();
         subGoalsList.addAll(jobsList);
         subGoalsList.addAll(tasksList);
-        mSubGoalsRecyclerView.setAdapter(new SubGoalsAdapter((ArrayList) subGoalsList));
+        if (mSubGoalsAdapter == null) {
+            mSubGoalsAdapter = new SubGoalsAdapter((ArrayList) subGoalsList);
+            mSubGoalsRecyclerView.setAdapter(mSubGoalsAdapter);
+        } else {
+            mSubGoalsAdapter.notifyDataSetChanged();
+        }
     }
 
     private class JobHolder extends RecyclerView.ViewHolder {

@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Model;
+package io.sokolvault13.turtlesway.Model;
 
 import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;

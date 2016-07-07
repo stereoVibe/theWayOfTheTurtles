@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Presenters;
+package io.sokolvault13.turtlesway.Presenters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,10 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 
-import io.sokolvault13.biggoals.R;
+import io.sokolvault13.turtlesway.R;
 
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {

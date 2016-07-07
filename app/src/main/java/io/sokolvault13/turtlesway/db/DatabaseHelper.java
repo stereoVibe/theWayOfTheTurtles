@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.db;
+package io.sokolvault13.turtlesway.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,9 +12,9 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.Job;
-import io.sokolvault13.biggoals.Model.Task;
+import io.sokolvault13.turtlesway.Model.BigGoal;
+import io.sokolvault13.turtlesway.Model.Job;
+import io.sokolvault13.turtlesway.Model.Task;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 

@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Presenters.BigGoalsList;
+package io.sokolvault13.turtlesway.Presenters.BigGoalsList;
 
 
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,14 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
-import io.sokolvault13.biggoals.Presenters.SubGoalsList.SubGoalsListActivity;
-import io.sokolvault13.biggoals.R;
-import io.sokolvault13.biggoals.db.DatabaseHelper;
-import io.sokolvault13.biggoals.db.HelperFactory;
+import io.sokolvault13.turtlesway.Model.BigGoal;
+import io.sokolvault13.turtlesway.Model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.Presenters.SubGoalsList.SubGoalsListActivity;
+import io.sokolvault13.turtlesway.R;
+import io.sokolvault13.turtlesway.db.DatabaseHelper;
+import io.sokolvault13.turtlesway.db.HelperFactory;
 
 public class BigGoalsListFragment extends Fragment {
 
@@ -32,14 +34,15 @@ public class BigGoalsListFragment extends Fragment {
     private DatabaseHelper dbHelper;
     private Dao<BigGoal, Integer> bigGoalsDAO;
 
-//    public BigGoalsListFragment() {
-//        // Required empty public constructor
-//    }
+    public BigGoalsListFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         HelperFactory.setHelper(getContext());
         super.onCreate(savedInstanceState);
+        Log.d("Timelife message", "Hello from onCreate");
         dbHelper = HelperFactory.getHelper();
         try {
             bigGoalsDAO = dbHelper.getBigGoalDAO();
@@ -63,11 +66,32 @@ public class BigGoalsListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        Log.d("Timelife message", "Hello from onResume");
+        HelperFactory.setHelper(getContext());
+        super.onResume();
+        dbHelper = HelperFactory.getHelper();
+        try {
+            updateUI();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void updateUI() throws SQLException {
 //        Dao<BigGoal, Integer> bigGoalsDAO = dbHelper.getBigGoalDAO();
         List<BigGoal> bigGoals = IntentionDAOHelper.getIntentionList(bigGoalsDAO);
-        mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
-        mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
+//        if (mBigGoalsAdapter == null){
+            mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
+            mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
+            Log.d("Timelife message", "I'm inside IF part");
+//        } else {
+//            Log.d("Timelife message", "I'm inside ELSE part");
+//
+//            mBigGoalsAdapter.notifyItemRangeInserted(0, bigGoals.size());
+//        }
     }
 
     private class BigGoalsHolder extends RecyclerView.ViewHolder {
@@ -89,7 +113,9 @@ public class BigGoalsListFragment extends Fragment {
             if (mBigGoalDescription != null) {
                 mBigGoalDescription.setText(mBigGoal.getDescription());
             }
-            mBigGoalProgress.setProgress(mBigGoal.getProgress());
+//            mBigGoalProgress.setProgress(mBigGoal.getProgress());
+            final Random random = new Random();
+            mBigGoalProgress.setProgress(random.nextInt(90));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,8 +177,15 @@ public class BigGoalsListFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        HelperFactory.releaseHelper();
+        Log.d("Timelife message", "Hello from onPause");
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-        HelperFactory.releaseHelper();
+        Log.d("Timelife message", "Hello from onStop");
     }
 }

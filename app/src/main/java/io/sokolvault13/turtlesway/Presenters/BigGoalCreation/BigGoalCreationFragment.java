@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Presenters.BigGoalCreation;
+package io.sokolvault13.turtlesway.Presenters.BigGoalCreation;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -20,13 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Presenters.SubGoalsList.SubGoalsListActivity;
-import io.sokolvault13.biggoals.R;
-import io.sokolvault13.biggoals.db.DatabaseHelper;
-import io.sokolvault13.biggoals.db.HelperFactory;
+import io.sokolvault13.turtlesway.Model.BigGoal;
+import io.sokolvault13.turtlesway.Presenters.SubGoalsList.SubGoalsListActivity;
+import io.sokolvault13.turtlesway.R;
+import io.sokolvault13.turtlesway.db.DatabaseHelper;
+import io.sokolvault13.turtlesway.db.HelperFactory;
 
-import static io.sokolvault13.biggoals.Model.IntentionDAOHelper.createBigGoalRecord;
+import static io.sokolvault13.turtlesway.Model.IntentionDAOHelper.createBigGoalRecord;
 
 public class BigGoalCreationFragment extends Fragment {
     private EditText mBigGoalTitle;
@@ -123,6 +123,7 @@ public class BigGoalCreationFragment extends Fragment {
             BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
             int bigGoalId = bigGoal.getId();
             Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
+
             startActivity(intent);
             getActivity().finish();
         } catch (SQLException e) {

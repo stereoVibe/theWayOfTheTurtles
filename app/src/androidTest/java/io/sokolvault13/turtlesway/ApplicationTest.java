@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals;
+package io.sokolvault13.turtlesway;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

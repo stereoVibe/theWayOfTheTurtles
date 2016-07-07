@@ -1,11 +1,7 @@
-package io.sokolvault13.biggoals.Model;
-
-import android.util.Log;
-import android.widget.Toast;
+package io.sokolvault13.turtlesway.Model;
 
 import com.j256.ormlite.dao.Dao;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 

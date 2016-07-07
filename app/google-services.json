@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "820610936406",
+    "firebase_url": "https://turtles-way-c93ea.firebaseio.com",
+    "project_id": "turtles-way-c93ea",
+    "storage_bucket": "turtles-way-c93ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820610936406:android:9eb188425871117f",
+        "android_client_info": {
+          "package_name": "io.sokolvault13.turtlesway"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820610936406-kd47psrsisp6ddsknepefdncta0tbpgc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj-ZSzsydQvTtTP136XZab5hLqlxTGrYw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

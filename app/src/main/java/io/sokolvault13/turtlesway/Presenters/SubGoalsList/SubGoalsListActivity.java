@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.Presenters.SubGoalsList;
+package io.sokolvault13.turtlesway.Presenters.SubGoalsList;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -27,20 +27,20 @@ import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 
-import io.sokolvault13.biggoals.Model.BigGoal;
-import io.sokolvault13.biggoals.Model.Intention;
-import io.sokolvault13.biggoals.Model.IntentionDAOHelper;
-import io.sokolvault13.biggoals.Model.Job;
-import io.sokolvault13.biggoals.Model.ObjectiveType;
-import io.sokolvault13.biggoals.Model.Task;
-import io.sokolvault13.biggoals.Presenters.BigGoalsList.BigGoalsListActivity;
-import io.sokolvault13.biggoals.Presenters.SingleFragmentActivity;
-import io.sokolvault13.biggoals.R;
-import io.sokolvault13.biggoals.db.DatabaseHelper;
-import io.sokolvault13.biggoals.db.HelperFactory;
+import io.sokolvault13.turtlesway.Model.BigGoal;
+import io.sokolvault13.turtlesway.Model.Intention;
+import io.sokolvault13.turtlesway.Model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.Model.Job;
+import io.sokolvault13.turtlesway.Model.ObjectiveType;
+import io.sokolvault13.turtlesway.Model.Task;
+import io.sokolvault13.turtlesway.Presenters.BigGoalsList.BigGoalsListActivity;
+import io.sokolvault13.turtlesway.Presenters.SingleFragmentActivity;
+import io.sokolvault13.turtlesway.R;
+import io.sokolvault13.turtlesway.db.DatabaseHelper;
+import io.sokolvault13.turtlesway.db.HelperFactory;
 
 public class SubGoalsListActivity extends SingleFragmentActivity {
-    private static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
+    public static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
     private static final String EXTRA_BIG_GOAL_ID = "io.sokolvault.turtlesway.big_goal_id";
 
     private DatabaseHelper dbHelper;

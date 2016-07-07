@@ -1,4 +1,4 @@
-package io.sokolvault13.biggoals.db;
+package io.sokolvault13.turtlesway.db;
 
 import android.content.Context;
 
