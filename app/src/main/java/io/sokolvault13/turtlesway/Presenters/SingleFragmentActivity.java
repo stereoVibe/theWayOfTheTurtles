@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Presenters;
+package io.sokolvault13.turtlesway.presenters;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

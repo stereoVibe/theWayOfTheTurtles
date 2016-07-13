@@ -1,5 +1,6 @@
-package io.sokolvault13.turtlesway.Presenters.SubGoalsList;
+package io.sokolvault13.turtlesway.presenters.SubGoalsList;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,22 +12,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.field.types.VoidType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.sokolvault13.turtlesway.Model.BigGoal;
-import io.sokolvault13.turtlesway.Model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.Model.Job;
-import io.sokolvault13.turtlesway.Model.Goal;
-import io.sokolvault13.turtlesway.Model.Task;
+import io.sokolvault13.turtlesway.db.HelperFactory;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.model.Job;
+import io.sokolvault13.turtlesway.model.Goal;
+import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
+import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalsListFragment extends Fragment {
-    private static final String ARG_BIG_GOAL_ID = "big_goal_id";
 
     private RecyclerView mSubGoalsRecyclerView;
     private DatabaseHelper dbHelper;
@@ -40,7 +43,7 @@ public class SubGoalsListFragment extends Fragment {
 
     public static SubGoalsListFragment newInstance(int bigGoalId){
         Bundle args = new Bundle();
-        args.putInt(ARG_BIG_GOAL_ID, bigGoalId);
+        args.putInt(Constants.ARG_BIG_GOAL_ID, bigGoalId);
         SubGoalsListFragment fragment = new SubGoalsListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -48,13 +51,15 @@ public class SubGoalsListFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mBigGoalId = getArguments().getInt(ARG_BIG_GOAL_ID);
+        mBigGoalId = getArguments().getInt(Constants.ARG_BIG_GOAL_ID);
+        HelperFactory.setHelper(getActivity());
         super.onCreate(savedInstanceState);
+        dbHelper = HelperFactory.getHelper();
         try {
-            HashMap allDAO = ((SubGoalsListActivity)getActivity()).getAllDAO();
-            mBigGoalsDAO = (Dao) allDAO.get("BigGoalsDAO");
-            mJobsDAO = (Dao) allDAO.get("JobsDAO");
-            mTasksDAO = (Dao) allDAO.get("TasksDAO");
+            HashMap allDAO = dbHelper.getAllDAO();
+            mBigGoalsDAO = (Dao) allDAO.get(Constants.BIG_GOALS_DAO);
+            mJobsDAO = (Dao) allDAO.get(Constants.JOBS_DAO);
+            mTasksDAO = (Dao) allDAO.get(Constants.TASKS_DAO);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -222,6 +227,14 @@ public class SubGoalsListFragment extends Fragment {
         private void configureTaskViewHolder(TaskHolder taskHolder, int position) {
             Task task = (Task) items.get(position);
             taskHolder.getTitle().setText(task.getTitle());
+        }
+
+        private class initilizeDAO extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                return null;
+            }
         }
     }
 }

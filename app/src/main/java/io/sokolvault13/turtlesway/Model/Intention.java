@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Model;
+package io.sokolvault13.turtlesway.model;
 
 import com.j256.ormlite.dao.Dao;
 

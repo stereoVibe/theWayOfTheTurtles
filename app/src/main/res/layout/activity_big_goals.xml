@@ -28,7 +28,7 @@
             <!--android:gravity="center">-->
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/big_goals_list_toolbar"
+                android:id="@+id/create_big_goals_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/bg_polygons"

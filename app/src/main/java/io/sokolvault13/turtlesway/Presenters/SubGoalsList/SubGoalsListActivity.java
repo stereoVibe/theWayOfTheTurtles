@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Presenters.SubGoalsList;
+package io.sokolvault13.turtlesway.presenters.SubGoalsList;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -27,21 +28,23 @@ import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 
-import io.sokolvault13.turtlesway.Model.BigGoal;
-import io.sokolvault13.turtlesway.Model.Intention;
-import io.sokolvault13.turtlesway.Model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.Model.Job;
-import io.sokolvault13.turtlesway.Model.ObjectiveType;
-import io.sokolvault13.turtlesway.Model.Task;
-import io.sokolvault13.turtlesway.Presenters.BigGoalsList.BigGoalsListActivity;
-import io.sokolvault13.turtlesway.Presenters.SingleFragmentActivity;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Intention;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.model.Job;
+import io.sokolvault13.turtlesway.model.ObjectiveType;
+import io.sokolvault13.turtlesway.model.Task;
+import io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity;
+import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
+import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationActivity;
+import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalsListActivity extends SingleFragmentActivity {
     public static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
-    private static final String EXTRA_BIG_GOAL_ID = "io.sokolvault.turtlesway.big_goal_id";
+
 
     private DatabaseHelper dbHelper;
     private Dao<BigGoal, Integer> mBigGoalsDAO;
@@ -60,13 +63,13 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 
     public static Intent newIntent(Context context, int bigGoalId){
         Intent intent = new Intent(context, SubGoalsListActivity.class);
-        intent.putExtra(EXTRA_BIG_GOAL_ID, bigGoalId);
+        intent.putExtra(Constants.EXTRA_BIG_GOAL_ID, bigGoalId);
         return intent;
     }
 
     @Override
     protected Fragment createFragment() {
-        mBigGoalId = getIntent().getIntExtra(EXTRA_BIG_GOAL_ID, -1);
+        mBigGoalId = getIntent().getIntExtra(Constants.EXTRA_BIG_GOAL_ID, -1);
         return SubGoalsListFragment.newInstance(mBigGoalId);
     }
 
@@ -110,10 +113,10 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
             mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
 
             // Needs to be deleted
-            HashMap<String, Object> hashMap = Intention.prepareSubGoal("Создать и выложить 30 приложений в GoogleStore",
-                    null, null, 30);
-//            Intention.createSubGoal(ObjectiveType.SIMPLE, mBigGoal, hashMap, mTasksDAO);
-            Job job = (Job) new Job().createSubGoal(ObjectiveType.CONTINUOUS, mBigGoal, hashMap, mJobsDAO);
+//            HashMap<String, Object> hashMap = Intention.prepareSubGoal("Создать и выложить 30 приложений в GoogleStore",
+//                    null, null, 30);
+////            Intention.createSubGoal(ObjectiveType.SIMPLE, mBigGoal, hashMap, mTasksDAO);
+//            Job job = (Job) new Job().createSubGoal(ObjectiveType.CONTINUOUS, mBigGoal, hashMap, mJobsDAO);
 
 //            Job job = (Job) Intention.createIntention(ObjectiveType.CONTINUOUS);
 //            Task task = (Task) Intention.createIntention(ObjectiveType.SIMPLE);
@@ -141,15 +144,15 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 //            }
 //        });
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        assert fab != null;
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(SubGoalsListActivity.this, SubGoalCreationActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_sub_goal_btn);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = SubGoalCreationActivity.newIntent(getApplicationContext(), mBigGoalId);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -198,15 +201,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         super.onPause();
     }
 
-    public HashMap<String, Dao<? extends Intention, Integer>> getAllDAO() throws SQLException {
-        HashMap<String, Dao<? extends Intention, Integer>> daosMap = new HashMap<>();
 
-        daosMap.put("BigGoalsDAO", dbHelper.getBigGoalDAO());
-        daosMap.put("JobsDAO", dbHelper.getJobDAO());
-        daosMap.put("TasksDAO", dbHelper.getTaskDAO());
-//        Map syncDaosMap = Collections.synchronizedMap(daosMap);
-        return daosMap;
-    }
 
     private void createJob(Job job){
         if (job != null) {
@@ -240,7 +235,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
             DeleteConfirmationDialog dialog = new DeleteConfirmationDialog();
             Bundle args = new Bundle();
             args.putString("title", title);
-            args.putInt(EXTRA_BIG_GOAL_ID, bigGoalID);
+            args.putInt(Constants.EXTRA_BIG_GOAL_ID, bigGoalID);
             dialog.setArguments(args);
 
             return dialog;
@@ -265,7 +260,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
                     confirmation = getResources().getString(R.string.delete_big_goal_dialog),
                     ok = getResources().getString(R.string.confirm_delete_big_goal_dialog),
                     cancel = getResources().getString(R.string.cancel_delete_big_goal_dialog);
-            bigGoalID = getArguments().getInt(EXTRA_BIG_GOAL_ID);
+            bigGoalID = getArguments().getInt(Constants.EXTRA_BIG_GOAL_ID);
 
             new initializeBigGoal().execute(helper);
 

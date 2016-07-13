@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Model;
+package io.sokolvault13.turtlesway.model;
 
 public interface Goal {
 

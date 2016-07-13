@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Presenters.BigGoalsList;
+package io.sokolvault13.turtlesway.presenters.BigGoalsList;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import io.sokolvault13.turtlesway.Presenters.BigGoalCreation.BigGoalCreationActivity;
-import io.sokolvault13.turtlesway.Presenters.SingleFragmentActivity;
+import io.sokolvault13.turtlesway.presenters.BigGoalCreation.BigGoalCreationActivity;
+import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.R;
 
 public class BigGoalsListActivity extends SingleFragmentActivity {
@@ -21,7 +21,7 @@ public class BigGoalsListActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int layoutId = R.layout.activity_big_goals;
-        int toolbarResourceId = R.id.big_goals_list_toolbar;
+        int toolbarResourceId = R.id.create_big_goals_toolbar;
         int toolbarLayoutId = R.layout.action_bar_list_big_goals;
         int toolbarMenuId = R.menu.biggoals_list_menu_toolbar;
         assignResources(layoutId, toolbarLayoutId, toolbarResourceId, toolbarMenuId, BIG_GOALS_LIST_FRAGMENT_TAG, false);

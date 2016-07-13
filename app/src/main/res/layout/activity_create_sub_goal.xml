@@ -16,16 +16,8 @@
         android:orientation="vertical"
         >
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:orientation="vertical"-->
-        <!--android:background="@drawable/bg_polygons"-->
-        <!--android:elevation="4dp"-->
-        <!--android:gravity="center">-->
-
         <android.support.v7.widget.Toolbar
-            android:id="@+id/create_big_goals_toolbar"
+            android:id="@+id/create_sub_goals_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/toolbar_blue"

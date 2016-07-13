@@ -11,10 +11,13 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
-import io.sokolvault13.turtlesway.Model.BigGoal;
-import io.sokolvault13.turtlesway.Model.Job;
-import io.sokolvault13.turtlesway.Model.Task;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Intention;
+import io.sokolvault13.turtlesway.model.Job;
+import io.sokolvault13.turtlesway.model.Task;
+import io.sokolvault13.turtlesway.utils.Constants;
 
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
@@ -82,6 +85,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             mTasksDAO = DaoManager.createDao(connectionSource, Task.class);
         }
         return mTasksDAO;
+    }
+
+    public HashMap<String, Dao<? extends Intention, Integer>> getAllDAO() throws SQLException {
+        HashMap<String, Dao<? extends Intention, Integer>> daosMap = new HashMap<>();
+        daosMap.put(Constants.BIG_GOALS_DAO, getBigGoalDAO());
+        daosMap.put(Constants.JOBS_DAO, getJobDAO());
+        daosMap.put(Constants.TASKS_DAO, getTaskDAO());
+//        Map syncDaosMap = Collections.synchronizedMap(daosMap);
+        return daosMap;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Presenters.BigGoalsList;
+package io.sokolvault13.turtlesway.presenters.BigGoalsList;
 
 
 import android.content.Intent;
@@ -20,9 +20,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
-import io.sokolvault13.turtlesway.Model.BigGoal;
-import io.sokolvault13.turtlesway.Model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.Presenters.SubGoalsList.SubGoalsListActivity;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;

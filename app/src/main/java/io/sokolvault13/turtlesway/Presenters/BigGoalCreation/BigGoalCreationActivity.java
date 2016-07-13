@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Presenters.BigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.BigGoalCreation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import io.sokolvault13.turtlesway.Presenters.SingleFragmentActivity;
+import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.R;
 
 public class BigGoalCreationActivity extends SingleFragmentActivity {
@@ -21,9 +21,9 @@ public class BigGoalCreationActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         int layoutId = R.layout.activity_create_big_goal;
-        int toolbarResourceId = R.id.big_goals_list_toolbar;
+        int toolbarResourceId = R.id.create_big_goals_toolbar;
         int toolbarLayoutId = R.layout.action_bar_create_big_goal;
-        int toolbarMenuId = R.menu.create_big_goal_menu_toolbar;
+        int toolbarMenuId = R.menu.create_goals_menu_toolbar;
         assignResources(layoutId,
                 toolbarLayoutId,
                 toolbarResourceId,

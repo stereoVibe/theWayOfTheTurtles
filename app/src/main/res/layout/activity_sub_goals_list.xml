@@ -113,12 +113,23 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Список задач:"
+        android:layout_marginLeft="72dp"
+        android:layout_marginTop="240dp"
+        app:layout_anchor="@id/sub_goals_list_container"
+        app:layout_anchorGravity="bottom|left|end"/>
+
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_marginTop="20dp"
+                 android:layout_marginTop="45dp"
                  android:id="@+id/fragmentContainer"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
-                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    </FrameLayout>
 
 
     <android.support.design.widget.FloatingActionButton
@@ -126,6 +137,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        app:fab_type="normal"
         android:src="@drawable/ic_plus_fab"
         app:borderWidth="0dp"
         app:layout_anchor="@id/sub_goals_list_container"

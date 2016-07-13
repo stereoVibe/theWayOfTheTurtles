@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.Presenters.BigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.BigGoalCreation;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -20,13 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import io.sokolvault13.turtlesway.Model.BigGoal;
-import io.sokolvault13.turtlesway.Presenters.SubGoalsList.SubGoalsListActivity;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 
-import static io.sokolvault13.turtlesway.Model.IntentionDAOHelper.createBigGoalRecord;
+import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.createBigGoalRecord;
 
 public class BigGoalCreationFragment extends Fragment {
     private EditText mBigGoalTitle;
@@ -54,7 +54,7 @@ public class BigGoalCreationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_big_goal, container, false);
         mBigGoalTitle = (EditText) view.findViewById(R.id.textGetTitle);
-        mBigGoalDescription = (EditText) view.findViewById(R.id.textGetDescriprtion);
+        mBigGoalDescription = (EditText) view.findViewById(R.id.textGetDescription);
         mCreateBigGoalBtn = (Button) view.findViewById(R.id.createBigGoalBtn);
         mPickBigGoalEndDateBtn = (Button) view.findViewById(R.id.pickBigGoalEndDate);
 
@@ -123,7 +123,6 @@ public class BigGoalCreationFragment extends Fragment {
             BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
             int bigGoalId = bigGoal.getId();
             Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
-
             startActivity(intent);
             getActivity().finish();
         } catch (SQLException e) {
