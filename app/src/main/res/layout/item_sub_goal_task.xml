@@ -5,7 +5,7 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/sub_goal_task_item_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="56dp"
                     android:paddingLeft="16dp"
                     android:paddingStart="16dp"
                     android:paddingRight="16dp"
@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:maxLines="1"
             android:text="Прочитать 3 обзора"
             android:id="@+id/item_task_title"
@@ -27,16 +27,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/checkBox"
-            android:layout_alignBottom="@+id/item_task_title"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:checked="false"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/deviderBorderColor"
         android:layout_below="@id/sub_goal_task_item_layout"/>
 </RelativeLayout>

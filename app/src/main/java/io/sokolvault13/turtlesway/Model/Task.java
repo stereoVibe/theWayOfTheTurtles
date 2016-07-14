@@ -54,7 +54,7 @@ public class Task extends Intention implements Goal {
 //        this.endDate = endDate;
 //    }
 
-    protected Task (String title, String description, Date endDate) {
+    public Task (String title, String description, Date endDate) {
         this.title = title;
         this.startDate = new Date();
         this.isOutOfDate = 0;

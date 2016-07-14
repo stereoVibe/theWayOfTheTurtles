@@ -51,7 +51,13 @@ public class SubGoalCreationActivity extends SingleFragmentActivity {
         switch (id){
             case R.id.continue_creation:
                 mFragment = (SubGoalCreationFragment) getSupportFragmentManager().findFragmentByTag(CREATE_SUB_GOAL_FRAGMENT_TAG);
-//                mFragment.createSubGoal();
+                try {
+                    mFragment.createSubGoal();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                onBackPressed();
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

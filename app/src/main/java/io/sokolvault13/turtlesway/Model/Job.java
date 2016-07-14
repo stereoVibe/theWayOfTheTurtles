@@ -26,7 +26,7 @@ public class Job extends Intention implements Goal {
     @DatabaseField (canBeNull = false, columnName = "completed_quantity")
     private int mCompletedQuantity;
     @DatabaseField (canBeNull = false, columnName = "goals_quantity")
-    private int mGoalQuantity;
+    private int mGoalQuantity = 0;
     @DatabaseField (canBeNull = false, columnName = "priority")
     private int mPriority;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
@@ -39,11 +39,14 @@ public class Job extends Intention implements Goal {
 
     protected Job(String title, String description, Date endDate, int goalQuantity){
         this.title = title;
-        this.mGoalQuantity = goalQuantity;
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = 0;
         this.mCompletedQuantity = 0;
+
+        if (goalQuantity > 0) {
+            this.mGoalQuantity = goalQuantity;
+        }
 
         if (description != null){
             this.description = description;

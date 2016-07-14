@@ -90,6 +90,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/deviderBorderColor"
         android:layout_below="@id/sub_goal_item_layout"/>
 </RelativeLayout>

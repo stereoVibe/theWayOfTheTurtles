@@ -18,4 +18,5 @@
     <color name="hintColorEditText">#424242</color>
     <color name="brightBlue">#1FA1DB</color>
     <color name="darkBlueSea">#0B486B</color>
+    <color name="deviderBorderColor">#1f000000</color>
 </resources>

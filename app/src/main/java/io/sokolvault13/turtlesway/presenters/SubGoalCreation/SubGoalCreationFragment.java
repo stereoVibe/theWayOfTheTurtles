@@ -12,8 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
-import com.google.android.gms.tasks.Tasks;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -23,7 +21,11 @@ import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Intention;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
+import io.sokolvault13.turtlesway.model.ObjectiveType;
+import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalCreationFragment extends Fragment {
@@ -69,7 +71,7 @@ public class SubGoalCreationFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_create_sub_goal, container, false);
         mSubGoalTitle = (EditText) view.findViewById(R.id.textGetTitle);
-        mSubGoalTitle = (EditText) view.findViewById(R.id.textGetDescription);
+        mSubGoalDescription = (EditText) view.findViewById(R.id.textGetDescription);
         mRepeatsQuantity = (EditText) view.findViewById(R.id.repeatsQuantity);
         mCreateGoalBtn = (Button) view.findViewById(R.id.add_sub_goal_btn);
         mChooseGoalTypeBtn = (SwitchCompat) view.findViewById(R.id.switch_create_task_job);
@@ -102,5 +104,29 @@ public class SubGoalCreationFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    protected void createSubGoal() throws Exception {
+
+        BigGoal bigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalID);
+        String title = String.valueOf(mSubGoalTitle.getText());
+        String description = String.valueOf(mSubGoalDescription.getText());
+        String repeatsQuantity = String.valueOf(mRepeatsQuantity.getText());
+        int quantity;
+
+        if (repeatsQuantity.isEmpty()) {
+            quantity = 0;
+        } else {
+            quantity = Integer.parseInt(repeatsQuantity);
+        }
+
+        if (isGoalTypeSimple){
+            HashMap <String, Object> goalDetails = Intention.prepareSubGoal(title, description, null, 0);
+            final Task task = (Task) new Task().createSubGoal(ObjectiveType.SIMPLE, bigGoal, goalDetails, mTasksDAO);
+
+        } else {
+            HashMap <String, Object> goalDetails = Intention.prepareSubGoal(title, description, null, quantity);
+            final Job job = (Job) new Job().createSubGoal(ObjectiveType.CONTINUOUS, bigGoal, goalDetails, mJobsDAO);
+        }
     }
 }
