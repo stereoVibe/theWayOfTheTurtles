@@ -17,10 +17,12 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Goal;
 import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 import io.sokolvault13.turtlesway.R;
@@ -83,15 +85,15 @@ public class BigGoalsListFragment extends Fragment {
     private void updateUI() throws SQLException {
 //        Dao<BigGoal, Integer> bigGoalsDAO = dbHelper.getBigGoalDAO();
         List<BigGoal> bigGoals = IntentionDAOHelper.getIntentionList(bigGoalsDAO);
-//        if (mBigGoalsAdapter == null){
+        if (mBigGoalsAdapter == null){
             mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
             mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
-            Log.d("Timelife message", "I'm inside IF part");
-//        } else {
-//            Log.d("Timelife message", "I'm inside ELSE part");
-//
+        } else {
+            mBigGoalsAdapter.clearItems();
+            mBigGoalsAdapter.setItems((ArrayList<BigGoal>) bigGoals);
+            mBigGoalsAdapter.notifyDataSetChanged();
 //            mBigGoalsAdapter.notifyItemRangeInserted(0, bigGoals.size());
-//        }
+        }
     }
 
     private class BigGoalsHolder extends RecyclerView.ViewHolder {
@@ -132,10 +134,18 @@ public class BigGoalsListFragment extends Fragment {
     private class BigGoalsAdapter extends RecyclerView.Adapter<BigGoalsHolder>{
         public static final int DESCRIPTION = 0,
                                 NO_DESCRIPTION = 1;
-        private final List<BigGoal> mBigGoals;
+        private List<BigGoal> mBigGoals;
 
         public BigGoalsAdapter(List<BigGoal> bigGoals) {
             mBigGoals = bigGoals;
+        }
+
+        public void setItems(ArrayList<BigGoal> items){
+            mBigGoals = items;
+        }
+
+        public void clearItems(){
+            this.mBigGoals.clear();
         }
 
         @Override

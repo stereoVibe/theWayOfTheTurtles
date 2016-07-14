@@ -135,4 +135,8 @@ public abstract class Intention {
 
         return null;
     }
+
+//    public int getDateAsSortingParameter() {
+//        return Integer.parseInt(String.valueOf(getStartDate()));
+//    }
 }

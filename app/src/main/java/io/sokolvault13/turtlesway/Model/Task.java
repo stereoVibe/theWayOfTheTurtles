@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "tasks")
-public class Task extends Intention implements Goal {
+public class Task extends Intention implements Goal, Comparable<Goal> {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     protected int id;
@@ -141,5 +141,14 @@ public class Task extends Intention implements Goal {
     @Override
     public void setCompleteStatus(int isComplete) {
 
+    }
+    @Override
+    public Date getDateAsSortingParameter() {
+        return this.startDate;
+    }
+
+    @Override
+    public int compareTo(Goal goal) {
+        return startDate.compareTo(goal.getDateAsSortingParameter());
     }
 }

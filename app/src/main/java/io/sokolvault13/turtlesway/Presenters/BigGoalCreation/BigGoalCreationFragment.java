@@ -120,10 +120,11 @@ public class BigGoalCreationFragment extends Fragment {
         String description = mBigGoalDescription.getText().toString();
         Date date = this.mDate;
         try {
-            BigGoal bigGoal = createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
-            int bigGoalId = bigGoal.getId();
-            Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
-            startActivity(intent);
+            createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+//            int bigGoalId = bigGoal.getId();
+//            Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
+//            startActivity(intent);
+            getActivity().onBackPressed();
             getActivity().finish();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -6,18 +6,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.field.types.VoidType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
@@ -35,7 +40,7 @@ public class SubGoalsListFragment extends Fragment {
     private DatabaseHelper dbHelper;
     private int mBigGoalId;
     private BigGoal bigGoal;
-    private List subGoalsList;
+    private ArrayList<Goal> subGoalsList;
     SubGoalsAdapter mSubGoalsAdapter;
     private Dao mBigGoalsDAO;
     private Dao mJobsDAO;
@@ -94,15 +99,28 @@ public class SubGoalsListFragment extends Fragment {
     }
 
     private void updateUI() throws SQLException {
-        List<? extends Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
-        List<? extends Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
-        subGoalsList = new ArrayList();
-        subGoalsList.addAll(jobsList);
-        subGoalsList.addAll(tasksList);
+        List<Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Job.BIGGOAL_ID_FIELD);
+        List<Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Task.BIGGOAL_ID_FIELD);
+
+        subGoalsList = new ArrayList<>();
+        Set<Goal> sortedSet = new TreeSet<>();
+        sortedSet.addAll(jobsList);
+        sortedSet.addAll(tasksList);
+        Log.d("sortedSet", String.valueOf(sortedSet.size()));
+        Iterator<Goal> goalIterator = sortedSet.iterator();
+        while (goalIterator.hasNext()){
+            subGoalsList.add(goalIterator.next());
+//            Log.d("goalIterator", goalIterator.next().getDateAsSortingParameter().toString());
+        }
+//        subGoalsList.addAll(jobsList);
+//        subGoalsList.addAll(tasksList);
+
         if (mSubGoalsAdapter == null) {
             mSubGoalsAdapter = new SubGoalsAdapter((ArrayList) subGoalsList);
             mSubGoalsRecyclerView.setAdapter(mSubGoalsAdapter);
         } else {
+            mSubGoalsAdapter.clearItems();
+            mSubGoalsAdapter.setItems(subGoalsList);
             mSubGoalsAdapter.notifyDataSetChanged();
         }
     }
@@ -137,9 +155,7 @@ public class SubGoalsListFragment extends Fragment {
         public TextView getCompleted() {
             return completed;
         }
-        public void setCompleted(TextView completed) {
-            this.completed = completed;
-        }
+
     }
 
     private class TaskHolder extends RecyclerView.ViewHolder {
@@ -164,10 +180,18 @@ public class SubGoalsListFragment extends Fragment {
         public final static int JOB = 0,
                                 TASK = 1;
 
-        ArrayList<? extends Goal> items = (ArrayList) subGoalsList;
+        ArrayList<Goal> items = (ArrayList<Goal>) subGoalsList;
 
-        public SubGoalsAdapter(ArrayList subGoalsList) {
+        public SubGoalsAdapter(ArrayList<Goal> subGoalsList) {
             this.items = subGoalsList;
+        }
+
+        public void setItems(ArrayList<Goal> items){
+            this.items = items;
+        }
+
+        public void clearItems(){
+            this.items.clear();
         }
 
         @Override

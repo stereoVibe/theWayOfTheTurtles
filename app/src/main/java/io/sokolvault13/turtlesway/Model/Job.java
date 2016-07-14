@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "jobs")
-public class Job extends Intention implements Goal {
+public class Job extends Intention implements Goal, Comparable<Goal> {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     private int id;
@@ -142,7 +142,18 @@ public class Job extends Intention implements Goal {
     public int getBigGoalId() {
         return mBigGoalId;
     }
+
+    @Override
+    public Date getDateAsSortingParameter() {
+        return this.startDate;
+    }
+
     @Override
     public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
 
+    @Override
+    public int compareTo(Goal goal) {
+//        int date = Integer.parseInt(String.valueOf(this.startDate));
+        return startDate.compareTo(goal.getDateAsSortingParameter());
+    }
 }

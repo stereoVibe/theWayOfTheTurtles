@@ -47,7 +47,7 @@ public class IntentionDAOHelper {
        return dao.queryForId(bigGoalId);
    }
 
-    public static <T extends Intention> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
+    public static <T extends Goal> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
                                                    Intention goal,
                                                    String idField) throws  SQLException {
         ArrayList<T> subIntentionsList = new ArrayList<>();
