@@ -16,32 +16,30 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import io.sokolvault13.turtlesway.db.HelperFactory;
-import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.model.Job;
-import io.sokolvault13.turtlesway.model.Goal;
-import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
+import io.sokolvault13.turtlesway.db.HelperFactory;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Goal;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.model.Job;
+import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalsListFragment extends Fragment {
 
+    SubGoalsAdapter mSubGoalsAdapter;
     private RecyclerView mSubGoalsRecyclerView;
     private DatabaseHelper dbHelper;
     private int mBigGoalId;
     private BigGoal bigGoal;
     private ArrayList<Goal> subGoalsList;
-    SubGoalsAdapter mSubGoalsAdapter;
     private Dao mBigGoalsDAO;
     private Dao mJobsDAO;
     private Dao mTasksDAO;
@@ -116,7 +114,7 @@ public class SubGoalsListFragment extends Fragment {
 //        subGoalsList.addAll(tasksList);
 
         if (mSubGoalsAdapter == null) {
-            mSubGoalsAdapter = new SubGoalsAdapter((ArrayList) subGoalsList);
+            mSubGoalsAdapter = new SubGoalsAdapter(subGoalsList);
             mSubGoalsRecyclerView.setAdapter(mSubGoalsAdapter);
         } else {
             mSubGoalsAdapter.clearItems();
@@ -222,6 +220,8 @@ public class SubGoalsListFragment extends Fragment {
                 case TASK:
                     TaskHolder taskHolder = (TaskHolder) holder;
                     configureTaskViewHolder(taskHolder, position);
+                    break;
+                default:
                     break;
             }
         }

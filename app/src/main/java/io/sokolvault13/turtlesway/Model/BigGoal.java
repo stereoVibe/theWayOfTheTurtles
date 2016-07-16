@@ -78,10 +78,6 @@ public class BigGoal extends Intention {
         this.title = title;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public Date getStartDate() {
         return null;
@@ -94,7 +90,7 @@ public class BigGoal extends Intention {
 
     @Override
     public Date getEndDate() {
-        return this.endDate;
+        return endDate;
     }
 
     @Override
@@ -124,6 +120,10 @@ public class BigGoal extends Intention {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getProgress() {
