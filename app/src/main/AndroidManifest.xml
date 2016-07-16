@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="io.sokolvault13.biggoals"
+<manifest package="io.sokolvault13.turtlesway"
           xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,7 +21,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
         <activity
-            android:name=".Presenters.BigGoalsList.BigGoalsListActivity"
+            android:name="io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity"
             android:finishOnTaskLaunch="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,16 +31,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Presenters.BigGoalCreation.BigGoalCreationActivity"
+            android:name="io.sokolvault13.turtlesway.presenters.BigGoalCreation.BigGoalCreationActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Presenters.SubGoalsList.SubGoalsListActivity"
+            android:name="io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Presenters.BigGoalsList.BigGoalsListActivity"/>
+                android:value="io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity"/>
         </activity>
+        <activity android:name=".presenters.SubGoalCreation.SubGoalCreationActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
