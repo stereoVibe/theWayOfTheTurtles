@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Goal;
 import io.sokolvault13.turtlesway.model.Intention;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.Task;
@@ -25,8 +26,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private Dao<BigGoal, Integer> mBigGoalDAO = null;
-    private Dao<Job, Integer> mSubGoalDAO = null;
+    private Dao<Job, Integer> mJobDAO = null;
     private Dao<Task, Integer> mTasksDAO = null;
+    private Dao<? extends Goal, Integer> mSubGoalDAO = null;
 
     private Class[] models = {
             BigGoal.class,
@@ -74,10 +76,10 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     public Dao<Job, Integer> getJobDAO() throws SQLException {
-        if (mSubGoalDAO == null){
-            mSubGoalDAO = DaoManager.createDao(connectionSource, Job.class);
+        if (mJobDAO == null){
+            mJobDAO = DaoManager.createDao(connectionSource, Job.class);
         }
-        return mSubGoalDAO;
+        return mJobDAO;
     }
 
     public Dao<Task, Integer> getTaskDAO() throws SQLException {
@@ -85,6 +87,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             mTasksDAO = DaoManager.createDao(connectionSource, Task.class);
         }
         return mTasksDAO;
+    }
+
+    public Dao<? extends Goal, Integer> getSubGoalDAO(Goal goal) throws SQLException {
+        mSubGoalDAO  = goal instanceof Task ? getTaskDAO() : getJobDAO();
+        return mSubGoalDAO;
     }
 
     public HashMap<String, Dao<? extends Intention, Integer>> getAllDAO() throws SQLException {
@@ -100,7 +107,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void close() {
         super.close();
         this.mBigGoalDAO = null;
-        this.mSubGoalDAO = null;
+        this.mJobDAO = null;
         this.mTasksDAO = null;
     }
 }
