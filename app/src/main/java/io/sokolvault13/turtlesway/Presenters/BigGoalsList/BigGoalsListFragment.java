@@ -21,13 +21,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.model.Goal;
-import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 
 public class BigGoalsListFragment extends Fragment {
 
@@ -96,16 +95,33 @@ public class BigGoalsListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        HelperFactory.releaseHelper();
+        Log.d("Timelife message", "Hello from onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Timelife message", "Hello from onStop");
+    }
+
     private class BigGoalsHolder extends RecyclerView.ViewHolder {
-        private BigGoal mBigGoal;
         public final TextView mBigGoalTitle;
         public final TextView mBigGoalDescription;
         public final NumberProgressBar mBigGoalProgress;
+        private BigGoal mBigGoal;
+
+//        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/product_sans.ttf");
 
         public BigGoalsHolder(View itemView) {
             super(itemView);
             mBigGoalTitle = (TextView) itemView.findViewById(R.id.big_goal_title);
+//            mBigGoalTitle.setTypeface(font);
             mBigGoalDescription = (TextView) itemView.findViewById(R.id.big_goal_description);
+//            mBigGoalDescription.setTypeface(font);
             mBigGoalProgress = (NumberProgressBar) itemView.findViewById(R.id.progressBar);
         }
 
@@ -184,18 +200,5 @@ public class BigGoalsListFragment extends Fragment {
                 return DESCRIPTION;
             }
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        HelperFactory.releaseHelper();
-        Log.d("Timelife message", "Hello from onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("Timelife message", "Hello from onStop");
     }
 }

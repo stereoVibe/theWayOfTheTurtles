@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.View;
 
 import io.sokolvault13.turtlesway.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
-    protected abstract Fragment createFragment();
     private Toolbar mToolBar;
     private int mMainLayout;
     private int mToolbarResource;
@@ -22,6 +22,8 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     private int mToolbarLayout;
     private String mTag;
     private boolean mHomeAsUp = false;
+
+    protected abstract Fragment createFragment();
 
     public final void assignResources(int mainLayout,
                                       int toolbarLayout,
@@ -40,6 +42,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/RobotoCondensed-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+//        TypefaceUtil.overrideFont(getApplicationContext(),"SERIF","fonts/product_sans.ttf" );
         setContentView(mMainLayout);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentContainer);

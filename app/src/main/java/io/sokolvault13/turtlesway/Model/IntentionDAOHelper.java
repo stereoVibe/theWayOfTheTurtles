@@ -43,13 +43,18 @@ public class IntentionDAOHelper {
 //                .query();
 //    }
 
-   public static BigGoal getBigGoal (Dao<BigGoal, Integer> dao, int bigGoalId) throws SQLException {
-       return dao.queryForId(bigGoalId);
-   }
+    public static BigGoal getBigGoal(Dao<BigGoal, Integer> dao, int bigGoalId) throws SQLException {
+        return dao.queryForId(bigGoalId);
+    }
+
+    public static <T extends Goal> T getSubGoal(Dao<T, Integer> dao, int subGoalID) throws SQLException {
+        return dao.queryForId(subGoalID);
+    }
+
 
     public static <T extends Goal> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
-                                                   Intention goal,
-                                                   String idField) throws  SQLException {
+                                                                    Intention goal,
+                                                                    String idField) throws SQLException {
         ArrayList<T> subIntentionsList = new ArrayList<>();
         CloseableIterator<T> iterator = dao.queryBuilder().where()
                 .eq(idField, goal.getId())
@@ -79,5 +84,18 @@ public class IntentionDAOHelper {
         }
         return list;
     }
+
+    public static void updateJobCompletedQuantity(Dao<Job, Integer> dao, Job job, int completedQuantity) throws SQLException {
+//        dao.queryForId(job.getId()).setCompletedQuantity(completedQuantity);
+        job.setCompletedQuantity(completedQuantity);
+        dao.update(job);
+    }
+
+    public static <T extends Intention> void setComplete(Dao<T, Integer> dao, T intention) throws SQLException {
+        T goal = dao.queryForId(intention.getId());
+        goal.setCompleteStatus(true);
+        dao.update(goal);
+    }
+
 
 }

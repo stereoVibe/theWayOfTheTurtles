@@ -74,22 +74,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
         Log.d("SubGoal Display", title);
         if (description != null) Log.d("SubGoal Display", description);
 
-//        if (goal instanceof Job){
-//            title = ((Job) goal).getTitle();
-//            Log.d("SubGoal Display", title);
-//            if (((Job) goal).getDescription() != null)
-//                description = ((Job) goal).getDescription();
-//                Log.d("SubGoal Display", description);
-//            goalsQuantity = ((Job) goal).getGoalQuantity();
-//            goalsComplete = ((Job) goal).getCompleteStatus();
-//
-//        } else if (goal instanceof Task){
-//            title = ((Task) goal).getTitle();
-//            if (((Task) goal).getDescription() != null)
-//                description = ((Task) goal).getDescription();
-//            else description = getResources().getString(R.string.no_description_text);
-//        }
-
         builder.setView(layout)
                 .setTitle(title)
                 .setPositiveButton("Править", new DialogInterface.OnClickListener() {

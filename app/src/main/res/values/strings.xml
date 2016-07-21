@@ -5,7 +5,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="big_goal_description_text"></string>
     <string name="title_activity_float_button_test">FloatButtonTestActivity</string>
     <string name="title_activity_fab">fab</string>
     <string name="action_settings">Settings</string>

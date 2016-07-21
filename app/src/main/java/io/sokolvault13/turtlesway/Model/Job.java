@@ -1,5 +1,7 @@
 package io.sokolvault13.turtlesway.model;
 
+import android.support.annotation.NonNull;
+
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -22,7 +24,7 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
     @DatabaseField (canBeNull = false, columnName = "is_due")
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
-    private int isComplete;
+    private boolean isComplete;
     @DatabaseField (canBeNull = false, columnName = "completed_quantity")
     private int mCompletedQuantity;
     @DatabaseField (canBeNull = false, columnName = "goals_quantity")
@@ -41,7 +43,7 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
         this.title = title;
         this.startDate = new Date();
         this.isOutOfDate = 0;
-        this.isComplete = 0;
+        this.isComplete = false;
         this.mCompletedQuantity = 0;
 
         if (goalQuantity > 0) {
@@ -52,7 +54,7 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
             this.description = description;
         }
         if (endDate != null) {
-            this.description = description;
+            this.endDate = endDate;
         }
 
     }
@@ -76,6 +78,11 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
     }
     public void setPriority(int priority) {
         mPriority = priority;
+    }
+
+    @Override
+    public int getId() {
+        return this.id;
     }
 
     @Override
@@ -123,24 +130,32 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
     }
 
     @Override
-    public int getCompleteStatus() {
+    public boolean getCompleteStatus() {
         return isComplete;
     }
-    public void setCompleteStatus(int isComplete) {
+
+    public void setCompleteStatus(boolean isComplete) {
         this.isComplete = isComplete;
+    }
+
+    @Override
+    public BigGoal getBigGoal() {
+        return this.mBigGoal;
     }
 
     @Override
     public void setBigGoal(BigGoal bigGoal) {
         this.mBigGoal = bigGoal;
     }
-    @Override
-    public BigGoal getBigGoal() {
-        return this.mBigGoal;
-    }
+
     @Override
     public int getBigGoalId() {
         return mBigGoalId;
+    }
+
+    @Override
+    public void setBigGoalId(BigGoal bigGoal) {
+        this.mBigGoalId = bigGoal.getId();
     }
 
     @Override
@@ -149,10 +164,7 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
     }
 
     @Override
-    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
-
-    @Override
-    public int compareTo(Goal goal) {
+    public int compareTo(@NonNull Goal goal) {
 //        int date = Integer.parseInt(String.valueOf(this.startDate));
         return startDate.compareTo(goal.getDateAsSortingParameter());
     }

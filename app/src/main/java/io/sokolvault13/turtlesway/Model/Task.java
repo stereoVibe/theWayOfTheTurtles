@@ -1,5 +1,7 @@
 package io.sokolvault13.turtlesway.model;
 
+import android.support.annotation.NonNull;
+
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -22,70 +24,55 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
     @DatabaseField (canBeNull = false, columnName = "is_due")
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
-    private int isComplete;
+    private boolean isComplete;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
     private BigGoal mBigGoal;
     @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
     private int mBigGoalId;
 
     public Task() {
-
     }
-
-//    protected Task(String title) {
-//        this.title = title;
-//        this.startDate = new Date();
-//        this.isOutOfDate = 0;
-//        this.isComplete = 0;
-//    }
-//
-//    protected Task(String title, String description) {
-//        this(title);
-//        this.description = description;
-//    }
-//
-//    protected Task(String title, Date endDate) {
-//        this(title);
-//        this.endDate = endDate;
-//    }
-//
-//    protected Task(String title, String description, Date endDate){
-//        this(title, description);
-//        this.endDate = endDate;
-//    }
 
     public Task (String title, String description, Date endDate) {
         this.title = title;
         this.startDate = new Date();
         this.isOutOfDate = 0;
-        this.isComplete = 0;
+        this.isComplete = false;
 
         if (description != null){
             this.description = description;
         }
         if (endDate != null) {
-            this.description = description;
+            this.endDate = endDate;
         }
+    }
+
+    @Override
+    public BigGoal getBigGoal() {
+        return this.mBigGoal;
     }
 
     @Override
     public void setBigGoal(BigGoal bigGoal) {
         mBigGoal = bigGoal;
     }
-    @Override
-    public BigGoal getBigGoal() {
-        return this.mBigGoal;
-    }
-    @Override
-    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
+
     @Override
     public int getBigGoalId() {
         return this.mBigGoalId;
     }
 
     @Override
+    public void setBigGoalId (BigGoal bigGoal) { this.mBigGoalId = bigGoal.getId(); }
+
+    @Override
+    public int getId() {
+        return this.id;
+    }
+
+    @Override
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     @Override
@@ -95,12 +82,12 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
 
     @Override
     public String getDescription() {
-        return null;
+        return description;
     }
 
     @Override
     public void setDescription(String description) {
-
+        this.description = description;
     }
 
     @Override
@@ -115,7 +102,7 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
 
     @Override
     public Date getEndDate() {
-        return null;
+        return this.endDate;
     }
 
     @Override
@@ -125,21 +112,20 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
 
     @Override
     public int getOutOfDate() {
-        return 0;
+        return this.isOutOfDate;
     }
 
     @Override
     public void setOutOfDate(int isOutOfDate) {
-
     }
 
     @Override
-    public int getCompleteStatus() {
-        return 0;
+    public boolean getCompleteStatus() {
+        return this.isComplete;
     }
 
     @Override
-    public void setCompleteStatus(int isComplete) {
+    public void setCompleteStatus(boolean isComplete) {
 
     }
     @Override
@@ -148,7 +134,7 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
     }
 
     @Override
-    public int compareTo(Goal goal) {
+    public int compareTo(@NonNull Goal goal) {
         return startDate.compareTo(goal.getDateAsSortingParameter());
     }
 }

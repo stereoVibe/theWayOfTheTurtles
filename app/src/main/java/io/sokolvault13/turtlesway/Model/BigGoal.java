@@ -29,7 +29,7 @@ public class BigGoal extends Intention {
     @DatabaseField (canBeNull = false, columnName = "is_due")
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
-    private int isComplete;
+    private boolean isComplete;
     @DatabaseField (canBeNull = false, columnName = "progress")
     private int mProgress;
     @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
@@ -40,14 +40,14 @@ public class BigGoal extends Intention {
     public BigGoal() {
         this.startDate = new Date();
         this.isOutOfDate = 0;
-        this.isComplete = 0;
+        this.isComplete = false;
     }
 //
     public BigGoal(String title) {
         this.title = title;
         this.startDate = new Date();
         this.isOutOfDate = 0;
-        this.isComplete = 0;
+        this.isComplete = false;
     }
 //
     public BigGoal(String title, String description) {
@@ -109,12 +109,12 @@ public class BigGoal extends Intention {
     }
 
     @Override
-    public int getCompleteStatus() {
-        return 0;
+    public boolean getCompleteStatus() {
+        return this.isComplete;
     }
 
     @Override
-    public void setCompleteStatus(int isComplete) {
+    public void setCompleteStatus(boolean isComplete) {
 
     }
 

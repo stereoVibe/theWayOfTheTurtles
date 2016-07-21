@@ -4,11 +4,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+
     <RelativeLayout android:id="@+id/sub_goal_item_layout"
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
                     android:paddingEnd="16dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
@@ -19,20 +19,24 @@
             android:id="@+id/item_job_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/complete_job_checkBox"
+            android:layout_toRightOf="@+id/complete_job_checkBox"
+            android:fontFamily="sans-serif"
             android:gravity="left"
+            android:paddingLeft="8dp"
             android:text="Job Title"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textColor="@color/darkTitle"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/item_goal_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/item_job_title"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_toEndOf="@+id/complete_job_checkBox"
+            android:layout_toRightOf="@+id/complete_job_checkBox"
+            android:paddingLeft="8dp"
             android:text="Goal:"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
@@ -40,11 +44,10 @@
             android:id="@+id/item_complete_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/item_goal_title"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_toEndOf="@+id/complete_job_checkBox"
+            android:layout_toRightOf="@+id/complete_job_checkBox"
+            android:paddingLeft="8dp"
             android:text="Complete:"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
@@ -55,7 +58,8 @@
             android:layout_above="@+id/item_complete_title"
             android:layout_toEndOf="@+id/item_goal_title"
             android:layout_toRightOf="@+id/item_goal_title"
-            android:text=" "
+            android:paddingLeft="8dp"
+            android:text="20 "
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <TextView
@@ -65,16 +69,21 @@
             android:layout_alignTop="@+id/item_complete_title"
             android:layout_toEndOf="@+id/item_complete_title"
             android:layout_toRightOf="@+id/item_complete_title"
-            android:text=" "
+            android:paddingLeft="8dp"
+            android:text="10 "
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/complete_job_checkBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/progressBar2"
-            android:layout_alignEnd="@+id/progressBar2"
-            android:layout_alignRight="@+id/progressBar2"/>
+            android:layout_alignBottom="@+id/item_complete_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="2dp"
+            android:button="@drawable/custom_checkbox_design"/>
 
         <ProgressBar
             android:id="@+id/progressBar2"

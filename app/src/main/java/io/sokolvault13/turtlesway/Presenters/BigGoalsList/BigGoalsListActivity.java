@@ -1,17 +1,24 @@
 package io.sokolvault13.turtlesway.presenters.BigGoalsList;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.presenters.BigGoalCreation.BigGoalCreationActivity;
 import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
-import io.sokolvault13.turtlesway.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BigGoalsListActivity extends SingleFragmentActivity {
     public static final String BIG_GOALS_LIST_FRAGMENT_TAG = "big_goals_list";
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected Fragment createFragment() {

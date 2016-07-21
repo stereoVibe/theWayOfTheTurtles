@@ -11,10 +11,9 @@ import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalCreationActivity extends SingleFragmentActivity {
+    public static final String CREATE_SUB_GOAL_FRAGMENT_TAG = "create_sub_goal_tag";
     SubGoalCreationFragment mFragment;
     private int mBigGoalId;
-
-    public static final String CREATE_SUB_GOAL_FRAGMENT_TAG = "create_sub_goal_tag";
 
     public static Intent newIntent(Context context, int bigGoalID){
         Intent intent = new Intent(context, SubGoalCreationActivity.class);
@@ -52,13 +51,14 @@ public class SubGoalCreationActivity extends SingleFragmentActivity {
             case R.id.continue_creation:
                 mFragment = (SubGoalCreationFragment) getSupportFragmentManager().findFragmentByTag(CREATE_SUB_GOAL_FRAGMENT_TAG);
                 try {
-                    mFragment.createSubGoal();
+                    if (mFragment.createSubGoal()) {
+                        onBackPressed();
+                        finish();
+                        return true;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                onBackPressed();
-                finish();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

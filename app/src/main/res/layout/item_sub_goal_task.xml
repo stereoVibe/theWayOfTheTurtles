@@ -14,27 +14,33 @@
                     android:paddingStart="16dp"
                     android:paddingTop="8dp">
 
+        <CheckBox
+            android:id="@+id/complete_task_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="2dp"
+            android:button="@drawable/custom_checkbox_design"
+            android:checked="false"
+            android:gravity="center_horizontal"/>
+
         <TextView
             android:id="@+id/item_task_title"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/complete_task_checkBox"
+            android:layout_toRightOf="@+id/complete_task_checkBox"
+            android:fontFamily="sans-serif"
             android:gravity="left|center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
+            android:paddingLeft="8dp"
             android:text="Прочитать 3 обзора"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textColor="@color/darkTitle"
+            android:textSize="14sp"/>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
 
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_check_circle_blue_grey_700_18dp"
-            android:checked="false"
-            android:gravity="center_horizontal"/>
 
     </RelativeLayout>
     <View
