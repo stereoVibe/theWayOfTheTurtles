@@ -31,11 +31,11 @@ public class BigGoal extends Intention {
     @DatabaseField (canBeNull = false, columnName = "is_complete")
     private boolean isComplete;
     @DatabaseField (canBeNull = false, columnName = "progress")
-    private int mProgress;
+    private double mProgress;
     @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
     private ForeignCollection <Job> mJobs;
     @ForeignCollectionField (columnName = TASKS_COLLECTS_FIELD, eager = true)
-    private ForeignCollection <Task> tasks;
+    private ForeignCollection<Task> mTasks;
 
     public BigGoal() {
         this.startDate = new Date();
@@ -126,11 +126,11 @@ public class BigGoal extends Intention {
         this.description = description;
     }
 
-    public int getProgress() {
+    public double getProgress() {
         return mProgress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(double progress) {
         mProgress = progress;
     }
 

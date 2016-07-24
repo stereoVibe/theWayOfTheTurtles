@@ -25,6 +25,8 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
     private boolean isComplete;
+    @DatabaseField(canBeNull = false, columnName = "priority")
+    private int mPriority;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
     private BigGoal mBigGoal;
     @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
@@ -38,6 +40,7 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
         this.startDate = new Date();
         this.isOutOfDate = 0;
         this.isComplete = false;
+        this.mPriority = 1;
 
         if (description != null){
             this.description = description;
@@ -45,6 +48,14 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
         if (endDate != null) {
             this.endDate = endDate;
         }
+    }
+
+    public int getPriority() {
+        return mPriority;
+    }
+
+    public void setPriority(int priority) {
+        mPriority = priority;
     }
 
     @Override

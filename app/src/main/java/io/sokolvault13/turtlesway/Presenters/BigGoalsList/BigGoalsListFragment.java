@@ -19,7 +19,6 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
@@ -131,9 +130,9 @@ public class BigGoalsListFragment extends Fragment {
             if (mBigGoalDescription != null) {
                 mBigGoalDescription.setText(mBigGoal.getDescription());
             }
-//            mBigGoalProgress.setProgress(mBigGoal.getProgress());
-            final Random random = new Random();
-            mBigGoalProgress.setProgress(random.nextInt(90));
+            mBigGoalProgress.setProgress((int) mBigGoal.getProgress());
+//            final Random random = new Random();
+//            mBigGoalProgress.setProgress(random.nextInt(90));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

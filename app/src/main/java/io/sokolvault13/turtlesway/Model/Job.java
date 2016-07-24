@@ -29,8 +29,10 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
     private int mCompletedQuantity;
     @DatabaseField (canBeNull = false, columnName = "goals_quantity")
     private int mGoalQuantity = 0;
-    @DatabaseField (canBeNull = false, columnName = "priority")
+    @DatabaseField(canBeNull = false, columnName = "priority", defaultValue = "1")
     private int mPriority;
+    @DatabaseField(canBeNull = false, dataType = DataType.DOUBLE, columnName = "progress", defaultValue = "0")
+    private double mProgress;
     @DatabaseField (foreign = true, index = true, foreignAutoRefresh = true, canBeNull = false, columnName = BIGGOAL_FIELD)
     private BigGoal mBigGoal;
     @DatabaseField (canBeNull = false, columnName = BIGGOAL_ID_FIELD)
@@ -71,6 +73,14 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
     }
     public void setGoalQuantity(int goalQuantity) {
         this.mGoalQuantity = goalQuantity;
+    }
+
+    public double getProgress() {
+        return mProgress;
+    }
+
+    public void addProgress(double progress) {
+        mProgress += progress;
     }
 
     public int getPriority() {
@@ -168,4 +178,5 @@ public class Job extends Intention implements Goal, Comparable<Goal> {
 //        int date = Integer.parseInt(String.valueOf(this.startDate));
         return startDate.compareTo(goal.getDateAsSortingParameter());
     }
+
 }

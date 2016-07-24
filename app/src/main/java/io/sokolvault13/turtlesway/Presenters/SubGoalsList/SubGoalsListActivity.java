@@ -143,11 +143,11 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 
         super.onPostCreate(savedInstanceState);
 
-        mBigGoal.setProgress(34);
+//        mBigGoal.setProgress(34);
         mDescription.setText(mBigGoal.getDescription());
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));
-        mProgressBar.setProgress(mBigGoal.getProgress());
+        mProgressBar.setProgress((int) mBigGoal.getProgress());
     }
 
     @Override

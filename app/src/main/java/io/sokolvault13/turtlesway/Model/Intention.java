@@ -106,6 +106,7 @@ public abstract class Intention {
                 IntentionDAOHelper.createTaskRecord((Task) taskGoal, subGoalDAO);
                 return taskGoal;
             case CONTINUOUS:
+
                 GoalMaker jobGoalMaker = new JobGoalMaker();
                 Goal jobGoal = jobGoalMaker.createGoal(bigGoal, goalDetails);
                 IntentionDAOHelper.createJobRecord((Job) jobGoal, subGoalDAO);

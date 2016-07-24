@@ -86,7 +86,7 @@
             android:button="@drawable/custom_checkbox_design"/>
 
         <ProgressBar
-            android:id="@+id/progressBar2"
+            android:id="@+id/job_progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

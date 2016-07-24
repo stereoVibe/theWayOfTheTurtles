@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -44,12 +46,11 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
     private RecyclerView mSubGoalsRecyclerView;
     private DatabaseHelper dbHelper;
     private int mBigGoalId;
-    private BigGoal bigGoal;
+    private BigGoal mBigGoal;
     private ArrayList<Goal> subGoalsList;
     private Dao mBigGoalsDAO;
     private Dao mJobsDAO;
     private Dao mTasksDAO;
-    private Enum mGoalType;
     private Context mContext;
     private RecyclerViewClickListener mClickListener;
 
@@ -100,7 +101,7 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
         mSubGoalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         try {
-            bigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
+            mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
             updateUI();
         } catch (SQLException e){
             e.printStackTrace();
@@ -120,8 +121,8 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
     }
 
     private void updateUI() throws SQLException {
-        List<Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, bigGoal, Intention.BIGGOAL_ID_FIELD);
-        List<Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, bigGoal, Intention.BIGGOAL_ID_FIELD);
+        List<Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, mBigGoal, Intention.BIGGOAL_ID_FIELD);
+        List<Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, mBigGoal, Intention.BIGGOAL_ID_FIELD);
 
         subGoalsList = new ArrayList<>();
         Set<Goal> sortedSet = new TreeSet<>();
@@ -144,11 +145,12 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
 
     private class JobHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        JobCompleteAnimation animation;
+        PerformJobComplete mJobComplete;
         private TextView title,
                          goal,
                          completed;
         private CheckBox completedCheckBox;
+        private ProgressBar progressBar;
         private View mView;
 
         public JobHolder(final View itemView) {
@@ -158,22 +160,23 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
             goal = (TextView) itemView.findViewById(R.id.item_goal);
             completed = (TextView) itemView.findViewById(R.id.item_complete);
             completedCheckBox = (CheckBox) itemView.findViewById(R.id.complete_job_checkBox);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.job_progress_bar);
 
-            animation = new JobCompleteAnimation();
-            animation.setView(itemView);
+            mJobComplete = new PerformJobComplete();
+            mJobComplete.setView(itemView);
 
             completedCheckBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    if (animation.getStatus() == AsyncTask.Status.FINISHED){
-                        animation = new JobCompleteAnimation();
-                        animation.setView(itemView);
-                        animation.setPosition(getLayoutPosition());
-                        animation.execute();
-                    } else if (animation.getStatus() != AsyncTask.Status.RUNNING){
-                        animation.setPosition(getLayoutPosition());
-                        animation.execute();
+                    if (mJobComplete.getStatus() == AsyncTask.Status.FINISHED){
+                        mJobComplete = new PerformJobComplete();
+                        mJobComplete.setView(itemView);
+                        mJobComplete.setPosition(getLayoutPosition());
+                        mJobComplete.execute();
+                    } else if (mJobComplete.getStatus() != AsyncTask.Status.RUNNING){
+                        mJobComplete.setPosition(getLayoutPosition());
+                        mJobComplete.execute();
                     }
                 }
             });
@@ -205,6 +208,10 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
 
         public CheckBox getCompletedCheckBox() {
             return completedCheckBox;
+        }
+
+        public ProgressBar getProgressBar() {
+            return progressBar;
         }
 
         @Override
@@ -310,11 +317,14 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
             jobHolder.getTitle().setText(job.getTitle());
             jobHolder.getGoal().setText(String.valueOf(job.getGoalQuantity()));
             jobHolder.getCompleted().setText(String.valueOf(job.getCompletedQuantity()));
+            jobHolder.getProgressBar().setProgress((int) job.getProgress());
+
             if (job.getCompleteStatus()) {
                 jobHolder.getTitle().setPaintFlags(jobHolder.getTitle().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 jobHolder.getView().setBackgroundColor(getResources().getColor(R.color.complete_row));
                 jobHolder.getCompletedCheckBox().setChecked(true);
                 jobHolder.getCompletedCheckBox().setEnabled(false);
+                jobHolder.getProgressBar().setProgress(100);
             }
         }
 
@@ -324,12 +334,13 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
         }
     }
 
-    private class JobCompleteAnimation extends AsyncTask<Void, Void, Void>{
+    private class PerformJobComplete extends AsyncTask<Void, Void, Void>{
         Animation mFadeInAnimation, mFadeOutAnimation;
         View mView;
         Job mJob;
-        View mLayout;
         int completedQuantity;
+        double mSingleTaskProgressAmount;
+
         Animation.AnimationListener animationFadeInListener = new Animation.AnimationListener() {
 
             @Override
@@ -367,23 +378,23 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
 
         @Override
         protected Void doInBackground(Void... voids) {
-
 //            mFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_in);
 //            mFadeOutAnimation = AnimationUtils.loadAnimation(getActivity(), android.R.anim.fade_out);
 //            mFadeInAnimation.setAnimationListener(animationFadeInListener);
 //            mFadeOutAnimation.setAnimationListener(animationFadeOutListener);
-
             completedQuantity = mJob.getCompletedQuantity();
+            mSingleTaskProgressAmount = (100 / mJob.getGoalQuantity());
 
             if (completedQuantity < mJob.getGoalQuantity()) {
                 try {
                     IntentionDAOHelper.updateJobCompletedQuantity(mJobsDAO, mJob, completedQuantity + 1);
+                    IntentionDAOHelper.addJobProgress(mJobsDAO, mJob, mSingleTaskProgressAmount);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
 
-            if (completedQuantity == mJob.getCompletedQuantity() - 1) {
+            if (completedQuantity == mJob.getGoalQuantity() - 1) {
                 try {
                     IntentionDAOHelper.setComplete(mJobsDAO, mJob);
                 } catch (SQLException e) {
@@ -391,12 +402,11 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
                 }
             }
 
-//            try {
-//                get(2000, TimeUnit.MILLISECONDS);
-//            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-//                e.printStackTrace();
-//            }
-
+            try {
+                mBigGoal = IntentionDAOHelper.updateBigGoalProgress(mBigGoalId, mBigGoalsDAO, mJobsDAO, mTasksDAO);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -405,30 +415,38 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
 //            title.startAnimation(mFadeOutAnimation);
 //            (TextView) mView.findViewById(R.id.item_complete).se;
             CheckBox checkBox = (CheckBox) mView.findViewById(R.id.complete_job_checkBox);
+            ProgressBar progressBar = (ProgressBar) mView.findViewById(R.id.job_progress_bar);
+            NumberProgressBar BigGoalProgressBar = (NumberProgressBar) getActivity().findViewById(R.id.big_goal_inner_progressBar);
 
             if (completedQuantity == mJob.getGoalQuantity() - 1) {
                 Toast.makeText(getContext(), "Выполнено +1 задача к Вашей цели!", Toast.LENGTH_SHORT).show();
+
                 TextView textViewComplete = (TextView) mView.findViewById(R.id.item_complete);
-                textViewComplete.setText(String.valueOf(mJob.getCompletedQuantity()));
                 TextView textView = (TextView) mView.findViewById(R.id.item_job_title);
+
+                textViewComplete.setText(String.valueOf(mJob.getCompletedQuantity()));
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//                mLayout.startAnimation(mFadeInAnimation);
                 mView.setBackgroundColor(getResources().getColor(R.color.complete_row));
+                progressBar.setProgress(100);
+
+                BigGoalProgressBar.setProgress((int) mBigGoal.getProgress());
+
                 checkBox.setChecked(true);
                 checkBox.setEnabled(false);
             } else if (completedQuantity < mJob.getGoalQuantity()){
+
+                BigGoalProgressBar.setProgress((int) mBigGoal.getProgress());
+
                 Toast.makeText(getContext(), "Выполнено +1 задача к Вашей цели!", Toast.LENGTH_SHORT).show();
+                progressBar.setProgress((int) mJob.getProgress());
                 checkBox.setChecked(false);
                 TextView textView = (TextView) mView.findViewById(R.id.item_complete);
                 textView.setText(String.valueOf(mJob.getCompletedQuantity()));
             }
-//            super.onPostExecute(aVoid);
         }
 
         public void setView(View view) {
             mView = view;
-//            mLayout = mView.findViewById(R.id.sub_goal_item_layout);
-//            title = mView.findViewById(R.id.item_complete_title);
         }
 
         public void setPosition(int layoutPosition) {
