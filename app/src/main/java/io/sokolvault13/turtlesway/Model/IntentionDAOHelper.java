@@ -120,12 +120,12 @@ public class IntentionDAOHelper {
         List<Intention> goals = new ArrayList<>();
 
         for (Dao dao : daos) {
-            CloseableIterator<? extends Intention> iterator = dao.queryBuilder().where()
+            CloseableIterator iterator = dao.queryBuilder().where()
                     .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
                     .iterator();
             try {
                 while (iterator.hasNext()) {
-                    goals.add(iterator.next());
+                    goals.add((Intention) iterator.next());
                 }
             } finally {
                 iterator.close();

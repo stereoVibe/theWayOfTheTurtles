@@ -72,6 +72,7 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
     private void showSubGoalDetailsDialog(int goalID, ObjectiveType goalType) {
         FragmentManager fm = getFragmentManager();
         SubGoalDetailsDialog dialog = SubGoalDetailsDialog.newInstance(goalID, goalType);
+//        dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.SubGoalsDialog);
         dialog.show(fm, "subGoalDetailsDialog");
     }
 
