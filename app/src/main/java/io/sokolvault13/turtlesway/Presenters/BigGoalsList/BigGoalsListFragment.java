@@ -54,9 +54,19 @@ public class BigGoalsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_big_goals_list, container, false);
-        mBigGoalsRecyclerView = (RecyclerView) view.findViewById(R.id.big_goals_recycler_view);
-        mBigGoalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        View view = null;
+
+        try {
+            if (IntentionDAOHelper.getIntentionList(bigGoalsDAO).size() == 0) {
+                view = inflater.inflate(R.layout.empty_state_big_goals_list, container, false);
+            } else {
+                view = inflater.inflate(R.layout.fragment_big_goals_list, container, false);
+                mBigGoalsRecyclerView = (RecyclerView) view.findViewById(R.id.big_goals_recycler_view);
+                mBigGoalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             updateUI();
@@ -83,10 +93,11 @@ public class BigGoalsListFragment extends Fragment {
     private void updateUI() throws SQLException {
 //        Dao<BigGoal, Integer> bigGoalsDAO = dbHelper.getBigGoalDAO();
         List<BigGoal> bigGoals = IntentionDAOHelper.getIntentionList(bigGoalsDAO);
-        if (mBigGoalsAdapter == null){
+
+        if (mBigGoalsAdapter == null && bigGoals.size() != 0) {
             mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
             mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
-        } else {
+        } else if (bigGoals.size() != 0) {
             mBigGoalsAdapter.clearItems();
             mBigGoalsAdapter.setItems((ArrayList<BigGoal>) bigGoals);
             mBigGoalsAdapter.notifyDataSetChanged();
@@ -118,9 +129,7 @@ public class BigGoalsListFragment extends Fragment {
         public BigGoalsHolder(View itemView) {
             super(itemView);
             mBigGoalTitle = (TextView) itemView.findViewById(R.id.big_goal_title);
-//            mBigGoalTitle.setTypeface(font);
             mBigGoalDescription = (TextView) itemView.findViewById(R.id.big_goal_description);
-//            mBigGoalDescription.setTypeface(font);
             mBigGoalProgress = (NumberProgressBar) itemView.findViewById(R.id.progressBar);
         }
 
@@ -131,8 +140,6 @@ public class BigGoalsListFragment extends Fragment {
                 mBigGoalDescription.setText(mBigGoal.getDescription());
             }
             mBigGoalProgress.setProgress((int) mBigGoal.getProgress());
-//            final Random random = new Random();
-//            mBigGoalProgress.setProgress(random.nextInt(90));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

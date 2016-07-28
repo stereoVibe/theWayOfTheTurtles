@@ -14,13 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.j256.ormlite.dao.Dao;
+
+import java.sql.SQLException;
 
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.Goal;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.ObjectiveType;
 import io.sokolvault13.turtlesway.model.Task;
@@ -51,7 +55,44 @@ public class SubGoalDetailsDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.sub_goal_details, container, false);
+        mSubGoalID = getArguments().getInt("subGoalID");
+        ObjectiveType goalType = ObjectiveType.valueOf(getArguments().getString("ObjectiveType"));
+
+        View layout = null;
+        switch (goalType) {
+            case SIMPLE:
+                layout = inflater.inflate(R.layout.dialog_task_details, container, false);
+                break;
+            case CONTINUOUS:
+                layout = inflater.inflate(R.layout.dialog_job_details, container, false);
+                break;
+        }
+
+
+        EditText subGoalTitle = (EditText) layout.findViewById(R.id.textGetTitle);
+        EditText subGoalDescription = (EditText) layout.findViewById(R.id.subGoal_description_text);
+        EditText repeatsQuantity = (EditText) layout.findViewById(R.id.repeatsQuantity);
+
+        try {
+            mSubGoalsDAO = dbHelper.getSubGoalDAO(createGoalType(goalType));
+            goal = IntentionDAOHelper.getSubGoal(mSubGoalsDAO, mSubGoalID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        title = goal instanceof Job ? ((Job) goal).getTitle() : ((Task) goal).getTitle();
+        description = goal instanceof Job ? ((Job) goal).getDescription() : ((Task) goal).getDescription();
+
+        subGoalTitle.setText(title);
+        if (description != null) {
+            subGoalDescription.setText(description);
+        }
+        if (goal instanceof Job) {
+            goalsQuantity = ((Job) goal).getGoalQuantity();
+            repeatsQuantity.setText(String.valueOf(goalsQuantity));
+        }
+
+        return layout;
 //        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -60,23 +101,10 @@ public class SubGoalDetailsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 //        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-//        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-//        View layout = layoutInflater.inflate(R.layout.sub_goal_details, (ViewGroup) getActivity().findViewById(R.id.subGoal_details_layout));
+        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+        View layout = layoutInflater.inflate(R.layout.dialog_job_details, (ViewGroup) getActivity().findViewById(R.id.subGoal_details_layout));
 //
-//        TextView subGoalDescription = (TextView) layout.findViewById(R.id.subGoal_description_text);
-//
-//        mSubGoalID = getArguments().getInt("subGoalID");
-//        ObjectiveType goalType = ObjectiveType.valueOf(getArguments().getString("ObjectiveType"));
-//
-//        try {
-//            mSubGoalsDAO = dbHelper.getSubGoalDAO(createGoalType(goalType));
-//            goal = IntentionDAOHelper.getSubGoal(mSubGoalsDAO, mSubGoalID);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        title = goal instanceof Job ? ((Job) goal).getTitle() : ((Task) goal).getTitle();
-//        description = goal instanceof Job ? ((Job) goal).getDescription() : ((Task) goal).getDescription();
+
 //        Log.d("SubGoal Display", title);
 //        if (description != null) Log.d("SubGoal Display", description);
 //
@@ -94,9 +122,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
 //                        dialogInterface.cancel();
 //                    }
 //                });
-//
-//        subGoalDescription.setText(description);
-
 
 //        AlertDialog dialog = builder.create();
 //        Dialog dialog = new Dialog(this.getContext(), R.style.SubGoalsDialog);
@@ -106,7 +131,7 @@ public class SubGoalDetailsDialog extends DialogFragment {
         View v = dialog.getWindow().getDecorView();
         v.setBackgroundResource(android.R.color.transparent);
         wmlp.gravity = Gravity.TOP;
-        wmlp.height = dialog.getWindow().getAttributes().height = (int) (getDeviceMetrics(getContext()).heightPixels * 0.4);
+        wmlp.height = dialog.getWindow().getAttributes().height = (int) (getDeviceMetrics(getContext()).heightPixels * 0.34);
         wmlp.width = dialog.getWindow().getAttributes().width = (int) (getDeviceMetrics(getContext()).widthPixels * 0.95);
         dialog.getWindow().setAttributes(wmlp);
 

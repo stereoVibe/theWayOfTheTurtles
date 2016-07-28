@@ -10,8 +10,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -42,13 +45,14 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     private int mBigGoalId;
     private BigGoal mBigGoal;
 
+    private TextView mExpandedTitle;
     private TextView mDescription;
     private TextView mEndDate;
     private NumberProgressBar mProgressBar;
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout mAppBarLayout;
-
+    private boolean isToolbarCollapsed = false;
 
     public static Intent newIntent(Context context, int bigGoalId){
         Intent intent = new Intent(context, SubGoalsListActivity.class);
@@ -78,6 +82,8 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         HelperFactory.setHelper(getApplication());
 
         super.onCreate(savedInstanceState);
+
+        mExpandedTitle = (TextView) findViewById(R.id.big_goal_inner_expanded_title);
 
         mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
         mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
@@ -139,11 +145,44 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 //        if (actionBar != null && mBigGoal.getTitle() != null){
 //            actionBar.setTitle(mBigGoal.getTitle());
 //        }
-        mCollapsingToolbarLayout.setTitle(mBigGoal.getTitle());
+//        mCollapsingToolbarLayout.setTitleEnabled(false);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                verticalOffset = Math.abs(verticalOffset);
+                int difference = appBarLayout.getHeight() - mToolbar.getHeight();
+
+                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
+                if (verticalOffset >= difference && !isToolbarCollapsed) {
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f);
+                    animation.setDuration(400);
+                    animation.setFillAfter(true);
+                    isToolbarCollapsed = true;
+                    mExpandedTitle.startAnimation(animation);
+                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
+                }
+                if (isToolbarCollapsed && verticalOffset == 0) {
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f, Animation.RELATIVE_TO_SELF);
+                    animation.setDuration(400);
+                    animation.setFillAfter(true);
+                    isToolbarCollapsed = false;
+                    mExpandedTitle.startAnimation(animation);
+                }
+//                } else if (isToolbarCollapsed) {
+//                    TranslateAnimation animation = new TranslateAnimation(0, 0, 0, 0, Animation.RELATIVE_TO_SELF, 0.2f, Animation.RELATIVE_TO_SELF, 0.2f);
+//                    animation.setDuration(500);
+//                    animation.setFillAfter(true);
+//                    isToolbarCollapsed = false;
+//                    mExpandedTitle.startAnimation(animation);
+//                    Log.d("onOffsetChanged", "verticalOffset is smaller");
+//                }
+            }
+        });
 
         super.onPostCreate(savedInstanceState);
 
-//        mBigGoal.setProgress(34);
+        mExpandedTitle.setText(mBigGoal.getTitle());
         mDescription.setText(mBigGoal.getDescription());
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         mEndDate.setText(String.format("%s", dateFormat.format(mBigGoal.getEndDate())));

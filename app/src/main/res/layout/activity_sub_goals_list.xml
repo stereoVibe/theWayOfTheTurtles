@@ -2,49 +2,47 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    tools:ignore="RtlHardcoded"
+    android:layout_height="match_parent"
     >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/sub_goals_list_container"
         android:layout_width="match_parent"
         android:layout_height="210dp"
-        android:fitsSystemWindows="true"
         android:background="@null"
+        android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/sub_goals_collapsingToolbar"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimaryDark"
-            app:titleEnabled="true"
-            app:expandedTitleTextAppearance="@style/TitleSubGoalsStyle"
-            app:expandedTitleMarginStart="72dp"
             app:expandedTitleMarginBottom="115dp"
+            app:expandedTitleMarginStart="72dp"
+            app:expandedTitleTextAppearance="@style/TitleSubGoalsStyle"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            android:fitsSystemWindows="true">
+            app:titleEnabled="true">
 
             <ImageView
                 android:id="@+id/bg_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
-                app:layout_collapseMode="parallax"
                 android:src="@drawable/bg_create_big_goal"
-                android:fitsSystemWindows="true"/>
+                app:layout_collapseMode="parallax"/>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/sub_goals_list_toolbar_collapsed"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:layout_collapseMode="pin"/>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
             <!--<android.support.v7.widget.Toolbar-->
                 <!--android:id="@+id/sub_goals_list_toolbar"-->
@@ -56,32 +54,44 @@
                 <!--app:layout_behavior=""/>-->
 
             <RelativeLayout
+                style="@style/DetailsOfTheBigGoal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_anchor="@id/sub_goals_list_container"
                 android:layout_marginLeft="72dp"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:paddingRight="8dp"
+                app:layout_anchor="@id/sub_goals_list_container"
                 app:layout_collapseMode="parallax"
-                style="@style/DetailsOfTheBigGoal"
                 >
 
                 <TextView
                     android:id="@+id/end_date_label"
-                    app:layout_collapseMode="parallax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="Дата достижения:"
                     android:textColor="@color/nearBlack"
-                    android:text="Дата достижения:"/>
+                    android:textSize="11sp"
+                    app:layout_collapseMode="parallax"/>
 
                 <TextView
                     android:id="@+id/big_goal_inner_end_date"
-                    android:layout_toRightOf="@id/end_date_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/end_date_label"
                     android:paddingLeft="8dp"
+                    android:text="05.10.2017"
                     android:textColor="@color/nearBlack"
-                    android:text="05.10.2017"/>
+                    android:textSize="11sp"/>
+
+                <TextView
+                    android:id="@+id/big_goal_inner_expanded_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:maxLines="1"
+                    android:text="Заголовок"
+                    android:textColor="@color/darkTitle"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/big_goal_inner_description"
@@ -90,24 +100,25 @@
                     android:layout_below="@id/end_date_label"
                     android:layout_marginTop="68dp"
                     android:maxLines="3"
+                    android:text="Показателем результата будет являтся способность исполнить Little Wing, Jimi Hendrix"
                     android:textColor="@color/nearBlack"
-                    android:text="Показателем результата будет являтся способность исполнить Little Wing, Jimi Hendrix"/>
+                    android:textSize="12sp"/>
 
             </RelativeLayout>
 
             <com.daimajia.numberprogressbar.NumberProgressBar
-                app:progress_reached_color="@color/darkBlueSea"
-                app:progress_unreached_color="@color/brightBlue"
-                app:progress_text_color="@color/darkBlueSea"
-                app:progress_text_size="14sp"
-                app:progress_unreached_bar_height="3dp"
-                app:progress_reached_bar_height="3dp"
                 android:id="@+id/big_goal_inner_progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
                 android:layout_marginLeft="56dp"
                 android:layout_marginTop="94dp"
+                android:padding="16dp"
+                app:progress_reached_bar_height="3dp"
+                app:progress_reached_color="@color/darkBlueSea"
+                app:progress_text_color="@color/darkBlueSea"
+                app:progress_text_size="14sp"
+                app:progress_unreached_bar_height="3dp"
+                app:progress_unreached_color="@color/brightBlue"
                 />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -116,19 +127,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Список задач:"
         android:layout_marginLeft="72dp"
         android:layout_marginTop="30dp"
+        android:text="Список задач:"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_anchor="@id/sub_goals_list_container"
         app:layout_anchorGravity="bottom|left|end"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 android:layout_marginTop="45dp"
-                 android:id="@+id/fragmentContainer"
+    <FrameLayout android:id="@+id/fragmentContainer"
+                 xmlns:android="http://schemas.android.com/apk/res/android"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
+                 android:layout_marginTop="45dp"
                  app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </FrameLayout>
 
@@ -139,9 +150,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:fab_type="normal"
         android:src="@drawable/ic_plus_fab"
         app:borderWidth="0dp"
+        app:fab_type="normal"
         app:layout_anchor="@id/sub_goals_list_container"
         app:layout_anchorGravity="bottom|left|end" />
 
