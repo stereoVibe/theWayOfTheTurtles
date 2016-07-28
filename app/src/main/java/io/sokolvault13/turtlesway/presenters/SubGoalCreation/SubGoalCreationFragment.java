@@ -11,7 +11,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.ToggleButton;
+import android.widget.Toast;
+
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
@@ -106,7 +107,7 @@ public class SubGoalCreationFragment extends Fragment {
         super.onStop();
     }
 
-    protected void createSubGoal() throws Exception {
+    protected boolean createSubGoal() throws SQLException {
 
         BigGoal bigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalID);
         String title = String.valueOf(mSubGoalTitle.getText());
@@ -115,18 +116,25 @@ public class SubGoalCreationFragment extends Fragment {
         int quantity;
 
         if (repeatsQuantity.isEmpty()) {
-            quantity = 0;
+            quantity = 1;
         } else {
             quantity = Integer.parseInt(repeatsQuantity);
         }
 
-        if (isGoalTypeSimple){
-            HashMap <String, Object> goalDetails = Intention.prepareSubGoal(title, description, null, 0);
-            final Task task = (Task) new Task().createSubGoal(ObjectiveType.SIMPLE, bigGoal, goalDetails, mTasksDAO);
-
+        if (title.isEmpty()) {
+            Toast.makeText(getActivity(), getResources().getString(R.string.no_title_exception), Toast.LENGTH_SHORT).show();
+            return false;
         } else {
-            HashMap <String, Object> goalDetails = Intention.prepareSubGoal(title, description, null, quantity);
-            final Job job = (Job) new Job().createSubGoal(ObjectiveType.CONTINUOUS, bigGoal, goalDetails, mJobsDAO);
+
+            if (isGoalTypeSimple) {
+                HashMap<String, Object> goalDetails = Intention.prepareSubGoal(title, description, null, 0);
+                new Task().createSubGoal(ObjectiveType.SIMPLE, bigGoal, goalDetails, mTasksDAO);
+            } else {
+                HashMap<String, Object> goalDetails = Intention.prepareSubGoal(title, description, null, quantity);
+                new Job().createSubGoal(ObjectiveType.CONTINUOUS, bigGoal, goalDetails, mJobsDAO);
+            }
+            return true;
         }
+
     }
 }

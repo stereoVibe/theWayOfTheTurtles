@@ -20,13 +20,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity;
 
 import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.createBigGoalRecord;
+import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.getIntentionList;
 
 public class BigGoalCreationFragment extends Fragment {
     private EditText mBigGoalTitle;
@@ -37,8 +38,20 @@ public class BigGoalCreationFragment extends Fragment {
     private DatabaseHelper dbHelper;
     private Calendar mCalendar = Calendar.getInstance();
     private Date mDate;
-    private Dao<BigGoal, Integer> bigGoalsDAO;
+    DatePickerDialog.OnDateSetListener mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            mCalendar.set(Calendar.YEAR, year);
+            mCalendar.set(Calendar.MONTH, monthOfYear);
+            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+            mDate = new Date(mCalendar.getTimeInMillis());
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+
+            mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(mDate)));
+        }
+    };
+    private Dao<BigGoal, Integer> bigGoalsDAO;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,29 +132,21 @@ public class BigGoalCreationFragment extends Fragment {
         String title = mBigGoalTitle.getText().toString();
         String description = mBigGoalDescription.getText().toString();
         Date date = this.mDate;
+
         try {
-            createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
-//            int bigGoalId = bigGoal.getId();
-//            Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
-//            startActivity(intent);
-            getActivity().onBackPressed();
-            getActivity().finish();
+            if (getIntentionList(bigGoalsDAO).size() == 0) {
+                createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+//                int bigGoalId = bigGoal.getId();
+//                Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
+                Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
+                startActivity(intent);
+            } else {
+                createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+                getActivity().onBackPressed();
+                getActivity().finish();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    DatePickerDialog.OnDateSetListener mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            mCalendar.set(Calendar.YEAR, year);
-            mCalendar.set(Calendar.MONTH, monthOfYear);
-            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-            mDate = new Date(mCalendar.getTimeInMillis());
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-
-            mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(mDate)));
-        }
-    };
 }

@@ -11,6 +11,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Collection;
 import java.util.Date;
 
+//@startuml
 @DatabaseTable(tableName = "big_goals")
 public class BigGoal extends Intention {
     public static final String SUBGOALS_COLLECTS_FIELD = "subgoals_collects";
@@ -29,25 +30,25 @@ public class BigGoal extends Intention {
     @DatabaseField (canBeNull = false, columnName = "is_due")
     private int isOutOfDate;
     @DatabaseField (canBeNull = false, columnName = "is_complete")
-    private int isComplete;
+    private boolean isComplete;
     @DatabaseField (canBeNull = false, columnName = "progress")
-    private int mProgress;
+    private double mProgress;
     @ForeignCollectionField (columnName = SUBGOALS_COLLECTS_FIELD, eager = true)
     private ForeignCollection <Job> mJobs;
     @ForeignCollectionField (columnName = TASKS_COLLECTS_FIELD, eager = true)
-    private ForeignCollection <Task> tasks;
+    private ForeignCollection<Task> mTasks;
 
     public BigGoal() {
-        this.startDate = new Date();
-        this.isOutOfDate = 0;
-        this.isComplete = 0;
+//        this.startDate = new Date();
+//        this.isOutOfDate = 0;
+//        this.isComplete = false;
     }
 //
     public BigGoal(String title) {
         this.title = title;
         this.startDate = new Date();
         this.isOutOfDate = 0;
-        this.isComplete = 0;
+        this.isComplete = false;
     }
 //
     public BigGoal(String title, String description) {
@@ -109,12 +110,12 @@ public class BigGoal extends Intention {
     }
 
     @Override
-    public int getCompleteStatus() {
-        return 0;
+    public boolean getCompleteStatus() {
+        return this.isComplete;
     }
 
     @Override
-    public void setCompleteStatus(int isComplete) {
+    public void setCompleteStatus(boolean isComplete) {
 
     }
 
@@ -126,11 +127,11 @@ public class BigGoal extends Intention {
         this.description = description;
     }
 
-    public int getProgress() {
+    public double getProgress() {
         return mProgress;
     }
 
-    public void setProgress(int progress) {
+    public void setProgress(double progress) {
         mProgress = progress;
     }
 
@@ -146,5 +147,6 @@ public class BigGoal extends Intention {
             Log.d("Assigning BigGoal", subIntention.getBigGoal().toString());
 //        }
     }
+//    @enduml
 
 }

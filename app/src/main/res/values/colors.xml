@@ -13,10 +13,13 @@
     <color name="darkTitle">#262626</color>
     <color name="greySubTitle">#999999</color>
     <color name="statusbar_cyan">#4db6ac</color>
+    <color name="complete_row">#c9ffea</color>
     <color name="toolbar_blue">#8CDDD9</color>
     <color name="nearBlack">#546e7a</color>
     <color name="hintColorEditText">#424242</color>
+    <color name="hintDialogTitle">#808080</color>
     <color name="brightBlue">#1FA1DB</color>
     <color name="darkBlueSea">#0B486B</color>
     <color name="deviderBorderColor">#1f000000</color>
+    <color name="dialogBackground">#f5f5f5</color>
 </resources>

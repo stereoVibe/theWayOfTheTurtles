@@ -19,15 +19,13 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.model.Goal;
-import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
+import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
+import io.sokolvault13.turtlesway.presenters.SubGoalsList.SubGoalsListActivity;
 
 public class BigGoalsListFragment extends Fragment {
 
@@ -56,9 +54,19 @@ public class BigGoalsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_big_goals_list, container, false);
-        mBigGoalsRecyclerView = (RecyclerView) view.findViewById(R.id.big_goals_recycler_view);
-        mBigGoalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        View view = null;
+
+        try {
+            if (IntentionDAOHelper.getIntentionList(bigGoalsDAO).size() == 0) {
+                view = inflater.inflate(R.layout.empty_state_big_goals_list, container, false);
+            } else {
+                view = inflater.inflate(R.layout.fragment_big_goals_list, container, false);
+                mBigGoalsRecyclerView = (RecyclerView) view.findViewById(R.id.big_goals_recycler_view);
+                mBigGoalsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         try {
             updateUI();
@@ -85,10 +93,11 @@ public class BigGoalsListFragment extends Fragment {
     private void updateUI() throws SQLException {
 //        Dao<BigGoal, Integer> bigGoalsDAO = dbHelper.getBigGoalDAO();
         List<BigGoal> bigGoals = IntentionDAOHelper.getIntentionList(bigGoalsDAO);
-        if (mBigGoalsAdapter == null){
+
+        if (mBigGoalsAdapter == null && bigGoals.size() != 0) {
             mBigGoalsAdapter = new BigGoalsAdapter(bigGoals);
             mBigGoalsRecyclerView.setAdapter(mBigGoalsAdapter);
-        } else {
+        } else if (bigGoals.size() != 0) {
             mBigGoalsAdapter.clearItems();
             mBigGoalsAdapter.setItems((ArrayList<BigGoal>) bigGoals);
             mBigGoalsAdapter.notifyDataSetChanged();
@@ -96,11 +105,26 @@ public class BigGoalsListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        HelperFactory.releaseHelper();
+        Log.d("Timelife message", "Hello from onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("Timelife message", "Hello from onStop");
+    }
+
     private class BigGoalsHolder extends RecyclerView.ViewHolder {
-        private BigGoal mBigGoal;
         public final TextView mBigGoalTitle;
         public final TextView mBigGoalDescription;
         public final NumberProgressBar mBigGoalProgress;
+        private BigGoal mBigGoal;
+
+//        Typeface font = Typeface.createFromAsset(getActivity().getAssets(), "fonts/product_sans.ttf");
 
         public BigGoalsHolder(View itemView) {
             super(itemView);
@@ -115,9 +139,7 @@ public class BigGoalsListFragment extends Fragment {
             if (mBigGoalDescription != null) {
                 mBigGoalDescription.setText(mBigGoal.getDescription());
             }
-//            mBigGoalProgress.setProgress(mBigGoal.getProgress());
-            final Random random = new Random();
-            mBigGoalProgress.setProgress(random.nextInt(90));
+            mBigGoalProgress.setProgress((int) mBigGoal.getProgress());
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,18 +206,5 @@ public class BigGoalsListFragment extends Fragment {
                 return DESCRIPTION;
             }
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        HelperFactory.releaseHelper();
-        Log.d("Timelife message", "Hello from onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d("Timelife message", "Hello from onStop");
     }
 }

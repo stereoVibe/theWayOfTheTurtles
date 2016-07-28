@@ -1,4 +1,3 @@
 package io.sokolvault13.turtlesway.model;
 
-public enum ObjectiveType {SIMPLE, CONTINUOUS
-}
+public enum ObjectiveType {SIMPLE, CONTINUOUS}
