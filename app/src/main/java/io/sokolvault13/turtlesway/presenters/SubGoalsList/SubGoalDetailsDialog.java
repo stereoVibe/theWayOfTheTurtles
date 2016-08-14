@@ -14,16 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.Goal;
+import io.sokolvault13.turtlesway.model.Intention;
 import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.ObjectiveType;
@@ -36,8 +39,10 @@ public class SubGoalDetailsDialog extends DialogFragment {
     Goal goal = null;
     String title;
     String description;
+    Button doneButton;
     int goalsQuantity;
     int goalsComplete;
+    NoticeDialogListener mNoticeDialogListener;
 
     public SubGoalDetailsDialog() {
     }
@@ -62,15 +67,17 @@ public class SubGoalDetailsDialog extends DialogFragment {
         switch (goalType) {
             case SIMPLE:
                 layout = inflater.inflate(R.layout.dialog_task_details, container, false);
+                doneButton = (Button) layout.findViewById(R.id.dialog_task_done_btn);
                 break;
             case CONTINUOUS:
                 layout = inflater.inflate(R.layout.dialog_job_details, container, false);
+                doneButton = (Button) layout.findViewById(R.id.dialog_job_done_btn);
                 break;
         }
 
 
-        EditText subGoalTitle = (EditText) layout.findViewById(R.id.textGetTitle);
-        EditText subGoalDescription = (EditText) layout.findViewById(R.id.subGoal_description_text);
+        final EditText subGoalTitle = (EditText) layout.findViewById(R.id.textGetTitle);
+        final EditText subGoalDescription = (EditText) layout.findViewById(R.id.subGoal_description_text);
         EditText repeatsQuantity = (EditText) layout.findViewById(R.id.repeatsQuantity);
 
         try {
@@ -91,6 +98,22 @@ public class SubGoalDetailsDialog extends DialogFragment {
             goalsQuantity = ((Job) goal).getGoalQuantity();
             repeatsQuantity.setText(String.valueOf(goalsQuantity));
         }
+
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<String, Object> intentionFields = new HashMap<>();
+                intentionFields.put(Intention.FIELD_INTENTION_TITLE, String.valueOf(subGoalTitle.getText()));
+                intentionFields.put(Intention.FIELD_INTENTION_DESCRIPTION, String.valueOf(subGoalDescription.getText()));
+                try {
+                    IntentionDAOHelper.updateIntention(mSubGoalsDAO, (Intention) goal, intentionFields);
+                    getDialog().dismiss();
+                    mNoticeDialogListener.onDialogClick(this);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return layout;
 //        return super.onCreateView(inflater, container, savedInstanceState);
@@ -135,6 +158,7 @@ public class SubGoalDetailsDialog extends DialogFragment {
         wmlp.width = dialog.getWindow().getAttributes().width = (int) (getDeviceMetrics(getContext()).widthPixels * 0.95);
         dialog.getWindow().setAttributes(wmlp);
 
+
         return dialog;
     }
 
@@ -151,11 +175,23 @@ public class SubGoalDetailsDialog extends DialogFragment {
         HelperFactory.setHelper(getContext());
         super.onAttach(context);
         dbHelper = HelperFactory.getHelper();
+
+        try {
+            // Instantiate the NoticeDialogListener so we can send events to the host
+            mNoticeDialogListener = (NoticeDialogListener) context;
+        } catch (ClassCastException e) {
+            // The activity doesn't implement the interface, throw exception
+            throw new ClassCastException(context.toString()
+                    + " must implement NoticeDialogListener");
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+//        FragmentManager fragmentManager = getFragmentManager();
+//        SubGoalsListFragment fragment = (SubGoalsListFragment) fragmentManager.findFragmentById(R.id.sub_goals_recycler_view);
+//        fragment.refreshRecyclerView();
     }
 
     private Goal createGoalType(ObjectiveType goalType) {
@@ -166,5 +202,9 @@ public class SubGoalDetailsDialog extends DialogFragment {
                 return new Job();
         }
         return null;
+    }
+
+    public interface NoticeDialogListener {
+        void onDialogClick(View.OnClickListener dialogFragment);
     }
 }

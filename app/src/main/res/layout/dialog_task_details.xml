@@ -93,7 +93,7 @@
         app:layout_anchorGravity="bottom|center"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/dialog_task_done_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

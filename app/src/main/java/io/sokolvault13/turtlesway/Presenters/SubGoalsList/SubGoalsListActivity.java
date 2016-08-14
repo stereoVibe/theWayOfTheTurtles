@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Locale;
 
@@ -34,7 +35,7 @@ import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationActivity;
 import io.sokolvault13.turtlesway.utils.Constants;
 
-public class SubGoalsListActivity extends SingleFragmentActivity {
+public class SubGoalsListActivity extends SingleFragmentActivity implements SubGoalDetailsDialog.NoticeDialogListener {
     public static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
 
 
@@ -210,5 +211,16 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         DeleteBigGoalConfirmationDialog deleteBigGoalConfirmationDialog = DeleteBigGoalConfirmationDialog.newInstance(mBigGoal.getTitle(), mBigGoalId);
         deleteBigGoalConfirmationDialog.show(fragmentManager, "Alert Dialog");
+    }
+
+    @Override
+    public void onDialogClick(View.OnClickListener dialogFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        SubGoalsListFragment fragment = (SubGoalsListFragment) fragmentManager.findFragmentByTag(SUB_GOALS_LIST_FRAGMENT_TAG);
+        try {
+            fragment.updateUI();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

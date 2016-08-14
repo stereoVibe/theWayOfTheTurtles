@@ -10,26 +10,29 @@ public abstract class Intention {
 
     public static final String BIGGOAL_FIELD = "big_goal";
     public static final String BIGGOAL_ID_FIELD = "big_goal_id";
+    public static final String FIELD_INTENTION_TITLE = "title";
+    public static final String FIELD_INTENTION_DESCRIPTION = "description";
+    public static final String FIELD_INTENTION_END_DATE = "endDate";
+    public static final String FIELD_INTENTION_GOAL_QUANTITY = "goalQuantity";
 
     private int id;
-//    private String title;
-//    private String description;
-//    private Date startDate;
-//    private Date endDate;
-//    private int isOutOfDate;
-//    private int isComplete;
 
     public static HashMap<String, Object> prepareSubGoal(String title, String description, Date endDate, int goalQuantity) {
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("title", title);
-        hashMap.put("description", description);
-        hashMap.put("endDate", endDate);
+        hashMap.put(FIELD_INTENTION_TITLE, title);
+        hashMap.put(FIELD_INTENTION_DESCRIPTION, description);
+        if (endDate != null) {
+            hashMap.put(FIELD_INTENTION_END_DATE, endDate);
+        }
         if (goalQuantity > 0)
-            hashMap.put("goalQuantity", goalQuantity);
+            hashMap.put(FIELD_INTENTION_GOAL_QUANTITY, goalQuantity);
         return hashMap;
     }
 
-//    public abstract int getId();
+    public int getId(){
+        return id;
+    }
+
     public abstract String getTitle();
 
     public abstract void setTitle(String title);
@@ -54,10 +57,6 @@ public abstract class Intention {
 
     public abstract void setCompleteStatus(boolean isComplete);
 
-    public int getId(){
-        return id;
-    }
-
     private Goal getGoalType(ObjectiveType objectiveType, HashMap<String, Object> goalDetails) {
 
         Goal goal;
@@ -70,27 +69,25 @@ public abstract class Intention {
                 goal = createLocalJobInstance(goalDetails);
                 return goal;
         }
-//        GoalMaker maker = new TaskGoalMaker();
-//        Goal goal = maker.createGoal(ObjectiveType.SIMPLE,null,"title", "description", 2);
         return null;
     }
 
     private Goal createLocalJobInstance(HashMap<String, Object> goalDetails) {
         Goal goal;
 
-        goal = new Job(String.valueOf(goalDetails.get("title")),
-                String.valueOf(goalDetails.get("description")),
-                (Date) goalDetails.get("endDate"),
-                (int) goalDetails.get("goalQuantity"));
+        goal = new Job(String.valueOf(goalDetails.get(FIELD_INTENTION_TITLE)),
+                String.valueOf(goalDetails.get(FIELD_INTENTION_DESCRIPTION)),
+                (Date) goalDetails.get(FIELD_INTENTION_END_DATE),
+                (int) goalDetails.get(FIELD_INTENTION_GOAL_QUANTITY));
         return goal;
     }
 
     private Goal createLocalTaskInstance(HashMap<String, Object> goalDetails){
         Goal goal;
 
-        goal = new Task(String.valueOf(goalDetails.get("title")),
-                        String.valueOf(goalDetails.get("description")),
-                        (Date) goalDetails.get("endDate"));
+        goal = new Task(String.valueOf(goalDetails.get(FIELD_INTENTION_TITLE)),
+                        String.valueOf(goalDetails.get(FIELD_INTENTION_DESCRIPTION)),
+                        (Date) goalDetails.get(FIELD_INTENTION_END_DATE));
         return goal;
     }
 
@@ -106,7 +103,6 @@ public abstract class Intention {
                 IntentionDAOHelper.createTaskRecord((Task) taskGoal, subGoalDAO);
                 return taskGoal;
             case CONTINUOUS:
-
                 GoalMaker jobGoalMaker = new JobGoalMaker();
                 Goal jobGoal = jobGoalMaker.createGoal(bigGoal, goalDetails);
                 IntentionDAOHelper.createJobRecord((Job) jobGoal, subGoalDAO);

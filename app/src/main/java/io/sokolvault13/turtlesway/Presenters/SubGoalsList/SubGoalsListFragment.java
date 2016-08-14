@@ -40,8 +40,9 @@ import io.sokolvault13.turtlesway.model.ObjectiveType;
 import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.utils.Constants;
 
-public class SubGoalsListFragment extends Fragment implements RecyclerViewClickListener {
+public class SubGoalsListFragment extends Fragment implements RecyclerViewClickListener, SubGoalDetailsDialog.NoticeDialogListener {
 
+    public static final String RECYLER_VIEW_FRAGMENT_TAG = "sub_goals_list_fragment";
     SubGoalsAdapter mSubGoalsAdapter;
     private RecyclerView mSubGoalsRecyclerView;
     private DatabaseHelper dbHelper;
@@ -90,6 +91,10 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
         } catch (SQLException e){
             e.printStackTrace();
         }
+
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .add(this, RECYLER_VIEW_FRAGMENT_TAG);
     }
 
     @Nullable
@@ -113,7 +118,6 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
     @Override
     public void onResume() {
         super.onResume();
-
         try {
             updateUI();
         } catch (SQLException e) {
@@ -121,7 +125,7 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
         }
     }
 
-    private void updateUI() throws SQLException {
+    protected void updateUI() throws SQLException {
         List<Goal> jobsList = IntentionDAOHelper.getAllSubIntentionsList(mJobsDAO, mBigGoal, Intention.BIGGOAL_ID_FIELD);
         List<Goal> tasksList = IntentionDAOHelper.getAllSubIntentionsList(mTasksDAO, mBigGoal, Intention.BIGGOAL_ID_FIELD);
 
@@ -141,6 +145,15 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
             mSubGoalsAdapter.clearItems();
             mSubGoalsAdapter.setItems(subGoalsList, mContext, this);
             mSubGoalsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onDialogClick(View.OnClickListener dialogFragment) {
+        try {
+            updateUI();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
