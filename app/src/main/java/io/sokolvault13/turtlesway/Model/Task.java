@@ -137,7 +137,7 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
 
     @Override
     public void setCompleteStatus(boolean isComplete) {
-
+        this.isComplete = isComplete;
     }
     @Override
     public Date getDateAsSortingParameter() {
