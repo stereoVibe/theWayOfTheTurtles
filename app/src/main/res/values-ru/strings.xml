@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Путь Черепах</string>
+    <string name="action_settings">Настройки</string>
+    <string name="cancel_delete_big_goal_dialog">Нет</string>
+    <string name="confirm_delete_big_goal_dialog">Да</string>
+    <string name="delete_big_goal_dialog">Вы уверены, что хотите удалить цель?</string>
+    <string name="save_successful">Изменения успешно сохранены!</string>
+    <string name="no_title_exception">Поле Название цели не может быть пустым. Пожалуйста заполните.</string>
+    <string name="no_description_text">Без описания.</string>
+</resources>

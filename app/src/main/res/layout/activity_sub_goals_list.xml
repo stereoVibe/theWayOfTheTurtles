@@ -83,22 +83,22 @@
                     android:textColor="@color/nearBlack"
                     android:textSize="11sp"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/big_goal_inner_expanded_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
+                    android:layout_marginTop="14dp"
                     android:maxLines="1"
                     android:text="Заголовок"
                     android:textColor="@color/darkTitle"
                     android:textSize="16sp"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/big_goal_inner_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/end_date_label"
-                    android:layout_marginTop="68dp"
+                    android:layout_marginTop="62dp"
                     android:maxLines="3"
                     android:text="Показателем результата будет являтся способность исполнить Little Wing, Jimi Hendrix"
                     android:textColor="@color/nearBlack"
@@ -112,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="56dp"
                 android:layout_marginTop="94dp"
-                android:padding="16dp"
+                android:padding="18dp"
                 app:progress_reached_bar_height="3dp"
                 app:progress_reached_color="@color/darkBlueSea"
                 app:progress_text_color="@color/darkBlueSea"

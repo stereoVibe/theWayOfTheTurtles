@@ -11,23 +11,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.util.HashMap;
 import java.util.Locale;
 
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Intention;
 import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.Task;
@@ -45,15 +50,16 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
     private Dao<Task, Integer> mTasksDAO;
     private int mBigGoalId;
     private BigGoal mBigGoal;
+    private Menu mMenu;
 
-    private TextView mExpandedTitle;
-    private TextView mDescription;
+    private EditText mExpandedTitle, mDescription;
     private TextView mEndDate;
     private NumberProgressBar mProgressBar;
     private Toolbar mToolbar;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout mAppBarLayout;
     private boolean isToolbarCollapsed = false;
+    private boolean editMode = false;
 
     public static Intent newIntent(Context context, int bigGoalId){
         Intent intent = new Intent(context, SubGoalsListActivity.class);
@@ -84,9 +90,14 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
 
         super.onCreate(savedInstanceState);
 
-        mExpandedTitle = (TextView) findViewById(R.id.big_goal_inner_expanded_title);
+        mExpandedTitle = (EditText) findViewById(R.id.big_goal_inner_expanded_title);
+        mExpandedTitle.setEnabled(false);
+        mExpandedTitle.setCursorVisible(false);
 
-        mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
+        mDescription = (EditText) findViewById(R.id.big_goal_inner_description);
+        mDescription.setEnabled(false);
+        mDescription.setCursorVisible(false);
+
         mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
         mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
         mToolbar = (Toolbar) findViewById(R.id.sub_goals_list_toolbar_collapsed);
@@ -107,12 +118,6 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
             mJobsDAO = dbHelper.getJobDAO();
             mTasksDAO = dbHelper.getTaskDAO();
             mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
-
-            // Needs to be deleted
-//            HashMap<String, Object> hashMap = Intention.prepareSubGoal("Создать и выложить 30 приложений в GoogleStore",
-//                    null, null, 30);
-////            Intention.createSubGoal(ObjectiveType.SIMPLE, mBigGoal, hashMap, mTasksDAO);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,11 +134,25 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        this.mMenu = menu;
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
             case R.id.delete_big_goal:
                 showDeleteBigGoalConfirmationDialog();
+                return true;
+            case R.id.edit_big_goal:
+                enableEditBigGoalMode();
+                return true;
+            case R.id.save_big_goal:
+                updateBigGoal();
+                enableEditBigGoalMode();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -211,6 +230,41 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
         FragmentManager fragmentManager = getSupportFragmentManager();
         DeleteBigGoalConfirmationDialog deleteBigGoalConfirmationDialog = DeleteBigGoalConfirmationDialog.newInstance(mBigGoal.getTitle(), mBigGoalId);
         deleteBigGoalConfirmationDialog.show(fragmentManager, "Alert Dialog");
+    }
+
+    private void enableEditBigGoalMode() {
+        if (!editMode) {
+            setEditableMode(true);
+        } else {
+            setEditableMode(false);
+        }
+    }
+
+    private void setEditableMode(boolean mode) {
+        MenuItem editItem = mMenu.findItem(R.id.edit_big_goal);
+        MenuItem saveItem = mMenu.findItem(R.id.save_big_goal);
+        mExpandedTitle.setEnabled(mode);
+        mExpandedTitle.setCursorVisible(mode);
+        mDescription.setEnabled(mode);
+        mDescription.setCursorVisible(mode);
+        editMode = mode;
+        editItem.setEnabled(!mode);
+        editItem.setVisible(!mode);
+        saveItem.setEnabled(mode);
+        saveItem.setVisible(mode);
+    }
+
+    private void updateBigGoal() {
+        HashMap<String, Object> intentionFields = new HashMap<>();
+        intentionFields.put(Intention.FIELD_INTENTION_TITLE, String.valueOf(mExpandedTitle.getText()));
+        intentionFields.put(Intention.FIELD_INTENTION_DESCRIPTION, String.valueOf(mDescription.getText()));
+        try {
+            IntentionDAOHelper.updateIntention(mBigGoalsDAO, mBigGoal, intentionFields);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Toast.makeText(getApplicationContext(), getResources().getText(R.string.save_successful), Toast.LENGTH_SHORT).show();
     }
 
     @Override
