@@ -8,4 +8,6 @@
     <string name="save_successful">Изменения успешно сохранены!</string>
     <string name="no_title_exception">Поле Название цели не может быть пустым. Пожалуйста заполните.</string>
     <string name="no_description_text">Без описания.</string>
+    <string name="task_complete_status_done">Выполнено!</string>
+    <string name="task_complete_status_in_progress">В процессе выполнения</string>
 </resources>

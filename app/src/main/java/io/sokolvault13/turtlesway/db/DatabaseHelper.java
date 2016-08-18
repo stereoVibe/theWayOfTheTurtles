@@ -14,9 +14,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.model.Goal;
 import io.sokolvault13.turtlesway.model.Intention;
 import io.sokolvault13.turtlesway.model.Job;
+import io.sokolvault13.turtlesway.model.SubGoal;
 import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.utils.Constants;
 
@@ -28,7 +28,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     private Dao<BigGoal, Integer> mBigGoalDAO = null;
     private Dao<Job, Integer> mJobDAO = null;
     private Dao<Task, Integer> mTasksDAO = null;
-    private Dao<? extends Goal, Integer> mSubGoalDAO = null;
+    private Dao<? extends SubGoal, Integer> mSubGoalDAO = null;
 
     private Class[] models = {
             BigGoal.class,
@@ -89,8 +89,8 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return mTasksDAO;
     }
 
-    public Dao<? extends Goal, Integer> getSubGoalDAO(Goal goal) throws SQLException {
-        mSubGoalDAO  = goal instanceof Task ? getTaskDAO() : getJobDAO();
+    public Dao<? extends SubGoal, Integer> getSubGoalDAO(SubGoal subGoal) throws SQLException {
+        mSubGoalDAO = subGoal instanceof Task ? getTaskDAO() : getJobDAO();
         return mSubGoalDAO;
     }
 

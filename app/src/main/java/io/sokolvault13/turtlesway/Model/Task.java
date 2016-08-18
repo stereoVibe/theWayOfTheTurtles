@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "tasks")
-public class Task extends Intention implements Goal, Comparable<Goal> {
+public class Task extends Intention implements SubGoal, Comparable<SubGoal> {
 
     @DatabaseField(generatedId = true, canBeNull = false, index = true)
     protected int id;
@@ -66,11 +66,6 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
     @Override
     public void setBigGoal(BigGoal bigGoal) {
         mBigGoal = bigGoal;
-    }
-
-    @Override
-    public int getBigGoalId() {
-        return this.mBigGoalId;
     }
 
     @Override
@@ -145,7 +140,7 @@ public class Task extends Intention implements Goal, Comparable<Goal> {
     }
 
     @Override
-    public int compareTo(@NonNull Goal goal) {
-        return startDate.compareTo(goal.getDateAsSortingParameter());
+    public int compareTo(@NonNull SubGoal subGoal) {
+        return startDate.compareTo(subGoal.getDateAsSortingParameter());
     }
 }

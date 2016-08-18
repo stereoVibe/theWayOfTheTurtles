@@ -84,14 +84,14 @@ public class IntentionDAOHelper {
         return dao.queryForId(bigGoalId);
     }
 
-    public static <T extends Goal> T getSubGoal(Dao<T, Integer> dao, int subGoalID) throws SQLException {
+    public static <T extends SubGoal> T getSubGoal(Dao<T, Integer> dao, int subGoalID) throws SQLException {
         return dao.queryForId(subGoalID);
     }
 
 
-    public static <T extends Goal> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
-                                                                    Intention goal,
-                                                                    String idField) throws SQLException {
+    public static <T extends SubGoal> List<T> getAllSubIntentionsList(Dao<T, Integer> dao,
+                                                                      Intention goal,
+                                                                      String idField) throws SQLException {
         List<T> subIntentionsList = new ArrayList<>();
         CloseableIterator<T> iterator = dao.queryBuilder().where()
                 .eq(idField, goal.getId())
@@ -124,16 +124,42 @@ public class IntentionDAOHelper {
 
     /* UPDATE mechanism for any Intention */
     public static <T> void updateIntention(Dao<T, Integer> dao, Intention intention, HashMap<String, Object> intentionFields) throws SQLException {
-        if (!intention.getTitle().equals(intentionFields.get(Intention.FIELD_INTENTION_TITLE))) {
-            intention.setTitle((String) intentionFields.get(Intention.FIELD_INTENTION_TITLE));
+        int goalQuantity = 0;
+        int changesCounter = 0;
+        String description = (String) intentionFields.get(Intention.FIELD_INTENTION_DESCRIPTION),
+                title = (String) intentionFields.get(Intention.FIELD_INTENTION_TITLE);
+        Date endDate = (Date) intentionFields.get(Intention.FIELD_INTENTION_END_DATE);
+
+        if (intentionFields.get(Intention.FIELD_INTENTION_GOAL_QUANTITY) != null) {
+            goalQuantity = (int) intentionFields.get(Intention.FIELD_INTENTION_GOAL_QUANTITY);
         }
-        if (intention.getDescription() != null && !intention.getDescription().equals(intentionFields.get(Intention.FIELD_INTENTION_DESCRIPTION))) {
-            intention.setDescription((String) intentionFields.get(Intention.FIELD_INTENTION_DESCRIPTION));
+
+        if (!intention.getTitle().equals(title)) {
+            intention.setTitle(title);
+            changesCounter++;
         }
-        if (intention.getEndDate() != null && !intention.getEndDate().equals(intentionFields.get(Intention.FIELD_INTENTION_END_DATE))) {
-            intention.setEndDate((Date) intentionFields.get(Intention.FIELD_INTENTION_END_DATE));
+        if (intention.getDescription() != null && !intention.getDescription().equals(description)) {
+            intention.setDescription(description);
+            changesCounter++;
         }
-        dao.update((T) intention);
+        if (intention.getEndDate() != null && !intention.getEndDate().equals(endDate)) {
+            intention.setEndDate(endDate);
+            changesCounter++;
+        }
+
+        if (intention instanceof Job && (((Job) intention).getGoalQuantity() != goalQuantity) && goalQuantity != 0) {
+            ((Job) intention).setGoalQuantity(goalQuantity);
+            changesCounter++;
+        }
+
+        if (intention instanceof Task && (intention.getCompleteStatus() != (boolean) intentionFields.get(SubGoal.COMPLETE_STATUS))) {
+            intention.setCompleteStatus((boolean) intentionFields.get(SubGoal.COMPLETE_STATUS));
+            changesCounter++;
+        }
+
+        if (changesCounter > 0) {
+            dao.update((T) intention);
+        }
     }
 
     public static void updateJobCompletedQuantity(Dao<Job, Integer> dao, Job job, int completedQuantity) throws SQLException {
@@ -142,7 +168,7 @@ public class IntentionDAOHelper {
         dao.update(job);
     }
 
-    public static void addJobProgress(Dao<Job, Integer> dao, Job job, double progress) throws SQLException {
+    public static void updateJobProgress(Dao<Job, Integer> dao, Job job, double progress) throws SQLException {
         job.addProgress(progress);
         dao.update(job);
     }

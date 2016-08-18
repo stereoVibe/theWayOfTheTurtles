@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,7 +54,6 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
     private TextView mEndDate;
     private NumberProgressBar mProgressBar;
     private Toolbar mToolbar;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout mAppBarLayout;
     private boolean isToolbarCollapsed = false;
     private boolean editMode = false;
@@ -101,7 +98,6 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
         mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
         mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
         mToolbar = (Toolbar) findViewById(R.id.sub_goals_list_toolbar_collapsed);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.sub_goals_collapsingToolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.sub_goals_list_container);
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_left);
@@ -173,14 +169,14 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
                 verticalOffset = Math.abs(verticalOffset);
                 int difference = appBarLayout.getHeight() - mToolbar.getHeight();
 
-                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
+//                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
                 if (verticalOffset >= difference && !isToolbarCollapsed) {
                     TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f);
                     animation.setDuration(400);
                     animation.setFillAfter(true);
                     isToolbarCollapsed = true;
                     mExpandedTitle.startAnimation(animation);
-                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
+//                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
                 }
                 if (isToolbarCollapsed && verticalOffset == 0) {
                     TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f, Animation.RELATIVE_TO_SELF);
@@ -267,12 +263,23 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
         Toast.makeText(getApplicationContext(), getResources().getText(R.string.save_successful), Toast.LENGTH_SHORT).show();
     }
 
+
+    private void updateBigGoalProgressBar() {
+        try {
+            mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mProgressBar.setProgress((int) mBigGoal.getProgress());
+    }
+
     @Override
     public void onDialogClick(View.OnClickListener dialogFragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         SubGoalsListFragment fragment = (SubGoalsListFragment) fragmentManager.findFragmentByTag(SUB_GOALS_LIST_FRAGMENT_TAG);
         try {
             fragment.updateUI();
+            updateBigGoalProgressBar();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -11,7 +11,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Collection;
 import java.util.Date;
 
-//@startuml
 @DatabaseTable(tableName = "big_goals")
 public class BigGoal extends Intention {
     public static final String SUBGOALS_COLLECTS_FIELD = "subgoals_collects";
@@ -139,7 +138,7 @@ public class BigGoal extends Intention {
         return this.mJobs;
     }
 
-    public <T extends Goal> void assignSubIntention(T subIntention) {
+    public <T extends SubGoal> void assignSubIntention(T subIntention) {
 //        B subIntentionTemp = (B) subIntention;
 //        if (subIntentionTemp.getTitle() != null){
             subIntention.setBigGoal(this);
@@ -147,6 +146,4 @@ public class BigGoal extends Intention {
             Log.d("Assigning BigGoal", subIntention.getBigGoal().toString());
 //        }
     }
-//    @enduml
-
 }

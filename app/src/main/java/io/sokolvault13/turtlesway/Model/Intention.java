@@ -57,82 +57,82 @@ public abstract class Intention {
 
     public abstract void setCompleteStatus(boolean isComplete);
 
-    private Goal getGoalType(ObjectiveType objectiveType, HashMap<String, Object> goalDetails) {
+    private SubGoal getGoalType(ObjectiveType objectiveType, HashMap<String, Object> goalDetails) {
 
-        Goal goal;
+        SubGoal subGoal;
         switch (objectiveType){
             case SIMPLE:
-                goal = createLocalTaskInstance(goalDetails);
-                return goal;
+                subGoal = createLocalTaskInstance(goalDetails);
+                return subGoal;
 
             case CONTINUOUS:
-                goal = createLocalJobInstance(goalDetails);
-                return goal;
+                subGoal = createLocalJobInstance(goalDetails);
+                return subGoal;
         }
         return null;
     }
 
-    private Goal createLocalJobInstance(HashMap<String, Object> goalDetails) {
-        Goal goal;
+    private SubGoal createLocalJobInstance(HashMap<String, Object> goalDetails) {
+        SubGoal subGoal;
 
-        goal = new Job(String.valueOf(goalDetails.get(FIELD_INTENTION_TITLE)),
+        subGoal = new Job(String.valueOf(goalDetails.get(FIELD_INTENTION_TITLE)),
                 String.valueOf(goalDetails.get(FIELD_INTENTION_DESCRIPTION)),
                 (Date) goalDetails.get(FIELD_INTENTION_END_DATE),
                 (int) goalDetails.get(FIELD_INTENTION_GOAL_QUANTITY));
-        return goal;
+        return subGoal;
     }
 
-    private Goal createLocalTaskInstance(HashMap<String, Object> goalDetails){
-        Goal goal;
+    private SubGoal createLocalTaskInstance(HashMap<String, Object> goalDetails) {
+        SubGoal subGoal;
 
-        goal = new Task(String.valueOf(goalDetails.get(FIELD_INTENTION_TITLE)),
+        subGoal = new Task(String.valueOf(goalDetails.get(FIELD_INTENTION_TITLE)),
                         String.valueOf(goalDetails.get(FIELD_INTENTION_DESCRIPTION)),
                         (Date) goalDetails.get(FIELD_INTENTION_END_DATE));
-        return goal;
+        return subGoal;
     }
 
-    public Goal createSubGoal(ObjectiveType objectiveType,
-                              BigGoal bigGoal,
-                              HashMap<String, Object> goalDetails,
-                              Dao subGoalDAO) throws SQLException {
+    public SubGoal createSubGoal(ObjectiveType objectiveType,
+                                 BigGoal bigGoal,
+                                 HashMap<String, Object> goalDetails,
+                                 Dao subGoalDAO) throws SQLException {
 
         switch (objectiveType){
             case SIMPLE:
                 GoalMaker taskGoalMaker = new TaskGoalMaker();
-                Goal taskGoal = taskGoalMaker.createGoal(bigGoal, goalDetails);
-                IntentionDAOHelper.createTaskRecord((Task) taskGoal, subGoalDAO);
-                return taskGoal;
+                SubGoal taskSubGoal = taskGoalMaker.createGoal(bigGoal, goalDetails);
+                IntentionDAOHelper.createTaskRecord((Task) taskSubGoal, subGoalDAO);
+                return taskSubGoal;
             case CONTINUOUS:
                 GoalMaker jobGoalMaker = new JobGoalMaker();
-                Goal jobGoal = jobGoalMaker.createGoal(bigGoal, goalDetails);
-                IntentionDAOHelper.createJobRecord((Job) jobGoal, subGoalDAO);
-                return jobGoal;
+                SubGoal jobSubGoal = jobGoalMaker.createGoal(bigGoal, goalDetails);
+                IntentionDAOHelper.createJobRecord((Job) jobSubGoal, subGoalDAO);
+                return jobSubGoal;
         }
 
         return null;
     }
 
     private interface GoalMaker {
-        Goal createGoal(BigGoal bigGoal, HashMap<String, Object> goalDetails);
+        SubGoal createGoal(BigGoal bigGoal, HashMap<String, Object> goalDetails);
     }
 
     private class TaskGoalMaker implements GoalMaker {
 
         @Override
-        public Goal createGoal(BigGoal bigGoal, HashMap<String, Object> goalDetails) {
-            Goal goal = getGoalType(ObjectiveType.SIMPLE, goalDetails);
-            bigGoal.assignSubIntention(goal);
-            return goal;
+        public SubGoal createGoal(BigGoal bigGoal, HashMap<String, Object> goalDetails) {
+            SubGoal subGoal = getGoalType(ObjectiveType.SIMPLE, goalDetails);
+            bigGoal.assignSubIntention(subGoal);
+            return subGoal;
         }
     }
 
     private class JobGoalMaker implements GoalMaker {
 
         @Override
-        public Goal createGoal(BigGoal bigGoal, HashMap<String, Object> goalDetails) {
-            Goal goal = getGoalType(ObjectiveType.CONTINUOUS, goalDetails);
-            bigGoal.assignSubIntention(goal);
-            return goal;
+        public SubGoal createGoal(BigGoal bigGoal, HashMap<String, Object> goalDetails) {
+            SubGoal subGoal = getGoalType(ObjectiveType.CONTINUOUS, goalDetails);
+            bigGoal.assignSubIntention(subGoal);
+            return subGoal;
         }
     }
 
