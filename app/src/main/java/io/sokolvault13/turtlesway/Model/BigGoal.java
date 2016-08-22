@@ -138,6 +138,7 @@ public class BigGoal extends Intention {
         return this.mJobs;
     }
 
+    /* Assigning any SubGoal to appropriate BigGoal */
     public <T extends SubGoal> void assignSubIntention(T subIntention) {
 //        B subIntentionTemp = (B) subIntention;
 //        if (subIntentionTemp.getTitle() != null){

@@ -11,40 +11,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/*
+ * This class is created to help handle
+ * general CRUD operations and any CRUD
+ * related actions.
+ */
 public class IntentionDAOHelper {
-
-    private static <T extends Intention> double getProgressResult(int bigGoalId, Dao<BigGoal, Integer> bigGoalDAO, Dao<T, Integer>... daos) throws SQLException {
-        double goalsCompleted = 0, goalsCapacity = 0;
-        BigGoal bigGoal = bigGoalDAO.queryForId(bigGoalId);
-        List<Intention> goals = new ArrayList<>();
-
-        for (Dao dao : daos) {
-            CloseableIterator iterator = dao.queryBuilder().where()
-                    .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
-                    .iterator();
-            try {
-                while (iterator.hasNext()) {
-                    goals.add((Intention) iterator.next());
-                }
-            } finally {
-                iterator.close();
-            }
-        }
-
-        for (Intention goal : goals) {
-            if (goal instanceof Job) {
-                goalsCapacity += ((Job) goal).getGoalQuantity();
-                goalsCompleted += ((Job) goal).getCompletedQuantity();
-            }
-            if (goal instanceof Task) {
-                goalsCapacity++;
-                if (goal.getCompleteStatus()) {
-                    goalsCompleted++;
-                }
-            }
-        }
-        return goalsCompleted * 100 / goalsCapacity;
-    }
 
     public static BigGoal createBigGoalRecord(BigGoal bigGoal,
                                               Dao<BigGoal, Integer> dao) throws SQLException {
@@ -179,6 +151,9 @@ public class IntentionDAOHelper {
         dao.update(goal);
     }
 
+    /*
+     * Direct calling of the method will update progress of the BigGoal.
+     */
     public static <T extends Intention> BigGoal updateBigGoalProgress(int bigGoalId, Dao<BigGoal, Integer> dao, Dao<T, Integer>... daos) throws SQLException {
         BigGoal bigGoal = getBigGoal(dao, bigGoalId);
         bigGoal.setProgress(getProgressResult(bigGoalId, dao, daos));
@@ -188,6 +163,46 @@ public class IntentionDAOHelper {
         return bigGoal;
     }
 
+    /*
+     *   getProgressResult method is private method which calculate
+     *   overall progress (BigGoal progress) of the goal and return
+     *   progress value in percent. Can operate any subGoals which
+     *   implemented SubGoal interface.
+     *   Calling from updateBigGoalProgress method.
+     */
+
+    private static <T extends Intention> double getProgressResult(int bigGoalId, Dao<BigGoal, Integer> bigGoalDAO, Dao<T, Integer>... daos) throws SQLException {
+        double goalsCompleted = 0, goalsCapacity = 0;
+        BigGoal bigGoal = bigGoalDAO.queryForId(bigGoalId);
+        List<Intention> goals = new ArrayList<>();
+
+        for (Dao dao : daos) {
+            CloseableIterator iterator = dao.queryBuilder().where()
+                    .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
+                    .iterator();
+            try {
+                while (iterator.hasNext()) {
+                    goals.add((Intention) iterator.next());
+                }
+            } finally {
+                iterator.close();
+            }
+        }
+
+        for (Intention goal : goals) {
+            if (goal instanceof Job) {
+                goalsCapacity += ((Job) goal).getGoalQuantity();
+                goalsCompleted += ((Job) goal).getCompletedQuantity();
+            }
+            if (goal instanceof Task) {
+                goalsCapacity++;
+                if (goal.getCompleteStatus()) {
+                    goalsCompleted++;
+                }
+            }
+        }
+        return goalsCompleted * 100 / goalsCapacity;
+    }
 
 
 }

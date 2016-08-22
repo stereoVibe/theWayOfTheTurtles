@@ -49,15 +49,6 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
                 TableUtils.createTable(connectionSource, c);
             }
 
-//            Dao<BigGoal, Integer> dao = getBigGoalDAO();
-//            BigGoal bigGoal = new BigGoal("First goal");
-//            dao.create(bigGoal);
-//            QueryBuilder<BigGoal, Integer> queryBuilder = dao.queryBuilder();
-//            PreparedQuery<BigGoal> preparedQuery = queryBuilder.where().eq("id", bigGoal.getId()).prepare();
-//            Log.i("dbHelper"," " + bigGoal.getId());
-//            bigGoal = dao.queryForFirst(preparedQuery);
-//            Log.i("dbHelper", " " + bigGoal.getTitle());
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,38 +59,44 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     }
 
+    /* Methods to getting single DAO object*/
     public Dao<BigGoal, Integer> getBigGoalDAO() throws SQLException {
-        if (mBigGoalDAO == null){
+        if (mBigGoalDAO == null) {
             mBigGoalDAO = DaoManager.createDao(connectionSource, BigGoal.class);
         }
         return mBigGoalDAO;
     }
 
     public Dao<Job, Integer> getJobDAO() throws SQLException {
-        if (mJobDAO == null){
+        if (mJobDAO == null) {
             mJobDAO = DaoManager.createDao(connectionSource, Job.class);
         }
         return mJobDAO;
     }
 
     public Dao<Task, Integer> getTaskDAO() throws SQLException {
-        if (mTasksDAO == null){
+        if (mTasksDAO == null) {
             mTasksDAO = DaoManager.createDao(connectionSource, Task.class);
         }
         return mTasksDAO;
     }
 
+    /* Get DAO object depending on type of SubGoal */
     public Dao<? extends SubGoal, Integer> getSubGoalDAO(SubGoal subGoal) throws SQLException {
         mSubGoalDAO = subGoal instanceof Task ? getTaskDAO() : getJobDAO();
         return mSubGoalDAO;
     }
 
+    /* Getting all DAO object in one method, to initialize it later */
     public HashMap<String, Dao<? extends Intention, Integer>> getAllDAO() throws SQLException {
         HashMap<String, Dao<? extends Intention, Integer>> daosMap = new HashMap<>();
         daosMap.put(Constants.BIG_GOALS_DAO, getBigGoalDAO());
         daosMap.put(Constants.JOBS_DAO, getJobDAO());
         daosMap.put(Constants.TASKS_DAO, getTaskDAO());
+
+        /* This comment code below needs for async work, if it will implemented later */
 //        Map syncDaosMap = Collections.synchronizedMap(daosMap);
+
         return daosMap;
     }
 
