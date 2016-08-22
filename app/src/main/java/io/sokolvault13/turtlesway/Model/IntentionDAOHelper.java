@@ -7,9 +7,44 @@ import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class IntentionDAOHelper {
+
+    private static <T extends Intention> double getProgressResult(int bigGoalId, Dao<BigGoal, Integer> bigGoalDAO, Dao<T, Integer>... daos) throws SQLException {
+        double goalsCompleted = 0, goalsCapacity = 0;
+        BigGoal bigGoal = bigGoalDAO.queryForId(bigGoalId);
+        List<Intention> goals = new ArrayList<>();
+
+        for (Dao dao : daos) {
+            CloseableIterator iterator = dao.queryBuilder().where()
+                    .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
+                    .iterator();
+            try {
+                while (iterator.hasNext()) {
+                    goals.add((Intention) iterator.next());
+                }
+            } finally {
+                iterator.close();
+            }
+        }
+
+        for (Intention goal : goals) {
+            if (goal instanceof Job) {
+                goalsCapacity += ((Job) goal).getGoalQuantity();
+                goalsCompleted += ((Job) goal).getCompletedQuantity();
+            }
+            if (goal instanceof Task) {
+                goalsCapacity++;
+                if (goal.getCompleteStatus()) {
+                    goalsCompleted++;
+                }
+            }
+        }
+        return goalsCompleted * 100 / goalsCapacity;
+    }
 
     public static BigGoal createBigGoalRecord(BigGoal bigGoal,
                                               Dao<BigGoal, Integer> dao) throws SQLException {
@@ -49,15 +84,15 @@ public class IntentionDAOHelper {
         return dao.queryForId(bigGoalId);
     }
 
-    public static <T extends Goal> T getSubGoal(Dao<T, Integer> dao, int subGoalID) throws SQLException {
+    public static <T extends SubGoal> T getSubGoal(Dao<T, Integer> dao, int subGoalID) throws SQLException {
         return dao.queryForId(subGoalID);
     }
 
 
-    public static <T extends Goal> List<T> getAllSubIntentionsList (Dao<T, Integer> dao,
-                                                                    Intention goal,
-                                                                    String idField) throws SQLException {
-        ArrayList<T> subIntentionsList = new ArrayList<>();
+    public static <T extends SubGoal> List<T> getAllSubIntentionsList(Dao<T, Integer> dao,
+                                                                      Intention goal,
+                                                                      String idField) throws SQLException {
+        List<T> subIntentionsList = new ArrayList<>();
         CloseableIterator<T> iterator = dao.queryBuilder().where()
                 .eq(idField, goal.getId())
                 .iterator();
@@ -74,7 +109,7 @@ public class IntentionDAOHelper {
     }
 
     public static <T extends Intention> List<T> getIntentionList (Dao<T, Integer> dao) throws SQLException {
-        ArrayList<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<>();
         CloseableIterator<T> iterator = dao.closeableIterator();
         try {
             while (iterator.hasNext()){
@@ -87,15 +122,54 @@ public class IntentionDAOHelper {
         return list;
     }
 
+    /* UPDATE mechanism for any Intention */
+    public static <T> void updateIntention(Dao<T, Integer> dao, Intention intention, HashMap<String, Object> intentionFields) throws SQLException {
+        int goalQuantity = 0;
+        int changesCounter = 0;
+        String description = (String) intentionFields.get(Intention.FIELD_INTENTION_DESCRIPTION),
+                title = (String) intentionFields.get(Intention.FIELD_INTENTION_TITLE);
+        Date endDate = (Date) intentionFields.get(Intention.FIELD_INTENTION_END_DATE);
+
+        if (intentionFields.get(Intention.FIELD_INTENTION_GOAL_QUANTITY) != null) {
+            goalQuantity = (int) intentionFields.get(Intention.FIELD_INTENTION_GOAL_QUANTITY);
+        }
+
+        if (!intention.getTitle().equals(title)) {
+            intention.setTitle(title);
+            changesCounter++;
+        }
+        if (intention.getDescription() != null && !intention.getDescription().equals(description)) {
+            intention.setDescription(description);
+            changesCounter++;
+        }
+        if (intention.getEndDate() != null && !intention.getEndDate().equals(endDate)) {
+            intention.setEndDate(endDate);
+            changesCounter++;
+        }
+
+        if (intention instanceof Job && (((Job) intention).getGoalQuantity() != goalQuantity) && goalQuantity != 0) {
+            ((Job) intention).setGoalQuantity(goalQuantity);
+            changesCounter++;
+        }
+
+        if (intention instanceof Task && (intention.getCompleteStatus() != (boolean) intentionFields.get(SubGoal.COMPLETE_STATUS))) {
+            intention.setCompleteStatus((boolean) intentionFields.get(SubGoal.COMPLETE_STATUS));
+            changesCounter++;
+        }
+
+        if (changesCounter > 0) {
+            dao.update((T) intention);
+        }
+    }
+
     public static void updateJobCompletedQuantity(Dao<Job, Integer> dao, Job job, int completedQuantity) throws SQLException {
 //        dao.queryForId(job.getId()).setCompletedQuantity(completedQuantity);
         job.setCompletedQuantity(completedQuantity);
         dao.update(job);
     }
 
-    public static void addJobProgress(Dao<Job, Integer> dao, Job job, double progress) throws SQLException {
+    public static void updateJobProgress(Dao<Job, Integer> dao, Job job, double progress) throws SQLException {
         job.addProgress(progress);
-
         dao.update(job);
     }
 
@@ -114,37 +188,6 @@ public class IntentionDAOHelper {
         return bigGoal;
     }
 
-    private static <T extends Intention> double getProgressResult(int bigGoalId, Dao<BigGoal, Integer> bigGoalDAO, Dao<T, Integer>... daos) throws SQLException {
-        double goalsCompleted = 0, goalsCapacity = 0;
-        BigGoal bigGoal = bigGoalDAO.queryForId(bigGoalId);
-        List<Intention> goals = new ArrayList<>();
 
-        for (Dao dao : daos) {
-            CloseableIterator iterator = dao.queryBuilder().where()
-                    .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
-                    .iterator();
-            try {
-                while (iterator.hasNext()) {
-                    goals.add((Intention) iterator.next());
-                }
-            } finally {
-                iterator.close();
-            }
-        }
-
-        for (Intention goal : goals) {
-            if (goal instanceof Job) {
-                goalsCapacity += ((Job) goal).getGoalQuantity();
-                goalsCompleted += ((Job) goal).getCompletedQuantity();
-            }
-            if (goal instanceof Task) {
-                goalsCapacity++;
-                if (goal.getCompleteStatus()) {
-                    goalsCompleted++;
-                }
-            }
-        }
-        return goalsCompleted * 100 / goalsCapacity;
-    }
 
 }

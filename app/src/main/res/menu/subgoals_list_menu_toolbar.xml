@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <item android:id="@+id/edit_big_goal"
-        android:title="edit"
-        android:icon="@drawable/ic_mode_edit_black_18dp"
+          android:enabled="true"
+          android:icon="@drawable/ic_mode_edit_black_18dp"
+          android:title="edit"
+          android:visible="true"
+          app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/save_big_goal"
+        android:enabled="false"
+        android:icon="@drawable/ic_save"
+        android:title="save"
+        android:visible="false"
         app:showAsAction="always"
         />
 
     <item android:id="@+id/delete_big_goal"
-          android:title="delete"
           android:icon="@drawable/ic_delete_trash"
+          android:title="delete"
           app:showAsAction="always"/>
 
 </menu>

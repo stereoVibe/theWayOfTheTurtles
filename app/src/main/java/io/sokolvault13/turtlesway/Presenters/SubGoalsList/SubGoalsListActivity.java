@@ -5,28 +5,32 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.j256.ormlite.dao.Dao;
 
+import java.sql.SQLException;
 import java.text.DateFormat;
+import java.util.HashMap;
 import java.util.Locale;
 
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
+import io.sokolvault13.turtlesway.model.Intention;
 import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.Task;
@@ -34,7 +38,7 @@ import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationActivity;
 import io.sokolvault13.turtlesway.utils.Constants;
 
-public class SubGoalsListActivity extends SingleFragmentActivity {
+public class SubGoalsListActivity extends SingleFragmentActivity implements SubGoalDetailsDialog.NoticeDialogListener {
     public static final String SUB_GOALS_LIST_FRAGMENT_TAG = "sub_goals_list";
 
 
@@ -44,15 +48,15 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     private Dao<Task, Integer> mTasksDAO;
     private int mBigGoalId;
     private BigGoal mBigGoal;
+    private Menu mMenu;
 
-    private TextView mExpandedTitle;
-    private TextView mDescription;
+    private EditText mExpandedTitle, mDescription;
     private TextView mEndDate;
     private NumberProgressBar mProgressBar;
     private Toolbar mToolbar;
-    private CollapsingToolbarLayout mCollapsingToolbarLayout;
     private AppBarLayout mAppBarLayout;
     private boolean isToolbarCollapsed = false;
+    private boolean editMode = false;
 
     public static Intent newIntent(Context context, int bigGoalId){
         Intent intent = new Intent(context, SubGoalsListActivity.class);
@@ -83,13 +87,17 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
 
         super.onCreate(savedInstanceState);
 
-        mExpandedTitle = (TextView) findViewById(R.id.big_goal_inner_expanded_title);
+        mExpandedTitle = (EditText) findViewById(R.id.big_goal_inner_expanded_title);
+        mExpandedTitle.setEnabled(false);
+        mExpandedTitle.setCursorVisible(false);
 
-        mDescription = (TextView) findViewById(R.id.big_goal_inner_description);
+        mDescription = (EditText) findViewById(R.id.big_goal_inner_description);
+        mDescription.setEnabled(false);
+        mDescription.setCursorVisible(false);
+
         mEndDate = (TextView) findViewById(R.id.big_goal_inner_end_date);
         mProgressBar = (NumberProgressBar) findViewById(R.id.big_goal_inner_progressBar);
         mToolbar = (Toolbar) findViewById(R.id.sub_goals_list_toolbar_collapsed);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.sub_goals_collapsingToolbar);
         mAppBarLayout = (AppBarLayout) findViewById(R.id.sub_goals_list_container);
 
         mToolbar.setNavigationIcon(R.drawable.ic_arrow_left);
@@ -106,12 +114,6 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
             mJobsDAO = dbHelper.getJobDAO();
             mTasksDAO = dbHelper.getTaskDAO();
             mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
-
-            // Needs to be deleted
-//            HashMap<String, Object> hashMap = Intention.prepareSubGoal("Создать и выложить 30 приложений в GoogleStore",
-//                    null, null, 30);
-////            Intention.createSubGoal(ObjectiveType.SIMPLE, mBigGoal, hashMap, mTasksDAO);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,11 +130,25 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        this.mMenu = menu;
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
             case R.id.delete_big_goal:
                 showDeleteBigGoalConfirmationDialog();
+                return true;
+            case R.id.edit_big_goal:
+                enableEditBigGoalMode();
+                return true;
+            case R.id.save_big_goal:
+                updateBigGoal();
+                enableEditBigGoalMode();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -153,14 +169,14 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
                 verticalOffset = Math.abs(verticalOffset);
                 int difference = appBarLayout.getHeight() - mToolbar.getHeight();
 
-                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
+//                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
                 if (verticalOffset >= difference && !isToolbarCollapsed) {
                     TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f);
                     animation.setDuration(400);
                     animation.setFillAfter(true);
                     isToolbarCollapsed = true;
                     mExpandedTitle.startAnimation(animation);
-                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
+//                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
                 }
                 if (isToolbarCollapsed && verticalOffset == 0) {
                     TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f, Animation.RELATIVE_TO_SELF);
@@ -210,5 +226,62 @@ public class SubGoalsListActivity extends SingleFragmentActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         DeleteBigGoalConfirmationDialog deleteBigGoalConfirmationDialog = DeleteBigGoalConfirmationDialog.newInstance(mBigGoal.getTitle(), mBigGoalId);
         deleteBigGoalConfirmationDialog.show(fragmentManager, "Alert Dialog");
+    }
+
+    private void enableEditBigGoalMode() {
+        if (!editMode) {
+            setEditableMode(true);
+        } else {
+            setEditableMode(false);
+        }
+    }
+
+    private void setEditableMode(boolean mode) {
+        MenuItem editItem = mMenu.findItem(R.id.edit_big_goal);
+        MenuItem saveItem = mMenu.findItem(R.id.save_big_goal);
+        mExpandedTitle.setEnabled(mode);
+        mExpandedTitle.setCursorVisible(mode);
+        mDescription.setEnabled(mode);
+        mDescription.setCursorVisible(mode);
+        editMode = mode;
+        editItem.setEnabled(!mode);
+        editItem.setVisible(!mode);
+        saveItem.setEnabled(mode);
+        saveItem.setVisible(mode);
+    }
+
+    private void updateBigGoal() {
+        HashMap<String, Object> intentionFields = new HashMap<>();
+        intentionFields.put(Intention.FIELD_INTENTION_TITLE, String.valueOf(mExpandedTitle.getText()));
+        intentionFields.put(Intention.FIELD_INTENTION_DESCRIPTION, String.valueOf(mDescription.getText()));
+        try {
+            IntentionDAOHelper.updateIntention(mBigGoalsDAO, mBigGoal, intentionFields);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Toast.makeText(getApplicationContext(), getResources().getText(R.string.save_successful), Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void updateBigGoalProgressBar() {
+        try {
+            mBigGoal = IntentionDAOHelper.getBigGoal(mBigGoalsDAO, mBigGoalId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mProgressBar.setProgress((int) mBigGoal.getProgress());
+    }
+
+    @Override
+    public void onDialogClick(View.OnClickListener dialogFragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        SubGoalsListFragment fragment = (SubGoalsListFragment) fragmentManager.findFragmentByTag(SUB_GOALS_LIST_FRAGMENT_TAG);
+        try {
+            fragment.updateUI();
+            updateBigGoalProgressBar();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

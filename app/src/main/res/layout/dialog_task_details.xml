@@ -67,8 +67,6 @@
             android:layout_columnSpan="3"
             android:layout_row="1"
             android:background="@color/deviderBorderColor"/>
-
-
     </GridLayout>
 
     <EditText
@@ -92,8 +90,36 @@
         app:layout_anchor="@id/gridLayoutSubGoalsDetails"
         app:layout_anchorGravity="bottom|center"/>
 
+    <Switch
+        android:id="@+id/complete_status_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="112dp"
+        android:checked="false"
+        android:switchPadding="@dimen/fab_margin"
+        android:text="Статус выполнения: "
+        android:textColor="@color/darkTitle"
+        app:layout_anchor="@id/gridLayoutSubGoalsDetails"
+        app:layout_anchorGravity="bottom|center"/>
+
+    <TextView
+        android:id="@+id/complete_status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="142dp"
+        android:text="status..."
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/hintDialogTitle"
+        app:layout_anchor="@id/gridLayoutSubGoalsDetails"
+        app:layout_anchorGravity="bottom|center"/>
+
+
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/dialog_task_done_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
