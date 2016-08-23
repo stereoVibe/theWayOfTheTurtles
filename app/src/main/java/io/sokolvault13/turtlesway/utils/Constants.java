@@ -14,4 +14,6 @@ public final class Constants {
     public static final String BIG_GOALS_DAO = "BigGoalsDAO";
     public static final String JOBS_DAO = "JobsDAO";
     public static final String TASKS_DAO = "TasksDAO";
+
+    public static final String DAO_ERROR = "DAO Error";
 }

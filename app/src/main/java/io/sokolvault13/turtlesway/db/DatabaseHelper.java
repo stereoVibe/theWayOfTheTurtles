@@ -94,7 +94,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         daosMap.put(Constants.JOBS_DAO, getJobDAO());
         daosMap.put(Constants.TASKS_DAO, getTaskDAO());
 
-        /* This comment code below needs for async work, if it will implemented later */
+        /* This commented code below needs for async work, if it will implemented later */
 //        Map syncDaosMap = Collections.synchronizedMap(daosMap);
 
         return daosMap;

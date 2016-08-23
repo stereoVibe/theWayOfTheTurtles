@@ -109,7 +109,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
             cancelLastJobButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int bigGoalID = mSubGoal.getBigGoal().getId();
                     int completedQuantity = ((Job) mSubGoal).getCompletedQuantity();
                     double mSingleTaskProgressAmount = (100 / ((Job) mSubGoal).getGoalQuantity());
 
@@ -258,9 +257,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-//        FragmentManager fragmentManager = getFragmentManager();
-//        SubGoalsListFragment fragment = (SubGoalsListFragment) fragmentManager.findFragmentById(R.id.sub_goals_recycler_view);
-//        fragment.refreshRecyclerView();
     }
 
     private SubGoal createGoalType(ObjectiveType goalType) {
