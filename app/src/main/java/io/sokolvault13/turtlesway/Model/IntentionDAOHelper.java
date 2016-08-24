@@ -11,12 +11,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/* TO-DO:  Make this class non-static as it
+*  not follow OOP */
+
 /*
  * This class is created to help handle
  * general CRUD operations and any CRUD
  * related actions.
  */
 public class IntentionDAOHelper {
+
+//    Preparations for converting this class to non-static
+//    Singleton creating
+/*    private IntentionDAOHelper(){}
+
+    private static class SingletonHelper {
+        private static final IntentionDAOHelper INSTANCE = new IntentionDAOHelper();
+    }
+
+    public static IntentionDAOHelper getDAOHelper(){
+        return SingletonHelper.INSTANCE;
+    }*/
 
     public static BigGoal createBigGoalRecord(BigGoal bigGoal,
                                               Dao<BigGoal, Integer> dao) throws SQLException {
@@ -43,14 +58,6 @@ public class IntentionDAOHelper {
                                                              Dao<T, Integer> dao) throws SQLException{
         dao.deleteById(intention.getId());
     }
-
-//    public static List<? extends Intention> getSubIntention (Dao<? extends Intention, Integer> dao,
-//                                               Intention goal,
-//                                               String idField) throws SQLException {
-//        return dao.queryBuilder().where()
-//                .eq(idField, goal.getId())
-//                .query();
-//    }
 
     public static BigGoal getBigGoal(Dao<BigGoal, Integer> dao, int bigGoalId) throws SQLException {
         return dao.queryForId(bigGoalId);
