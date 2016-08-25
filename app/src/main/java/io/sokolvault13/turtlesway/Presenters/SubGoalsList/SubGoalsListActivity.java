@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,6 +129,8 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
                 startActivity(intent);
             }
         });
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     @Override
@@ -144,6 +148,8 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
                 showDeleteBigGoalConfirmationDialog();
                 return true;
             case R.id.edit_big_goal:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 enableEditBigGoalMode();
                 return true;
             case R.id.save_big_goal:
@@ -171,7 +177,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
 
 //                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
                 if (verticalOffset >= difference && !isToolbarCollapsed) {
-                    TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f);
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.05f);
                     animation.setDuration(400);
                     animation.setFillAfter(true);
                     isToolbarCollapsed = true;
@@ -179,7 +185,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
 //                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
                 }
                 if (isToolbarCollapsed && verticalOffset == 0) {
-                    TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f, Animation.RELATIVE_TO_SELF);
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.05f, Animation.RELATIVE_TO_SELF);
                     animation.setDuration(400);
                     animation.setFillAfter(true);
                     isToolbarCollapsed = false;

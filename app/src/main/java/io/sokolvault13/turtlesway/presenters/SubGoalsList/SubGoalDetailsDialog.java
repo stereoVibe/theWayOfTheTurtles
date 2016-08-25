@@ -2,6 +2,7 @@ package io.sokolvault13.turtlesway.presenters.SubGoalsList;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -113,13 +115,17 @@ public class SubGoalDetailsDialog extends DialogFragment {
                     int completedQuantity = ((Job) mSubGoal).getCompletedQuantity();
                     double mSingleTaskProgressAmount = (100 / ((Job) mSubGoal).getGoalQuantity());
 
-                    try {
-                        IntentionDAOHelper.updateJobCompletedQuantity((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, (completedQuantity - 1));
-                        IntentionDAOHelper.updateJobProgress((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, mSingleTaskProgressAmount * -1);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    if (completedQuantity - 1 >= 0) {
+                        try {
+                            IntentionDAOHelper.updateJobCompletedQuantity((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, (completedQuantity - 1));
+                            IntentionDAOHelper.updateJobProgress((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, mSingleTaskProgressAmount * -1);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getContext(), "One job have been canceled", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "There are no more jobs to cancel", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(getContext(), "One job have been canceled", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -175,6 +181,8 @@ public class SubGoalDetailsDialog extends DialogFragment {
             });
         }
 
+        changeKeyboardVisibility();
+
         return layout;
 //        return super.onCreateView(inflater, container, savedInstanceState);
     }
@@ -217,8 +225,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
         wmlp.height = dialog.getWindow().getAttributes().height = (int) (getDeviceMetrics(getContext()).heightPixels * 0.34);
         wmlp.width = dialog.getWindow().getAttributes().width = (int) (getDeviceMetrics(getContext()).widthPixels * 0.95);
         dialog.getWindow().setAttributes(wmlp);
-
-
         return dialog;
     }
 
@@ -256,6 +262,18 @@ public class SubGoalDetailsDialog extends DialogFragment {
     }
 
     @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        changeKeyboardVisibility();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        changeKeyboardVisibility();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 //        FragmentManager fragmentManager = getFragmentManager();
@@ -271,6 +289,11 @@ public class SubGoalDetailsDialog extends DialogFragment {
                 return new Job();
         }
         return null;
+    }
+
+    private void changeKeyboardVisibility() {
+        InputMethodManager inputMM = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMM.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
     public interface NoticeDialogListener {
