@@ -16,6 +16,8 @@ import io.sokolvault13.turtlesway.R;
 
 public abstract class GoalDialog extends DialogFragment {
 
+    private NoticeDialogListener mNoticeDialogListener;
+
     protected abstract void changeKeyboardVisibility();
 
     @Override

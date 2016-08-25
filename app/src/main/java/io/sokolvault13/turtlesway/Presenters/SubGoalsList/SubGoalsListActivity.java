@@ -37,7 +37,7 @@ import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
-import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationActivity;
+import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationDialog;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalsListActivity extends SingleFragmentActivity implements SubGoalDetailsDialog.NoticeDialogListener {
@@ -125,8 +125,11 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = SubGoalCreationActivity.newIntent(getApplicationContext(), mBigGoalId);
-                startActivity(intent);
+//                Intent intent = SubGoalCreationActivity.newIntent(getApplicationContext(), mBigGoalId);
+//                startActivity(intent);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                SubGoalCreationDialog dialog = SubGoalCreationDialog.newInstance(mBigGoalId);
+                dialog.show(fragmentManager, "SubGoalCreationDialog");
             }
         });
 

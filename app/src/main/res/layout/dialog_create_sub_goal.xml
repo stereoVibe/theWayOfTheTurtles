@@ -39,8 +39,7 @@
             android:layout_row="0"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColorHint="@color/hintDialogTitle"
-            app:counterEnabled="true"
-            app:counterMaxLength="35">
+            >
             <!--app:errorEnabled="true"-->
             <!--&gt;-->
 
@@ -92,7 +91,7 @@
             android:textSize="14sp"/>
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/repeatsQuantityTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
@@ -103,7 +102,7 @@
             android:textSize="14sp"/>
 
         <android.support.v7.widget.SwitchCompat
-            android:id="@+id/switch1"
+            android:id="@+id/switch_create_task_job"
             style="@style/Base.TextAppearance.AppCompat.Widget.Switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,16 +126,21 @@
             android:layout_gravity="fill_horizontal"
             android:layout_marginRight="16dp"
             android:layout_row="3"
+            android:backgroundTint="@color/greySubTitle"
             android:elegantTextHeight="false"
             android:ems="5"
             android:enabled="false"
+            android:gravity="center"
+            android:hint="@string/enter_qty"
             android:inputType="number"
+            android:textColor="@color/darkTitle"
+            android:textColorHint="@color/greySubTitle"
             android:textSize="12sp"/>
 
     </GridLayout>
 
     <EditText
-        android:id="@+id/subGoal_description_text"
+        android:id="@+id/textGetDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -155,7 +159,7 @@
         android:textColorHint="@color/hintDialogTitle"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/add_sub_goal_btn"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

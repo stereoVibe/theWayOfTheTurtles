@@ -119,7 +119,6 @@ public class BigGoalCreationDialog extends GoalDialog {
                 changeKeyboardVisibility();
                 Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
                 startActivity(intent);
-
             } catch (SQLException e) {
                 e.printStackTrace();
             }
