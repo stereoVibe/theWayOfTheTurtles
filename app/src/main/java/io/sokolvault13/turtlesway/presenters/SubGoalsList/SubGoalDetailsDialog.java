@@ -1,19 +1,12 @@
 package io.sokolvault13.turtlesway.presenters.SubGoalsList;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.util.DisplayMetrics;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -34,9 +27,10 @@ import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.ObjectiveType;
 import io.sokolvault13.turtlesway.model.SubGoal;
 import io.sokolvault13.turtlesway.model.Task;
+import io.sokolvault13.turtlesway.presenters.GoalDialog;
 import io.sokolvault13.turtlesway.utils.Constants;
 
-public class SubGoalDetailsDialog extends DialogFragment {
+public class SubGoalDetailsDialog extends GoalDialog {
     int mSubGoalID;
     Dao<? extends SubGoal, Integer> mSubGoalsDAO;
     DatabaseHelper dbHelper;
@@ -46,8 +40,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
     Button doneButton, cancelLastJobButton;
     Switch switchCompleteStatus = null;
     NoticeDialogListener mNoticeDialogListener;
-    //    int goalsQuantity = 0;
-//    int goalsComplete;
     private Dao mBigGoalsDAO, mJobsDAO, mTasksDAO;
 
     public SubGoalDetailsDialog() {
@@ -109,16 +101,21 @@ public class SubGoalDetailsDialog extends DialogFragment {
             cancelLastJobButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int bigGoalID = mSubGoal.getBigGoal().getId();
                     int completedQuantity = ((Job) mSubGoal).getCompletedQuantity();
                     double mSingleTaskProgressAmount = (100 / ((Job) mSubGoal).getGoalQuantity());
 
-                    try {
-                        IntentionDAOHelper.updateJobCompletedQuantity((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, (completedQuantity - 1));
-                        IntentionDAOHelper.updateJobProgress((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, mSingleTaskProgressAmount * -1);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                    if (completedQuantity - 1 >= 0) {
+                        try {
+                            IntentionDAOHelper.updateJobCompletedQuantity((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, (completedQuantity - 1));
+                            IntentionDAOHelper.updateJobProgress((Dao<Job, Integer>) mSubGoalsDAO, (Job) mSubGoal, mSingleTaskProgressAmount * -1);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getActivity(), "One job have been canceled", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "There are no more jobs to cancel", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(getContext(), "One job have been canceled", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -174,59 +171,10 @@ public class SubGoalDetailsDialog extends DialogFragment {
             });
         }
 
+        changeKeyboardVisibility();
+
         return layout;
 //        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View layout = layoutInflater.inflate(R.layout.dialog_job_details, (ViewGroup) getActivity().findViewById(R.id.subGoal_details_layout));
-//
-
-//        Log.d("SubGoal Display", title);
-//        if (description != null) Log.d("SubGoal Display", description);
-//
-//        builder.setView(layout)
-////                .setTitle(title)
-//                .setPositiveButton("Править", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        Toast.makeText(getActivity(), "Будет изменение полей", Toast.LENGTH_SHORT).show();
-//                    }
-//                })
-//                .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        dialogInterface.cancel();
-//                    }
-//                });
-
-//        AlertDialog dialog = builder.create();
-//        Dialog dialog = new Dialog(this.getContext(), R.style.SubGoalsDialog);
-        Dialog dialog = new Dialog(this.getContext(), R.style.SubGoalsDialog);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        WindowManager.LayoutParams wmlp = dialog.getWindow().getAttributes();
-        View v = dialog.getWindow().getDecorView();
-        v.setBackgroundResource(android.R.color.transparent);
-        wmlp.gravity = Gravity.TOP;
-        wmlp.height = dialog.getWindow().getAttributes().height = (int) (getDeviceMetrics(getContext()).heightPixels * 0.34);
-        wmlp.width = dialog.getWindow().getAttributes().width = (int) (getDeviceMetrics(getContext()).widthPixels * 0.95);
-        dialog.getWindow().setAttributes(wmlp);
-
-
-        return dialog;
-    }
-
-    private DisplayMetrics getDeviceMetrics(Context context) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        display.getMetrics(metrics);
-        return metrics;
     }
 
     @Override
@@ -254,11 +202,6 @@ public class SubGoalDetailsDialog extends DialogFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
     private SubGoal createGoalType(ObjectiveType goalType) {
         switch (goalType) {
             case SIMPLE:
@@ -269,7 +212,9 @@ public class SubGoalDetailsDialog extends DialogFragment {
         return null;
     }
 
-    public interface NoticeDialogListener {
-        void onDialogClick(View.OnClickListener dialogFragment);
+    @Override
+    protected void changeKeyboardVisibility() {
+        InputMethodManager inputMM = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMM.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

@@ -17,4 +17,5 @@
     <string name="save_successful">Сhanges saved successfully!</string>
     <string name="task_complete_status_done">Complete!</string>
     <string name="task_complete_status_in_progress">In Progress</string>
+    <string name="enter_qty">How much?</string>
 </resources>

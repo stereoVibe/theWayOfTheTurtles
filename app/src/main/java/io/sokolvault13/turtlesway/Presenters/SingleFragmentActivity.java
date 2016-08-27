@@ -1,5 +1,6 @@
 package io.sokolvault13.turtlesway.presenters;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import io.sokolvault13.turtlesway.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /*
 * Template class for creating full screen fragments
@@ -45,6 +47,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         this.mToolbarMenu = toolbarMenu;
         this.mTag = tag;
         this.mHomeAsUp = homeAsUp;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
