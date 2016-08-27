@@ -12,8 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +37,7 @@ import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
-import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationActivity;
+import io.sokolvault13.turtlesway.presenters.SubGoalCreation.SubGoalCreationDialog;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalsListActivity extends SingleFragmentActivity implements SubGoalDetailsDialog.NoticeDialogListener {
@@ -123,10 +125,15 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = SubGoalCreationActivity.newIntent(getApplicationContext(), mBigGoalId);
-                startActivity(intent);
+//                Intent intent = SubGoalCreationActivity.newIntent(getApplicationContext(), mBigGoalId);
+//                startActivity(intent);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                SubGoalCreationDialog dialog = SubGoalCreationDialog.newInstance(mBigGoalId);
+                dialog.show(fragmentManager, "SubGoalCreationDialog");
             }
         });
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     @Override
@@ -144,6 +151,8 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
                 showDeleteBigGoalConfirmationDialog();
                 return true;
             case R.id.edit_big_goal:
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 enableEditBigGoalMode();
                 return true;
             case R.id.save_big_goal:
@@ -171,7 +180,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
 
 //                Log.d("onOffsetChanged", "VO:" + String.valueOf(verticalOffset + "difference: " + String.valueOf(difference)));
                 if (verticalOffset >= difference && !isToolbarCollapsed) {
-                    TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f);
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, Animation.RELATIVE_TO_SELF, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.05f);
                     animation.setDuration(400);
                     animation.setFillAfter(true);
                     isToolbarCollapsed = true;
@@ -179,7 +188,7 @@ public class SubGoalsListActivity extends SingleFragmentActivity implements SubG
 //                    Log.d("onOffsetChanged", "verticalOffset is larger or equal");
                 }
                 if (isToolbarCollapsed && verticalOffset == 0) {
-                    TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.65f, Animation.RELATIVE_TO_SELF);
+                    TranslateAnimation animation = new TranslateAnimation(0, 0, mToolbar.getHeight() - mExpandedTitle.getHeight() * 1.05f, Animation.RELATIVE_TO_SELF);
                     animation.setDuration(400);
                     animation.setFillAfter(true);
                     isToolbarCollapsed = false;

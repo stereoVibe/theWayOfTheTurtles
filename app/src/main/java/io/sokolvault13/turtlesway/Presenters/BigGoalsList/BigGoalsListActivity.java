@@ -1,14 +1,14 @@
 package io.sokolvault13.turtlesway.presenters.BigGoalsList;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import io.sokolvault13.turtlesway.R;
-import io.sokolvault13.turtlesway.presenters.BigGoalCreation.BigGoalCreationActivity;
+import io.sokolvault13.turtlesway.presenters.BigGoalCreation.BigGoalCreationDialog;
 import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -40,9 +40,16 @@ public class BigGoalsListActivity extends SingleFragmentActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BigGoalsListActivity.this, BigGoalCreationActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(BigGoalsListActivity.this, BigGoalCreationActivity.class);
+//                startActivity(intent);
+                showBigGoalCreationDialog();
             }
         });
+    }
+
+    private void showBigGoalCreationDialog(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        BigGoalCreationDialog dialog = new BigGoalCreationDialog();
+        dialog.show(fragmentManager, "SubGoalCreationDialog");
     }
 }
