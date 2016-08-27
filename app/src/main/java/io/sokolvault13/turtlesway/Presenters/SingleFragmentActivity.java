@@ -15,7 +15,9 @@ import io.sokolvault13.turtlesway.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-
+/*
+* Template class for creating full screen fragments
+*/
 public abstract class SingleFragmentActivity extends AppCompatActivity {
     private Toolbar mToolBar;
     private int mMainLayout;
@@ -27,6 +29,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     protected abstract Fragment createFragment();
 
+    /*
+    * Method is assigning appropriate resources to fragment.
+    * mainLayout is inflating layout for the fragment
+    * toolbar[Xxx] resources is responsible for custom toolbar
+    * homeAsUp is switching on/off left back button
+    */
     public final void assignResources(int mainLayout,
                                       int toolbarLayout,
                                       int toolbarResource,

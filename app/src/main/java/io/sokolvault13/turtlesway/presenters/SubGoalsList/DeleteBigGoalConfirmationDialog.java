@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -31,6 +32,9 @@ public class DeleteBigGoalConfirmationDialog extends DialogFragment {
     public DeleteBigGoalConfirmationDialog() {
     }
 
+    /*
+     * Creating instance of the dialog with id of the deleting goal
+     */
     public static DeleteBigGoalConfirmationDialog newInstance(String title, int bigGoalID) {
         DeleteBigGoalConfirmationDialog dialog = new DeleteBigGoalConfirmationDialog();
         Bundle args = new Bundle();
@@ -72,10 +76,15 @@ public class DeleteBigGoalConfirmationDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
+                    /* Accessing the database and the implementation of the removal*/
                     IntentionDAOHelper.deleteIntention(bigGoal, bigGoalDAO);
                 } catch (SQLException e) {
+                    Log.e(Constants.DAO_ERROR, "Removal of the Big Goal can't be done.");
                     e.printStackTrace();
                 }
+                /*
+                * Return to the entry screen with list of Big Goals
+                */
                 Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
                 startActivity(intent);
                 dismiss();
@@ -113,6 +122,7 @@ public class DeleteBigGoalConfirmationDialog extends DialogFragment {
                 bigGoal = IntentionDAOHelper.getBigGoal(bigGoalDAO, bigGoalID);
             } catch (SQLException e) {
                 e.printStackTrace();
+                Log.e(Constants.DAO_ERROR, "Can't get bigGoal object.");
             }
         }
     }

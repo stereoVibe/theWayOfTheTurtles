@@ -11,40 +11,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+/* TO-DO:  Make this class non-static as it
+*  not follow OOP */
+
+/*
+ * This class is created to help handle
+ * general CRUD operations and any CRUD
+ * related actions.
+ */
 public class IntentionDAOHelper {
 
-    private static <T extends Intention> double getProgressResult(int bigGoalId, Dao<BigGoal, Integer> bigGoalDAO, Dao<T, Integer>... daos) throws SQLException {
-        double goalsCompleted = 0, goalsCapacity = 0;
-        BigGoal bigGoal = bigGoalDAO.queryForId(bigGoalId);
-        List<Intention> goals = new ArrayList<>();
+//    Preparations for converting this class to non-static
+//    Singleton creating
+/*    private IntentionDAOHelper(){}
 
-        for (Dao dao : daos) {
-            CloseableIterator iterator = dao.queryBuilder().where()
-                    .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
-                    .iterator();
-            try {
-                while (iterator.hasNext()) {
-                    goals.add((Intention) iterator.next());
-                }
-            } finally {
-                iterator.close();
-            }
-        }
-
-        for (Intention goal : goals) {
-            if (goal instanceof Job) {
-                goalsCapacity += ((Job) goal).getGoalQuantity();
-                goalsCompleted += ((Job) goal).getCompletedQuantity();
-            }
-            if (goal instanceof Task) {
-                goalsCapacity++;
-                if (goal.getCompleteStatus()) {
-                    goalsCompleted++;
-                }
-            }
-        }
-        return goalsCompleted * 100 / goalsCapacity;
+    private static class SingletonHelper {
+        private static final IntentionDAOHelper INSTANCE = new IntentionDAOHelper();
     }
+
+    public static IntentionDAOHelper getDAOHelper(){
+        return SingletonHelper.INSTANCE;
+    }*/
 
     public static BigGoal createBigGoalRecord(BigGoal bigGoal,
                                               Dao<BigGoal, Integer> dao) throws SQLException {
@@ -71,14 +58,6 @@ public class IntentionDAOHelper {
                                                              Dao<T, Integer> dao) throws SQLException{
         dao.deleteById(intention.getId());
     }
-
-//    public static List<? extends Intention> getSubIntention (Dao<? extends Intention, Integer> dao,
-//                                               Intention goal,
-//                                               String idField) throws SQLException {
-//        return dao.queryBuilder().where()
-//                .eq(idField, goal.getId())
-//                .query();
-//    }
 
     public static BigGoal getBigGoal(Dao<BigGoal, Integer> dao, int bigGoalId) throws SQLException {
         return dao.queryForId(bigGoalId);
@@ -179,6 +158,9 @@ public class IntentionDAOHelper {
         dao.update(goal);
     }
 
+    /*
+     * Direct calling of the method will update progress of the BigGoal.
+     */
     public static <T extends Intention> BigGoal updateBigGoalProgress(int bigGoalId, Dao<BigGoal, Integer> dao, Dao<T, Integer>... daos) throws SQLException {
         BigGoal bigGoal = getBigGoal(dao, bigGoalId);
         bigGoal.setProgress(getProgressResult(bigGoalId, dao, daos));
@@ -188,6 +170,46 @@ public class IntentionDAOHelper {
         return bigGoal;
     }
 
+    /*
+     *   getProgressResult method is private method which calculate
+     *   overall progress (BigGoal progress) of the goal and return
+     *   progress value in percent. Can operate any subGoals which
+     *   implemented SubGoal interface.
+     *   Calling from updateBigGoalProgress method.
+     */
+
+    private static <T extends Intention> double getProgressResult(int bigGoalId, Dao<BigGoal, Integer> bigGoalDAO, Dao<T, Integer>... daos) throws SQLException {
+        double goalsCompleted = 0, goalsCapacity = 0;
+        BigGoal bigGoal = bigGoalDAO.queryForId(bigGoalId);
+        List<Intention> goals = new ArrayList<>();
+
+        for (Dao dao : daos) {
+            CloseableIterator iterator = dao.queryBuilder().where()
+                    .eq(Intention.BIGGOAL_ID_FIELD, bigGoal.getId())
+                    .iterator();
+            try {
+                while (iterator.hasNext()) {
+                    goals.add((Intention) iterator.next());
+                }
+            } finally {
+                iterator.close();
+            }
+        }
+
+        for (Intention goal : goals) {
+            if (goal instanceof Job) {
+                goalsCapacity += ((Job) goal).getGoalQuantity();
+                goalsCompleted += ((Job) goal).getCompletedQuantity();
+            }
+            if (goal instanceof Task) {
+                goalsCapacity++;
+                if (goal.getCompleteStatus()) {
+                    goalsCompleted++;
+                }
+            }
+        }
+        return goalsCompleted * 100 / goalsCapacity;
+    }
 
 
 }

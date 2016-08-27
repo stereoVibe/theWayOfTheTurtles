@@ -61,8 +61,6 @@ public class SubGoalsListFragment extends Fragment implements RecyclerViewClickL
         return fragment;
     }
 
-
-
     @Override
     public void recyclerViewListClicked(View v, int position, ObjectiveType goalType) {
         int goalID = mSubGoalsList.get(position).getId();
