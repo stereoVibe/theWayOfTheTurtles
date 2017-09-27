@@ -41,7 +41,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase database, final ConnectionSource connectionSource) {
+    public void onCreate(final SQLiteDatabase database, final ConnectionSource connectionSource) {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
 
@@ -84,6 +84,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     /* Get DAO object depending on type of SubGoal */
     public Dao<? extends SubGoal, Integer> getSubGoalDAO(SubGoal subGoal) throws SQLException {
         mSubGoalDAO = subGoal instanceof Task ? getTaskDAO() : getJobDAO();
+//        Log.d(SubGoal.class.getName(), "cr");
         return mSubGoalDAO;
     }
 
