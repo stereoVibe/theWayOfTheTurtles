@@ -4,7 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity;
+import io.sokolvault13.turtlesway.presenters.biggoalslist.BigGoalsListActivity;
 
 /**
  * Created by Vault on 28/08/16.

@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.subGoalsList;
+package io.sokolvault13.turtlesway.presenters.subgoalslist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +37,7 @@ import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.Task;
 import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
-import io.sokolvault13.turtlesway.presenters.subGoalCreation.SubGoalCreationDialog;
+import io.sokolvault13.turtlesway.presenters.subgoalcreation.SubGoalCreationDialog;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class SubGoalsListActivity extends SingleFragmentActivity implements SubGoalDetailsDialog.NoticeDialogListener {

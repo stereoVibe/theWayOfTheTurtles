@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.subGoalsList;
+package io.sokolvault13.turtlesway.presenters.subgoalslist;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -20,7 +20,7 @@ import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
 import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity;
+import io.sokolvault13.turtlesway.presenters.biggoalslist.BigGoalsListActivity;
 import io.sokolvault13.turtlesway.utils.Constants;
 
 public class DeleteBigGoalConfirmationDialog extends DialogFragment {

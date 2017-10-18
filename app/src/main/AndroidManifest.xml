@@ -21,7 +21,7 @@
             <!--</intent-filter>-->
         <!--</activity>-->
         <activity
-            android:name="io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity"
+            android:name="io.sokolvault13.turtlesway.presenters.biggoalslist.BigGoalsListActivity"
             android:finishOnTaskLaunch="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -31,19 +31,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="io.sokolvault13.turtlesway.presenters.BigGoalCreation.BigGoalCreationActivity"
+            android:name="io.sokolvault13.turtlesway.presenters.biggoalcreation.BigGoalCreationActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="io.sokolvault13.turtlesway.presenters.subGoalsList.SubGoalsListActivity"
+            android:name="io.sokolvault13.turtlesway.presenters.subgoalslist.SubGoalsListActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity"/>
+                android:value="io.sokolvault13.turtlesway.presenters.biggoalslist.BigGoalsListActivity"/>
         </activity>
-        <activity android:name=".presenters.subGoalCreation.SubGoalCreationActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".presenters.bigGoalCreation.BigGoalCreationActivity" />
+        <activity
+            android:name=".presenters.subgoalcreation.SubGoalCreationActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

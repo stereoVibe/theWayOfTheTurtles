@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.bigGoalsList;
+package io.sokolvault13.turtlesway.presenters.biggoalslist;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.View;
 
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
-import io.sokolvault13.turtlesway.presenters.bigGoalCreation.BigGoalCreationDialog;
+import io.sokolvault13.turtlesway.presenters.biggoalcreation.BigGoalCreationDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BigGoalsListActivity extends SingleFragmentActivity {

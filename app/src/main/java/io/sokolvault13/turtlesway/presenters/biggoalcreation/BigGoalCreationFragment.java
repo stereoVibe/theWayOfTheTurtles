@@ -1,19 +1,16 @@
-package io.sokolvault13.turtlesway.presenters.bigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.biggoalcreation;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 
@@ -26,16 +23,13 @@ import java.util.Locale;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
-
 import io.sokolvault13.turtlesway.model.BigGoal;
-
-import io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity;
-import io.sokolvault13.turtlesway.presenters.GoalDialog;
+import io.sokolvault13.turtlesway.presenters.biggoalslist.BigGoalsListActivity;
 
 import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.createBigGoalRecord;
+import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.getIntentionList;
 
-public class BigGoalCreationDialog extends GoalDialog {
-
+public class BigGoalCreationFragment extends Fragment {
     private EditText mBigGoalTitle;
     private EditText mBigGoalDescription;
     private Button mCreateBigGoalBtn;
@@ -50,28 +44,26 @@ public class BigGoalCreationDialog extends GoalDialog {
             mCalendar.set(Calendar.YEAR, year);
             mCalendar.set(Calendar.MONTH, monthOfYear);
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
             mDate = new Date(mCalendar.getTimeInMillis());
             DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-
             mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(mDate)));
         }
     };
-    private Dao<io.sokolvault13.turtlesway.model.BigGoal, Integer> bigGoalsDAO;
+    private Dao<BigGoal, Integer> bigGoalsDAO;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         HelperFactory.setHelper(getActivity());
         dbHelper = HelperFactory.getHelper();
         getBigGoalDao();
-        return super.onCreateDialog(savedInstanceState);
+        super.onCreate(savedInstanceState);
+
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.dialog_create_big_goal, container, false);
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_create_big_goal, container, false);
         mBigGoalTitle = (EditText) view.findViewById(R.id.textGetTitle);
         mBigGoalDescription = (EditText) view.findViewById(R.id.textGetDescription);
         mCreateBigGoalBtn = (Button) view.findViewById(R.id.createBigGoalBtn);
@@ -103,41 +95,54 @@ public class BigGoalCreationDialog extends GoalDialog {
             }
         });
 
-        changeKeyboardVisibility();
-
         return view;
     }
 
-    public void createBigGoal() {
-        String title = String.valueOf(mBigGoalTitle.getText());
-        String description = String.valueOf(mBigGoalDescription.getText());
-        Date date = this.mDate;
-
-        if (!title.isEmpty()) {
-            try {
-                createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
-//                int bigGoalId = bigGoal.getId();
-//                Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
-                changeKeyboardVisibility();
-                Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
-                startActivity(intent);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(getContext(), getResources().getString(R.string.no_title_exception), Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public Context getContext() {
+        return super.getContext();
     }
 
     @Override
-    protected void changeKeyboardVisibility() {
-        InputMethodManager inputMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMM.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    public void onStart() {
+        if (dbHelper == null){
+            HelperFactory.setHelper(getActivity());
+            dbHelper = HelperFactory.getHelper();
+        }
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+        HelperFactory.releaseHelper();
+        super.onPause();
     }
 
     private void getBigGoalDao() {
         try {
             bigGoalsDAO = dbHelper.getBigGoalDAO();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createBigGoal() {
+        String title = mBigGoalTitle.getText().toString();
+        String description = mBigGoalDescription.getText().toString();
+        Date date = this.mDate;
+
+        try {
+            if (getIntentionList(bigGoalsDAO).size() == 0) {
+                createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+//                int bigGoalId = bigGoal.getId();
+//                Intent intent = SubGoalsListActivity.newIntent(getActivity(), bigGoalId);
+                Intent intent = new Intent(getContext(), BigGoalsListActivity.class);
+                startActivity(intent);
+            } else {
+                createBigGoalRecord(new BigGoal(title, description, date), bigGoalsDAO);
+                getActivity().onBackPressed();
+                getActivity().finish();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.bigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.biggoalcreation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

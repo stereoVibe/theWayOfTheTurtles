@@ -1,13 +1,12 @@
-package io.sokolvault13.turtlesway.presenters.subGoalCreation;
+package io.sokolvault13.turtlesway.presenters.subgoalcreation;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -19,7 +18,7 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import io.sokolvault13.turtlesway.*;
+import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
@@ -28,29 +27,27 @@ import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
 import io.sokolvault13.turtlesway.model.Job;
 import io.sokolvault13.turtlesway.model.ObjectiveType;
 import io.sokolvault13.turtlesway.model.Task;
-import io.sokolvault13.turtlesway.presenters.GoalDialog;
 import io.sokolvault13.turtlesway.utils.Constants;
 
-public class SubGoalCreationDialog extends GoalDialog {
-    NoticeDialogListener mNoticeDialogListener;
+public class SubGoalCreationFragment extends Fragment {
     private DatabaseHelper dbHelper;
     private EditText mSubGoalTitle,
-            mSubGoalDescription,
-            mRepeatsQuantity;
+                     mSubGoalDescription,
+                     mRepeatsQuantity;
     private Button mCreateGoalBtn;
     private SwitchCompat mChooseGoalTypeBtn;
     private int mBigGoalID;
     private Dao mBigGoalsDAO,
-            mJobsDAO,
-            mTasksDAO;
+                mJobsDAO,
+                mTasksDAO;
     private boolean isGoalTypeSimple = true;
 
-    public static SubGoalCreationDialog newInstance(int bigGoalId) {
-        SubGoalCreationDialog dialog = new SubGoalCreationDialog();
+    public static SubGoalCreationFragment newInstance(int bigGoalID){
         Bundle args = new Bundle();
-        args.putInt(Constants.ARG_BIG_GOAL_ID, bigGoalId);
-        dialog.setArguments(args);
-        return dialog;
+        args.putInt(Constants.ARG_BIG_GOAL_ID, bigGoalID);
+        SubGoalCreationFragment fragment = new SubGoalCreationFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -64,7 +61,7 @@ public class SubGoalCreationDialog extends GoalDialog {
             mBigGoalsDAO = (Dao) allDAO.get(Constants.BIG_GOALS_DAO);
             mJobsDAO = (Dao) allDAO.get(Constants.JOBS_DAO);
             mTasksDAO = (Dao) allDAO.get(Constants.TASKS_DAO);
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -73,7 +70,7 @@ public class SubGoalCreationDialog extends GoalDialog {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.dialog_create_sub_goal, container, false);
+        final View view = inflater.inflate(R.layout.fragment_create_sub_goal, container, false);
         mSubGoalTitle = (EditText) view.findViewById(R.id.textGetTitle);
         mSubGoalDescription = (EditText) view.findViewById(R.id.textGetDescription);
         mRepeatsQuantity = (EditText) view.findViewById(R.id.repeatsQuantity);
@@ -85,7 +82,7 @@ public class SubGoalCreationDialog extends GoalDialog {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 TextView repeatsQtyTitle = (TextView) view.findViewById(R.id.repeatsQuantityTitle);
 
-                if (isChecked) {
+                if (isChecked){
                     repeatsQtyTitle.setEnabled(true);
                     mRepeatsQuantity.setEnabled(true);
                     isGoalTypeSimple = false;
@@ -97,33 +94,19 @@ public class SubGoalCreationDialog extends GoalDialog {
             }
         });
 
-        mCreateGoalBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    if (createSubGoal()) {
-                        getDialog().dismiss();
-                    }
-                    mNoticeDialogListener.onDialogClick(this);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
+
         return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            mNoticeDialogListener = (NoticeDialogListener) context;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(context.toString()
-                    + " must implement NoticeDialogListener");
-        }
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     protected boolean createSubGoal() throws SQLException {
@@ -154,11 +137,6 @@ public class SubGoalCreationDialog extends GoalDialog {
             }
             return true;
         }
-    }
 
-    @Override
-    protected void changeKeyboardVisibility() {
-        InputMethodManager inputMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMM.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

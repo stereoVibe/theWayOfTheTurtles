@@ -1,6 +1,7 @@
-package io.sokolvault13.turtlesway.presenters.bigGoalsList;
+package io.sokolvault13.turtlesway.presenters.biggoalslist;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,7 +25,9 @@ import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
 import io.sokolvault13.turtlesway.model.IntentionDAOHelper;
-import io.sokolvault13.turtlesway.presenters.subGoalsList.SubGoalsListActivity;
+import io.sokolvault13.turtlesway.presenters.subgoalslist.SubGoalsListActivity;
+
+//import com.daimajia.numberprogressbar.NumberProgressBar;
 
 //import android.support.v4.app.Fragment;
 
