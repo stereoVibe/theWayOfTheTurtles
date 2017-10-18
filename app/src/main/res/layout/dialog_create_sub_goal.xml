@@ -25,7 +25,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:paddingTop="9dp"
-            android:src="@drawable/ic_arrow_back_grey_700_18dp"/>
+            android:src="@drawable/ic_arrow_back_grey_700_24dp"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/textGetTitleLayout"

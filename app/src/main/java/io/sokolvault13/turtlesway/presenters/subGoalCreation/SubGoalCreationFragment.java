@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.SubGoalCreation;
+package io.sokolvault13.turtlesway.presenters.subGoalCreation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

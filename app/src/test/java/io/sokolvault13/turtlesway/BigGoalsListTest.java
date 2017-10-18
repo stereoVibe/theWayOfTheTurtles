@@ -4,9 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity;
-
-import static org.junit.Assert.*;
+import io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity;
 
 /**
  * Created by Vault on 28/08/16.

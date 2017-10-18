@@ -1,8 +1,6 @@
-package io.sokolvault13.turtlesway.presenters.SubGoalsList;
+package io.sokolvault13.turtlesway.presenters.subGoalsList;
 
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class PerformJobCompleteTest {
 

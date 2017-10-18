@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.SubGoalCreation;
+package io.sokolvault13.turtlesway.presenters.subGoalCreation;
 
 import android.content.Context;
 import android.content.Intent;

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:src="@drawable/lemur"/>
+        android:src="@drawable/ic_loyalty_pink_400_48dp"/>
 
     <TextView
         android:id="@+id/textView4"

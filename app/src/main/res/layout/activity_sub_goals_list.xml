@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:custom="http://schemas.android.com/tools">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/sub_goals_list_container"
@@ -107,6 +106,7 @@
 
             </RelativeLayout>
 
+            <!--com.daimajia.numberprogressbar.NumberProgressBa-->
             <com.daimajia.numberprogressbar.NumberProgressBar
                 android:id="@+id/big_goal_inner_progressBar"
                 android:layout_width="wrap_content"
@@ -114,12 +114,12 @@
                 android:layout_marginLeft="56dp"
                 android:layout_marginTop="94dp"
                 android:padding="18dp"
-                app:progress_reached_bar_height="3dp"
-                app:progress_reached_color="@color/darkBlueSea"
-                app:progress_text_color="@color/darkBlueSea"
-                app:progress_text_size="14sp"
-                app:progress_unreached_bar_height="3dp"
-                app:progress_unreached_color="@color/brightBlue"
+                custom:progress_reached_bar_height="3dp"
+                custom:progress_reached_color="@color/darkBlueSea"
+                custom:progress_text_color="@color/darkBlueSea"
+                custom:progress_text_size="14sp"
+                custom:progress_unreached_bar_height="3dp"
+                custom:progress_unreached_color="@color/brightBlue"
                 />
 
         </android.support.design.widget.CollapsingToolbarLayout>

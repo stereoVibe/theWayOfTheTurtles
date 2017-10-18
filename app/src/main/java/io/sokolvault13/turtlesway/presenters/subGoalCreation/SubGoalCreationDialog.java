@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.SubGoalCreation;
+package io.sokolvault13.turtlesway.presenters.subGoalCreation;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.j256.ormlite.dao.Dao;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import io.sokolvault13.turtlesway.R;
+import io.sokolvault13.turtlesway.*;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;

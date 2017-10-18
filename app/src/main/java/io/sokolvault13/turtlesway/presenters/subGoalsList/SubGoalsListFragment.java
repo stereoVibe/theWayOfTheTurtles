@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.SubGoalsList;
+package io.sokolvault13.turtlesway.presenters.subGoalsList;
 
 import android.content.Context;
 import android.graphics.Paint;

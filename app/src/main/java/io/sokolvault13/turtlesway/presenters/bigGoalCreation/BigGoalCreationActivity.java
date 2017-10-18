@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.BigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.bigGoalCreation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,10 +6,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
 import io.sokolvault13.turtlesway.R;
+import io.sokolvault13.turtlesway.presenters.SingleFragmentActivity;
+
 
 public class BigGoalCreationActivity extends SingleFragmentActivity {
+
     private BigGoalCreationFragment mFragment;
     public static final String CREATE_BIG_GOAL_FRAGMENT_TAG = "create_big_goal_tag";
 

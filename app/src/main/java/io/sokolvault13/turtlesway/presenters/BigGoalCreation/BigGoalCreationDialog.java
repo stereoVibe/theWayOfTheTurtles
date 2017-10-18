@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.BigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.bigGoalCreation;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -26,8 +26,10 @@ import java.util.Locale;
 import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
+
 import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity;
+
+import io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity;
 import io.sokolvault13.turtlesway.presenters.GoalDialog;
 
 import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.createBigGoalRecord;
@@ -55,7 +57,7 @@ public class BigGoalCreationDialog extends GoalDialog {
             mPickBigGoalEndDateBtn.setText(String.format("%s", dateFormat.format(mDate)));
         }
     };
-    private Dao<BigGoal, Integer> bigGoalsDAO;
+    private Dao<io.sokolvault13.turtlesway.model.BigGoal, Integer> bigGoalsDAO;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

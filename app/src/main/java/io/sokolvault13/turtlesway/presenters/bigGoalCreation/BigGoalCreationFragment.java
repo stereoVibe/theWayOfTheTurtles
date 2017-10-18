@@ -1,4 +1,4 @@
-package io.sokolvault13.turtlesway.presenters.BigGoalCreation;
+package io.sokolvault13.turtlesway.presenters.bigGoalCreation;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -24,7 +24,7 @@ import io.sokolvault13.turtlesway.R;
 import io.sokolvault13.turtlesway.db.DatabaseHelper;
 import io.sokolvault13.turtlesway.db.HelperFactory;
 import io.sokolvault13.turtlesway.model.BigGoal;
-import io.sokolvault13.turtlesway.presenters.BigGoalsList.BigGoalsListActivity;
+import io.sokolvault13.turtlesway.presenters.bigGoalsList.BigGoalsListActivity;
 
 import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.createBigGoalRecord;
 import static io.sokolvault13.turtlesway.model.IntentionDAOHelper.getIntentionList;
